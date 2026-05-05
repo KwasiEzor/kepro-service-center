@@ -1,5 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { 
   Car, 
   Key, 
@@ -17,6 +19,7 @@ import {
   Info
 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
 
 type Step = 'service' | 'vehicle' | 'details' | 'success';
 
@@ -29,27 +32,42 @@ const serviceOptions = [
 
 export default function Quote() {
   const [step, setStep] = React.useState<Step>('service');
-  const [formData, setFormData] = React.useState({
-    serviceType: '',
-    brand: '',
-    model: '',
-    year: '',
-    location: '',
-    urgency: 'Standard',
-    name: '',
-    email: '',
-    phone: '',
-    message: ''
+  const [serviceType, setServiceType] = React.useState('');
+  const [refId, setRefId] = React.useState('');
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+  } = useForm<QuoteFormData>({
+    resolver: zodResolver(quoteFormSchema),
   });
 
   const handleNext = () => {
-    if (step === 'service') setStep('vehicle');
-    else if (step === 'vehicle') setStep('details');
+    if (step === 'service') {
+      setValue('serviceType', serviceType as any);
+      setStep('vehicle');
+    } else if (step === 'vehicle') setStep('details');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep('success');
+  const onSubmit = async (data: QuoteFormData) => {
+    try {
+      const response = await fetch('http://localhost:3001/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Failed');
+
+      const result = await response.json();
+      setRefId(result.refId);
+      setStep('success');
+    } catch (error) {
+      console.error('Quote error:', error);
+      alert('Failed to submit. Please call us directly.');
+    }
   };
 
   return (
@@ -108,17 +126,17 @@ export default function Quote() {
                   {serviceOptions.map((opt) => (
                     <button
                       key={opt.id}
-                      onClick={() => setFormData({ ...formData, serviceType: opt.id })}
+                      onClick={() => setServiceType(opt.id)}
                       className={cn(
                         "flex items-start gap-6 p-8 rounded-3xl border-2 text-left transition-all group",
-                        formData.serviceType === opt.id 
+                        serviceType === opt.id 
                           ? "border-brand-red bg-brand-red/10 bg-glow-red" 
                           : "border-white/5 bg-white/5 hover:border-white/20"
                       )}
                     >
                       <div className={cn(
                         "w-12 h-12 rounded-2xl flex items-center justify-center transition-colors shadow-xl",
-                        formData.serviceType === opt.id ? "bg-brand-red text-white" : "bg-white/10 text-white/40"
+                        serviceType === opt.id ? "bg-brand-red text-white" : "bg-white/10 text-white/40"
                       )}>
                         <opt.icon className="w-6 h-6" />
                       </div>
@@ -131,7 +149,7 @@ export default function Quote() {
                 </div>
                 <div className="mt-12 flex justify-end">
                   <button
-                    disabled={!formData.serviceType}
+                    disabled={!serviceType}
                     onClick={handleNext}
                     className="flex items-center gap-3 px-10 py-4 bg-brand-red text-white rounded-full font-bold hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:hover:scale-100"
                   >
@@ -160,47 +178,46 @@ export default function Quote() {
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Brand</label>
                     <input
+                      {...register('brand')}
                       type="text"
                       placeholder="e.g. BMW, Audi, Mercedes"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.brand}
-                      onChange={e => setFormData({...formData, brand: e.target.value})}
                     />
+                    {errors.brand && <p className="text-red-400 text-xs px-2">{errors.brand.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Model</label>
                     <input
+                      {...register('model')}
                       type="text"
                       placeholder="e.g. 5 Series, A4, G-Wagon"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.model}
-                      onChange={e => setFormData({...formData, model: e.target.value})}
                     />
+                    {errors.model && <p className="text-red-400 text-xs px-2">{errors.model.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Year</label>
                     <input
+                      {...register('year')}
                       type="text"
                       placeholder="e.g. 2021"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.year}
-                      onChange={e => setFormData({...formData, year: e.target.value})}
                     />
+                    {errors.year && <p className="text-red-400 text-xs px-2">{errors.year.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Location (City)</label>
                     <input
+                      {...register('location')}
                       type="text"
                       placeholder="e.g. Paris, Lyon, Marseille"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.location}
-                      onChange={e => setFormData({...formData, location: e.target.value})}
                     />
+                    {errors.location && <p className="text-red-400 text-xs px-2">{errors.location.message}</p>}
                   </div>
                 </div>
                 <div className="mt-12 flex justify-end">
                   <button
-                    disabled={!formData.brand || !formData.model || !formData.year}
                     onClick={handleNext}
                     className="flex items-center gap-3 px-10 py-4 bg-brand-red text-white rounded-full font-bold hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
                   >
@@ -225,56 +242,53 @@ export default function Quote() {
                   <h2 className="text-3xl font-display font-bold mb-4">Personal Details</h2>
                   <p className="text-white/40">How should our technical team contact you?</p>
                 </div>
-                <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-8">
+                <form onSubmit={handleSubmit(onSubmit)} className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Full Name</label>
                     <input
-                      required
+                      {...register('name')}
                       type="text"
                       placeholder="John Doe"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.name}
-                      onChange={e => setFormData({...formData, name: e.target.value})}
                     />
+                    {errors.name && <p className="text-red-400 text-xs px-2">{errors.name.message}</p>}
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Phone Number</label>
                     <input
-                      required
+                      {...register('phone')}
                       type="tel"
                       placeholder="01 23 45 67 89"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.phone}
-                      onChange={e => setFormData({...formData, phone: e.target.value})}
                     />
+                    {errors.phone && <p className="text-red-400 text-xs px-2">{errors.phone.message}</p>}
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Email Address</label>
                     <input
-                      required
+                      {...register('email')}
                       type="email"
                       placeholder="john@example.com"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all"
-                      value={formData.email}
-                      onChange={e => setFormData({...formData, email: e.target.value})}
                     />
+                    {errors.email && <p className="text-red-400 text-xs px-2">{errors.email.message}</p>}
                   </div>
                   <div className="md:col-span-2 space-y-2">
                     <label className="text-xs font-bold text-white/40 uppercase tracking-widest px-2">Additional Information (Optional)</label>
                     <textarea
+                      {...register('message')}
                       placeholder="Describe the issue in more detail..."
                       rows={4}
                       className="w-full glass bg-white/5 border-white/5 rounded-3xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all resize-none"
-                      value={formData.message}
-                      onChange={e => setFormData({...formData, message: e.target.value})}
                     />
                   </div>
                   <div className="md:col-span-2 mt-4">
                     <button
                       type="submit"
-                      className="w-full py-5 bg-brand-red text-white rounded-full font-black text-xl hover:scale-105 active:scale-95 transition-all bg-glow-red"
+                      disabled={isSubmitting}
+                      className="w-full py-5 bg-brand-red text-white rounded-full font-black text-xl hover:scale-105 active:scale-95 transition-all bg-glow-red disabled:opacity-50"
                     >
-                      SEND REQUEST
+                      {isSubmitting ? 'SENDING...' : 'SEND REQUEST'}
                     </button>
                     <p className="text-[10px] text-white/20 text-center mt-6 uppercase tracking-widest leading-relaxed">
                       By submitting, you agree to our processing of your technical data for service purposes. <br />
@@ -297,7 +311,7 @@ export default function Quote() {
                 </div>
                 <h2 className="text-4xl md:text-5xl font-display font-bold mb-6">Request Received</h2>
                 <p className="text-xl text-white/60 mb-12 max-w-lg mx-auto">
-                  Thank you, {formData.name}. Our technical supervisor has been notified. We will contact you via phone shortly to confirm the intervention.
+                  Thank you. Our technical supervisor has been notified. We will contact you via phone shortly to confirm the intervention.
                 </p>
                 <div className="glass p-8 rounded-3xl inline-block text-left mb-12 border-white/10">
                    <div className="flex items-center gap-3 mb-4 text-brand-red">
@@ -305,8 +319,7 @@ export default function Quote() {
                      <span className="font-bold text-sm uppercase tracking-widest">Urgency Priority: High</span>
                    </div>
                    <div className="space-y-2 text-sm">
-                     <p><span className="text-white/40">Ref ID:</span> <span className="font-mono">KP-{Math.random().toString(36).substr(2, 6).toUpperCase()}</span></p>
-                     <p><span className="text-white/40">Vehicle:</span> <span className="font-bold">{formData.brand} {formData.model}</span></p>
+                     <p><span className="text-white/40">Ref ID:</span> <span className="font-mono">{refId}</span></p>
                    </div>
                 </div>
                 <div>

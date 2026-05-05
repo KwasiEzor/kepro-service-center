@@ -1,11 +1,13 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  MessageSquare, 
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  MessageSquare,
   Send,
   ExternalLink,
   Instagram,
@@ -13,14 +15,37 @@ import {
   Linkedin
 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { contactFormSchema, type ContactFormData } from '../lib/validation';
 
 export default function Contact() {
-  const [formState, setFormState] = React.useState('idle');
+  const [formState, setFormState] = React.useState<'idle' | 'submitting' | 'success'>('idle');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
+  });
+
+  const onSubmit = async (data: ContactFormData) => {
     setFormState('submitting');
-    setTimeout(() => setFormState('success'), 2000);
+
+    try {
+      const response = await fetch('http://localhost:3001/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) throw new Error('Submission failed');
+
+      setFormState('success');
+    } catch (error) {
+      console.error('Form error:', error);
+      alert('Failed to send. Please call us directly.');
+      setFormState('idle');
+    }
   };
 
   return (
@@ -94,28 +119,34 @@ export default function Contact() {
                   <p className="text-white/50">One of our specialists will get back to you shortly.</p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">Your Name</label>
-                    <input 
-                      required
-                      type="text" 
+                    <input
+                      {...register('name')}
+                      type="text"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm"
                       placeholder="Jane Cooper"
                     />
+                    {errors.name && (
+                      <p className="text-red-400 text-xs px-2">{errors.name.message}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">Email Address</label>
-                    <input 
-                      required
-                      type="email" 
+                    <input
+                      {...register('email')}
+                      type="email"
                       className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm"
                       placeholder="jane@example.com"
                     />
+                    {errors.email && (
+                      <p className="text-red-400 text-xs px-2">{errors.email.message}</p>
+                    )}
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">Message Topic</label>
-                    <select className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm appearance-none cursor-pointer">
+                    <select {...register('topic')} className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm appearance-none cursor-pointer">
                       <option className="bg-[#0A1F44]">General Inquiry</option>
                       <option className="bg-[#0A1F44]">Key Support</option>
                       <option className="bg-[#0A1F44]">B2B Partnerships</option>
@@ -124,12 +155,15 @@ export default function Contact() {
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">How can we help?</label>
-                    <textarea 
-                      required
+                    <textarea
+                      {...register('message')}
                       rows={5}
                       className="w-full glass bg-white/5 border-white/5 rounded-3xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm resize-none"
                       placeholder="Share some details about your problem..."
                     />
+                    {errors.message && (
+                      <p className="text-red-400 text-xs px-2">{errors.message.message}</p>
+                    )}
                   </div>
                   
                   <button 

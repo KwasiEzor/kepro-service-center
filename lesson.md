@@ -60,3 +60,25 @@
 - Modified: `ChatBot.tsx`, `package.json`
 
 **Deps**: concurrently
+
+### Phase 3 - Input Validation ✅
+**Completed**: 2026-05-05
+
+**Changes**:
+- Installed Zod, React Hook Form, @hookform/resolvers
+- Created validation schemas in `src/lib/validation.ts`
+- Updated Contact.tsx with full validation
+- Updated Quote.tsx with multi-step validation
+- Added backend endpoints `/api/contact` and `/api/quote`
+
+**Issues**:
+- Zod error property: `error.issues` not `error.errors`
+- Multi-step forms: setValue() to pass data between steps
+
+**Files**:
+- `src/lib/validation.ts` - Zod schemas
+- `src/pages/Contact.tsx` - React Hook Form integration
+- `src/pages/Quote.tsx` - React Hook Form with multi-step
+- `server/api.ts` - Added contact + quote endpoints
+
+**Deps**: zod, react-hook-form, @hookform/resolvers
