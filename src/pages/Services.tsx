@@ -57,103 +57,190 @@ const serviceCategories = [
 
 export default function Services() {
   return (
-    <div className="pt-32 pb-20 overflow-hidden">
+    <div className="pt-32 pb-20 overflow-hidden relative">
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-[120px] rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      </div>
+
       {/* Header */}
-      <section className="px-6 sm:px-12 mb-20 text-center relative">
+      <section className="px-6 sm:px-12 mb-24 text-center relative z-10">
         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-white/10 text-xs font-bold tracking-widest uppercase text-brand-red mb-8"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-600/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
         >
-          Specialist Automotive Tech
+          <Settings className="w-3.5 h-3.5 text-cyan-400" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+            Specialist Automotive Tech
+          </span>
         </motion.div>
-        
-        <motion.h1 
+
+        <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-5xl md:text-7xl font-display font-bold mb-8 tracking-tight"
+          transition={{ delay: 0.1, duration: 0.8 }}
+          className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-[1.05]"
         >
-          Technical <span className="text-white/40">Expertise</span>
+          <span className="block text-white">Technical</span>
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient">
+            Expertise
+          </span>
         </motion.h1>
-        
+
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-white/60 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+          className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
         >
-          We bridge the gap between mechanical hardware and digital software. Our technicians are trained in the latest immobilizer technologies and diagnostic protocols.
+          We bridge the gap between mechanical hardware and digital software. Our technicians are trained in the <span className="text-white font-bold">latest immobilizer technologies</span> and diagnostic protocols.
         </motion.p>
       </section>
 
-      {/* Main Services Wall */}
-      <section className="px-6 sm:px-12 max-w-7xl mx-auto space-y-32">
+      {/* Premium Services Showcase */}
+      <section className="px-6 sm:px-12 max-w-7xl mx-auto space-y-40 relative z-10">
         {serviceCategories.map((cat, idx) => (
           <motion.div
             key={cat.id}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
             className={cn(
               "flex flex-col lg:flex-row gap-16 items-center",
               idx % 2 !== 0 && "lg:flex-row-reverse"
             )}
           >
-            <div className="flex-1 space-y-8">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-brand-red/10 rounded-2xl flex items-center justify-center p-4 border border-brand-red/20 shadow-[0_0_20px_rgba(255,45,45,0.1)]">
-                  <cat.icon className="w-full h-full text-brand-red" />
+            {/* Content Side */}
+            <div className="flex-1 space-y-10">
+              {/* Icon + Title */}
+              <motion.div
+                initial={{ opacity: 0, x: idx % 2 === 0 ? -30 : 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center gap-6"
+              >
+                <div className="w-20 h-20 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-3xl flex items-center justify-center border border-white/10 backdrop-blur-xl">
+                  <cat.icon className="w-10 h-10 text-cyan-400" />
                 </div>
-                <h2 className="text-3xl md:text-5xl font-display font-bold leading-none">{cat.title}</h2>
-              </div>
-              
-              <p className="text-xl text-white/70 font-medium">
+                <h2 className="text-4xl md:text-6xl font-display font-black leading-none text-white">
+                  {cat.title}
+                </h2>
+              </motion.div>
+
+              {/* Description */}
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                className="text-xl text-white/70 leading-relaxed"
+              >
                 {cat.description}
-              </p>
-              
-              <div className="grid sm:grid-cols-2 gap-6 pt-4">
+              </motion.p>
+
+              {/* Service Grid */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="grid sm:grid-cols-2 gap-4 pt-4"
+              >
                 {cat.services.map((s, i) => (
-                  <div key={i} className="glass p-6 rounded-3xl hover:bg-white/5 transition-colors border-white/5">
-                    <h4 className="font-bold text-white mb-2">{s.name}</h4>
-                    <p className="text-xs text-white/40 leading-relaxed font-medium">
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5 + i * 0.1 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-6 rounded-3xl border border-white/10 hover:border-white/20 transition-all"
+                  >
+                    {/* Gradient glow on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 rounded-3xl transition-all duration-300 -z-10" />
+
+                    <h4 className="font-bold text-white mb-2 text-sm">{s.name}</h4>
+                    <p className="text-xs text-white/50 leading-relaxed">
                       {s.detail}
                     </p>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
 
-            <div className="flex-1 relative group">
-              <div className="relative rounded-[40px] overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
-                <img 
-                  src={cat.image} 
-                  alt={cat.title}
-                  className="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-tr from-brand-blue/60 via-transparent to-transparent opacity-60" />
+            {/* Image Side with Premium Card */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="flex-1 relative group"
+            >
+              {/* Main Image Card with Gradient Border */}
+              <div className="relative p-1 rounded-[48px] bg-gradient-to-br from-white/20 to-white/5">
+                <div className="relative rounded-[44px] overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
+                  <img
+                    src={cat.image}
+                    alt={cat.title}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    referrerPolicy="no-referrer"
+                  />
+                  {/* Gradient Overlays */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-blue-500/20 to-purple-600/30 mix-blend-overlay" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent opacity-80" />
+                </div>
               </div>
-              
-              {/* Decorative side block */}
+
+              {/* Decorative Glow */}
               <div className={cn(
-                "absolute -z-10 w-full h-full border-2 border-brand-red/20 rounded-[40px] transition-transform duration-500 group-hover:scale-105",
-                idx % 2 === 0 ? "top-6 right-6" : "top-6 left-6"
+                "absolute -z-10 w-full h-full rounded-[48px] bg-gradient-to-br from-cyan-500/20 to-blue-500/20 blur-3xl transition-all duration-700 group-hover:blur-2xl group-hover:scale-105",
+                idx % 2 === 0 ? "top-8 right-8" : "top-8 left-8"
               )} />
-            </div>
+            </motion.div>
           </motion.div>
         ))}
       </section>
 
-      {/* Brand Coverage banner */}
-      <section className="mt-32 py-20 bg-white/5 border-y border-white/5">
-        <div className="flex flex-col items-center gap-8 text-center text-white/20">
-          <span className="text-sm font-bold tracking-[0.3em] uppercase">Supporting leading manufacturers</span>
-          <div className="flex flex-wrap justify-center gap-x-16 gap-y-8 px-6">
-            {['VOLKSWAGEN', 'AUDI', 'BMW', 'MERCEDES', 'PORSCHE', 'LAND ROVER', 'PEUGEOT', 'RENAULT'].map(b => (
-              <span key={b} className="text-2xl font-display font-black tracking-tighter hover:text-white/60 transition-colors cursor-default">
-                {b}
-              </span>
+      {/* Premium Brand Coverage Banner */}
+      <section className="mt-40 py-24 relative overflow-hidden">
+        {/* Background with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
+        <div className="absolute inset-0 border-y border-white/5" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-white/5 to-white/10 border border-white/10 text-xs font-bold tracking-widest uppercase backdrop-blur-xl">
+              <ShieldCheck className="w-3.5 h-3.5 text-white/40" />
+              <span className="text-white/40">Supporting Leading Manufacturers</span>
+            </div>
+          </motion.div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {['VOLKSWAGEN', 'AUDI', 'BMW', 'MERCEDES', 'PORSCHE', 'LAND ROVER', 'PEUGEOT', 'RENAULT'].map((brand, i) => (
+              <motion.div
+                key={brand}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                whileHover={{ y: -4, opacity: 1 }}
+                className="group flex items-center justify-center p-8 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] rounded-3xl border border-white/5 hover:border-white/10 transition-all cursor-default"
+              >
+                <span className="text-lg md:text-xl font-display font-black tracking-tight text-white/30 group-hover:text-white/70 transition-colors">
+                  {brand}
+                </span>
+              </motion.div>
             ))}
           </div>
         </div>

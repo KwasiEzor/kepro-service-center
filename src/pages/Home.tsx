@@ -1,18 +1,20 @@
 import React from 'react';
-import { motion, useScroll, useTransform } from 'motion/react';
-import { 
-  Key, 
-  Settings, 
-  Cpu, 
-  ShieldCheck, 
-  ArrowRight, 
-  PhoneCall, 
-  MapPin, 
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'motion/react';
+import {
+  Key,
+  Settings,
+  Cpu,
+  ShieldCheck,
+  ArrowRight,
+  PhoneCall,
+  MapPin,
   Star,
   ChevronRight,
   Clock,
   Car,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles,
+  Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { cn } from '../lib/utils';
@@ -22,249 +24,514 @@ const services = [
     title: "Car Key Specialist",
     description: "Lost all keys? We can program and cut new keys on-site for almost any vehicle model.",
     icon: Key,
-    color: "from-blue-500 to-indigo-600"
+    gradient: "from-cyan-500 via-blue-500 to-purple-600",
+    features: ["All Key Lost Recovery", "Smart Key Programming", "Remote Diagnostics"]
   },
   {
     title: "Full Diagnostics",
     description: "Deep binary scans of your vehicle electronics using dealer-level specialized equipment.",
     icon: Cpu,
-    color: "from-purple-500 to-pink-600"
+    gradient: "from-purple-500 via-pink-500 to-rose-600",
+    features: ["ECU Analysis", "Network Scan", "Performance Tuning"]
   },
   {
     title: "Immobilizer Repairs",
     description: "Fixing ECU synchronization issues and complex immobilizer system failures.",
     icon: Settings,
-    color: "from-orange-500 to-red-600"
+    gradient: "from-orange-500 via-red-500 to-pink-600",
+    features: ["Module Coding", "Immo Sync", "Software Updates"]
   }
 ];
 
 const stats = [
-  { label: "Successful Services", value: "12k+" },
-  { label: "Expert Technicians", value: "24" },
-  { label: "Response Time", value: "30min" },
-  { label: "Client Rating", value: "4.9/5" }
+  { label: "Successful Services", value: "12k+", icon: CheckCircle2 },
+  { label: "Expert Technicians", value: "24", icon: ShieldCheck },
+  { label: "Response Time", value: "30min", icon: Clock },
+  { label: "Client Rating", value: "4.9/5", icon: Star }
 ];
 
 export default function Home() {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
+  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
-  const scale = useTransform(scrollY, [0, 300], [1, 0.9]);
+  const scale = useTransform(scrollY, [0, 300], [1, 0.95]);
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const springX = useSpring(mouseX, { stiffness: 150, damping: 15 });
+  const springY = useSpring(mouseY, { stiffness: 150, damping: 15 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    mouseX.set((e.clientX - rect.left - rect.width / 2) / 20);
+    mouseY.set((e.clientY - rect.top - rect.height / 2) / 20);
+  };
 
   return (
     <div className="relative overflow-hidden pt-20">
-      {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-10 px-6 sm:px-12">
-        {/* Animated Background Elements */}
+      {/* Hero Section - Premium Immersive */}
+      <section className="relative min-h-screen flex items-center justify-center pt-10 px-6 sm:px-12" onMouseMove={handleMouseMove}>
+        {/* Advanced Background with Mesh Gradient */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div 
-            style={{ y: y1 }}
-            className="absolute -top-[20%] -right-[10%] w-[80%] h-[80%] bg-brand-blue/20 blur-[120px] rounded-full"
+          <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0A1F44]/50 to-[#020617]" />
+
+          <motion.div
+            style={{ x: springX, y: springY }}
+            className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-600/20 blur-[120px] rounded-full"
           />
-          <motion.div 
-            style={{ y: -y1 }}
-            className="absolute -bottom-[20%] -left-[10%] w-[60%] h-[60%] bg-brand-red/10 blur-[120px] rounded-full"
+          <motion.div
+            style={{ x: -springX, y: -springY }}
+            className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-pink-500/10 via-brand-red/10 to-orange-500/10 blur-[100px] rounded-full"
           />
+
+          {/* Grid Pattern Overlay */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
         </div>
 
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center relative z-10 text-center lg:text-left">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10 text-center lg:text-left">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
+            {/* Premium Badge */}
             <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1 }}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-600/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+                Premium Mobile Service
+              </span>
+            </motion.div>
+
+            {/* Hero Headline with Gradient */}
+            <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-white/10 text-xs font-bold tracking-widest uppercase text-brand-red mb-8"
+              className="font-display text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-[1.05]"
             >
-              <span className="w-1.5 h-1.5 bg-brand-red rounded-full animate-pulse" />
-              Available 24/7 in your area
-            </motion.div>
-            
-            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-[1.1]">
-              Technicien <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white to-white/40">Auto Mobile</span>
-            </h1>
-            
-            <p className="text-lg md:text-xl text-white/60 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Clés, Diagnostic, Programmation. Solution technique haut de gamme directement chez vous ou sur votre lieu de travail.
-            </p>
+              <span className="block text-white">Technicien</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient">
+                Auto Mobile
+              </span>
+            </motion.h1>
 
-            <div className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+            {/* Subtitle */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-lg md:text-xl text-white/70 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
+            >
+              Clés, Diagnostic, Programmation. Solution technique <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 font-bold">haut de gamme</span> directement chez vous.
+            </motion.p>
+
+            {/* Animated Gradient CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start"
+            >
               <Link
                 to="/quote"
-                className="group relative px-8 py-4 bg-brand-red rounded-full font-bold text-lg overflow-hidden bg-glow-red transition-all hover:scale-105 active:scale-95"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
-                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                <span className="relative flex items-center gap-2">
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 animate-gradient" />
+                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                <span className="relative z-10 flex items-center gap-2 text-white">
                   Request Service <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
               </Link>
+
               <Link
                 to="/services"
-                className="group px-8 py-4 glass hover:bg-white/10 rounded-full font-bold text-lg transition-all"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden border border-white/10 backdrop-blur-xl hover:bg-white/5 transition-all"
               >
-                Explore Services
+                <span className="relative z-10 text-white/90 group-hover:text-white transition-colors">
+                  Explore Services
+                </span>
               </Link>
-            </div>
+            </motion.div>
 
-            <div className="mt-12 flex items-center justify-center lg:justify-start gap-8 opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700">
-              {['BMW', 'Audi', 'Mercedes', 'Range Rover', 'Porsche'].map((brand) => (
-                <span key={brand} className="text-sm font-display font-bold tracking-widest">{brand}</span>
+            {/* Premium Brands */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="mt-16 flex items-center justify-center lg:justify-start gap-8 flex-wrap"
+            >
+              {['BMW', 'Audi', 'Mercedes', 'Range Rover', 'Porsche'].map((brand, i) => (
+                <motion.span
+                  key={brand}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 0.4, y: 0 }}
+                  transition={{ delay: 0.6 + i * 0.05 }}
+                  whileHover={{ opacity: 1, scale: 1.05 }}
+                  className="text-sm font-display font-bold tracking-widest text-white cursor-default transition-all"
+                >
+                  {brand}
+                </motion.span>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
+          {/* Premium Hero Visual with Parallax Cards */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
             className="relative hidden lg:block"
           >
-            <div className="relative z-10 rounded-[40px] overflow-hidden border border-white/10 shadow-2xl">
-              <img 
-                src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1200" 
-                alt="Premium Car Key Service"
-                className="w-full h-auto"
-                referrerPolicy="no-referrer"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand-blue/80 via-transparent to-transparent" />
-              
-              {/* Floating Glass Cards */}
-              <motion.div 
-                animate={{ y: [0, -20, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-12 -left-12 glass p-6 rounded-3xl shadow-xl max-w-[200px]"
-              >
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-10 h-10 bg-green-500/20 rounded-xl flex items-center justify-center">
-                    <CheckCircle2 className="text-green-500 w-6 h-6" />
-                  </div>
-                  <span className="text-xs font-bold text-white/50">MOBILE EXPERT</span>
-                </div>
-                <p className="text-sm font-medium">On-site key coding within 45 minutes.</p>
-              </motion.div>
+            {/* Main Image Card with Gradient Border */}
+            <motion.div
+              style={{ y: y2 }}
+              className="relative z-10 rounded-[48px] overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-br from-white/5 to-transparent p-1"
+            >
+              <div className="rounded-[44px] overflow-hidden relative group">
+                <img
+                  src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1200"
+                  alt="Premium Car Key Service"
+                  className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-purple-600/20 mix-blend-overlay" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-transparent to-transparent" />
+              </div>
+            </motion.div>
 
-              <motion.div 
-                animate={{ y: [0, 20, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-12 -right-12 glass p-6 rounded-3xl shadow-xl max-w-[220px]"
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  {[1,2,3,4,5].map(i => <Star key={i} className="w-3 h-3 fill-brand-red text-brand-red" />)}
+            {/* Floating Premium Stats Cards */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.6 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="absolute top-12 -left-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 rounded-3xl shadow-2xl max-w-[240px] border border-white/10"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl flex items-center justify-center">
+                  <CheckCircle2 className="text-emerald-400 w-6 h-6" />
                 </div>
-                <p className="text-sm font-bold mb-1">Excellent Support</p>
-                <p className="text-xs text-white/50">"Saved my holiday when I lost my Porsche keys."</p>
-              </motion.div>
-            </div>
-            
-            {/* Background Glow */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-brand-red/20 blur-[100px] -z-10 rounded-full scale-150" />
+                <span className="text-xs font-bold tracking-wider text-emerald-400 uppercase">Verified</span>
+              </div>
+              <p className="text-sm font-bold mb-1">Lightning Response</p>
+              <p className="text-xs text-white/60">On-site key coding within 45 minutes.</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="absolute bottom-12 -right-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 rounded-3xl shadow-2xl max-w-[260px] border border-white/10"
+            >
+              <div className="flex items-center gap-1 mb-3">
+                {[1, 2, 3, 4, 5].map(i => (
+                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                ))}
+              </div>
+              <p className="text-sm font-bold mb-2">Premium Support</p>
+              <p className="text-xs text-white/60 italic">"Saved my holiday when I lost my Porsche keys. Professional service!"</p>
+              <p className="text-[10px] text-white/40 mt-2 font-bold">— Jean-Marc, Paris</p>
+            </motion.div>
+
+            {/* Glowing Orbs */}
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 blur-[100px] rounded-full -z-10" />
+            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[100px] rounded-full -z-10" />
           </motion.div>
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 px-6 sm:px-12 relative">
+      {/* Premium Stats Section */}
+      <section className="py-32 px-6 sm:px-12 relative">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats.map((stat, idx) => (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                viewport={{ once: true }}
-                key={stat.label}
-                className="text-center group"
-              >
-                <h3 className="text-4xl md:text-5xl font-display font-bold mb-2 group-hover:text-brand-red transition-colors">
-                  {stat.value}
-                </h3>
-                <p className="text-sm text-white/40 font-bold tracking-widest uppercase">
-                  {stat.label}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="py-32 px-6 sm:px-12 bg-white/5" id="services">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-6xl font-display font-bold mb-6">
-                Premium Solutions <br />
-                <span className="text-white/40">For Your Vehicle</span>
-              </h2>
-              <p className="text-white/60 text-lg">
-                We use the latest European diagnostic tools and authentic components to ensure your car's electronics remain factory-standard.
-              </p>
-            </div>
-            <Link to="/services" className="group flex items-center gap-4 text-brand-red font-bold uppercase tracking-widest border-b border-brand-red/20 pb-2 hover:border-brand-red transition-all">
-              See All Services <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service, idx) => (
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.2 }}
+                transition={{ delay: idx * 0.1, duration: 0.6 }}
                 viewport={{ once: true }}
-                key={service.title}
-                className="group glass p-10 rounded-[40px] hover:bg-white/10 transition-all duration-500"
+                whileHover={{ y: -8, scale: 1.02 }}
+                key={stat.label}
+                className="relative group"
               >
-                <div className={cn(
-                  "w-16 h-16 rounded-2xl bg-gradient-to-br mb-8 flex items-center justify-center text-white",
-                  service.color
-                )}>
-                  <service.icon className="w-8 h-8" />
+                {/* Card with Gradient Border */}
+                <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300">
+                  {/* Icon */}
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ delay: idx * 0.1 + 0.2, type: "spring", stiffness: 200 }}
+                    viewport={{ once: true }}
+                    className="w-12 h-12 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center border border-white/10"
+                  >
+                    <stat.icon className="w-6 h-6 text-cyan-400" />
+                  </motion.div>
+
+                  {/* Value */}
+                  <h3 className="text-4xl md:text-5xl font-display font-black mb-3 text-center bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                    {stat.value}
+                  </h3>
+
+                  {/* Label */}
+                  <p className="text-xs text-white/50 font-bold tracking-widest uppercase text-center">
+                    {stat.label}
+                  </p>
+
+                  {/* Hover Glow */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 rounded-3xl transition-all duration-300 -z-10" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-                <p className="text-white/50 leading-relaxed mb-8">
-                  {service.description}
-                </p>
-                <Link to={`/services#${service.title.toLowerCase()}`} className="inline-flex items-center gap-2 text-sm font-bold text-white group-hover:text-brand-red transition-all">
-                  Read More <ArrowRight className="w-4 h-4" />
-                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-32 px-6 sm:px-12">
-        <div className="max-w-5xl mx-auto relative overflow-hidden rounded-[50px] bg-brand-blue p-12 md:p-20 text-center">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white via-transparent to-transparent scale-150" />
-          
-          <h2 className="relative z-10 text-4xl md:text-6xl font-display font-bold mb-8">
-            Locked out or need <br />
-            urgent assistance?
-          </h2>
-          <p className="relative z-10 text-lg md:text-xl text-white/60 mb-12 max-w-2xl mx-auto">
-            Our priority mobile units are dispatching 24/7. Average response time in central areas is under 30 minutes.
-          </p>
-          
-          <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-6">
-            <a
-              href="tel:+1234567890"
-              className="w-full sm:w-auto px-10 py-5 bg-white text-brand-blue rounded-full font-black text-xl flex items-center justify-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-xl"
+      {/* Premium Services Grid */}
+      <section className="py-32 px-6 sm:px-12 relative" id="services">
+        {/* Background Effect */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="max-w-2xl"
             >
-              <PhoneCall className="w-6 h-6" /> CALL NOW
-            </a>
-            <Link
-              to="/contact"
-              className="w-full sm:w-auto px-10 py-5 glass border-white/20 text-white rounded-full font-bold text-xl hover:bg-white/10 transition-all"
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-xl"
+              >
+                <Zap className="w-3.5 h-3.5 text-purple-400" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                  Our Expertise
+                </span>
+              </motion.div>
+
+              <h2 className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]">
+                <span className="block text-white">Premium Solutions</span>
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-rose-600">
+                  For Your Vehicle
+                </span>
+              </h2>
+              <p className="text-white/70 text-lg leading-relaxed">
+                We use the latest European diagnostic tools and authentic components to ensure your car's electronics remain <span className="text-white font-bold">factory-standard</span>.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
             >
-              Contact Support
-            </Link>
+              <Link
+                to="/services"
+                className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-white/5 to-white/10 border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all font-bold"
+              >
+                <span className="text-white">See All Services</span>
+                <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Premium Service Cards */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {services.map((service, idx) => (
+              <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.15, duration: 0.8 }}
+                viewport={{ once: true }}
+                whileHover={{ y: -12, scale: 1.02 }}
+                key={service.title}
+                className="group relative"
+              >
+                {/* Card */}
+                <div className="relative backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-[40px] border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
+                  {/* Gradient Overlay on Hover */}
+                  <div className={cn(
+                    "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-[40px]",
+                    service.gradient
+                  )} />
+
+                  {/* Icon */}
+                  <motion.div
+                    whileHover={{ rotate: 360 }}
+                    transition={{ duration: 0.6 }}
+                    className="relative z-10"
+                  >
+                    <div className={cn(
+                      "w-20 h-20 rounded-3xl bg-gradient-to-br mb-8 flex items-center justify-center text-white shadow-2xl",
+                      service.gradient
+                    )}>
+                      <service.icon className="w-10 h-10" />
+                    </div>
+                  </motion.div>
+
+                  {/* Title */}
+                  <h3 className="text-2xl font-display font-bold mb-4 text-white relative z-10">
+                    {service.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-white/60 leading-relaxed mb-6 relative z-10 text-sm">
+                    {service.description}
+                  </p>
+
+                  {/* Features List */}
+                  <ul className="space-y-2 mb-8 relative z-10">
+                    {service.features.map((feature, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -10 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: idx * 0.15 + i * 0.1 }}
+                        viewport={{ once: true }}
+                        className="flex items-center gap-2 text-xs text-white/50"
+                      >
+                        <div className="w-1 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400" />
+                        {feature}
+                      </motion.li>
+                    ))}
+                  </ul>
+
+                  {/* CTA */}
+                  <Link
+                    to={`/services#${service.title.toLowerCase()}`}
+                    className={cn(
+                      "inline-flex items-center gap-2 text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r transition-all relative z-10",
+                      service.gradient
+                    )}
+                  >
+                    Learn More <ArrowRight className="w-4 h-4 text-white/70 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Premium CTA Section */}
+      <section className="py-32 px-6 sm:px-12 relative">
+        <div className="max-w-6xl mx-auto relative">
+          {/* Premium Card with Gradient Border */}
+          <div className="relative p-1 rounded-[56px] bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-600/20">
+            <div className="relative overflow-hidden rounded-[52px] bg-gradient-to-br from-[#0A1F44] to-[#020617] p-12 md:p-20 text-center border border-white/10">
+              {/* Advanced Background Pattern */}
+              <div className="absolute inset-0 opacity-10">
+                <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:3rem_3rem]" />
+              </div>
+
+              {/* Animated Gradient Orbs */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.5, 0.3],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 blur-[100px] rounded-full"
+              />
+              <motion.div
+                animate={{
+                  scale: [1, 1.3, 1],
+                  opacity: [0.2, 0.4, 0.2],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1
+                }}
+                className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[100px] rounded-full"
+              />
+
+              {/* Content */}
+              <div className="relative z-10">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-red-500/10 to-orange-500/10 border border-red-500/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+                >
+                  <PhoneCall className="w-3.5 h-3.5 text-red-400" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                    24/7 Emergency Service
+                  </span>
+                </motion.div>
+
+                <motion.h2
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.1 }}
+                  className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]"
+                >
+                  <span className="block text-white">Locked out or need</span>
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                    urgent assistance?
+                  </span>
+                </motion.h2>
+
+                <motion.p
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed"
+                >
+                  Our priority mobile units are dispatching <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 font-bold">24/7</span>. Average response time in central areas is under <span className="text-white font-bold">30 minutes</span>.
+                </motion.p>
+
+                {/* Premium CTAs */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="flex flex-col sm:flex-row items-center justify-center gap-6"
+                >
+                  {/* Primary CTA - Animated Gradient */}
+                  <motion.a
+                    href="tel:+1234567890"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="group relative w-full sm:w-auto"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
+                    <div className="relative px-10 py-5 bg-white text-[#020617] rounded-full font-black text-xl flex items-center justify-center gap-3 shadow-2xl">
+                      <PhoneCall className="w-6 h-6" />
+                      <span>CALL NOW</span>
+                    </div>
+                  </motion.a>
+
+                  {/* Secondary CTA */}
+                  <Link
+                    to="/contact"
+                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-white/10 text-white rounded-full font-bold text-xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+                  >
+                    Contact Support
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

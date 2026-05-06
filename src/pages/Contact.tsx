@@ -49,136 +49,256 @@ export default function Contact() {
   };
 
   return (
-    <div className="pt-32 pb-20 px-6 sm:px-12">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-20">
+    <div className="pt-32 pb-20 px-6 sm:px-12 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-[120px] rounded-full" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid lg:grid-cols-2 gap-20 items-center">
           {/* Info Side */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-display font-bold mb-8">
-              Let's Talk <br />
-              <span className="text-white/30">Binary.</span>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+            >
+              <MessageSquare className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+                Get in Touch
+              </span>
+            </motion.div>
+
+            <h1 className="text-6xl md:text-8xl font-display font-black mb-8 leading-[1.05]">
+              <span className="block text-white">Let's Talk</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient">
+                Binary.
+              </span>
             </h1>
-            <p className="text-xl text-white/50 leading-relaxed mb-12 max-w-lg">
-              Whether it's an emergency lockout or a complex ECU programming question, our specialists are ready to decode your problem.
+
+            <p className="text-xl text-white/70 leading-relaxed mb-16 max-w-lg">
+              Whether it's an emergency lockout or a complex ECU programming question, our specialists are ready to <span className="text-white font-bold">decode your problem</span>.
             </p>
 
-            <div className="space-y-8">
+            {/* Premium Contact Cards */}
+            <div className="space-y-6">
               {[
-                { icon: Phone, label: "Emergency Hotline", value: "01 23 45 67 89", detail: "24/7 Rapid Response" },
-                { icon: Mail, label: "Technical Support", value: "support@keypro.service", detail: "Reply within 4 hours" },
-                { icon: MapPin, label: "Service Hub", value: "8 Rue de la Paix, Paris", detail: "Appointments Only" }
-              ].map((item) => (
-                <div key={item.label} className="flex gap-6 items-start group">
-                  <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-brand-red group-hover:scale-110 transition-transform shadow-xl">
-                    <item.icon className="w-6 h-6" />
+                { icon: Phone, label: "Emergency Hotline", value: "01 23 45 67 89", detail: "24/7 Rapid Response", gradient: "from-emerald-500/20 to-green-500/20", iconColor: "text-emerald-400" },
+                { icon: Mail, label: "Technical Support", value: "support@keypro.service", detail: "Reply within 4 hours", gradient: "from-cyan-500/20 to-blue-500/20", iconColor: "text-cyan-400" },
+                { icon: MapPin, label: "Service Hub", value: "8 Rue de la Paix, Paris", detail: "Appointments Only", gradient: "from-purple-500/20 to-pink-500/20", iconColor: "text-purple-400" }
+              ].map((item, i) => (
+                <motion.div
+                  key={item.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ x: 8, scale: 1.02 }}
+                  className="group"
+                >
+                  <div className="relative p-1 rounded-3xl bg-gradient-to-br from-white/10 to-white/5">
+                    <div className="flex gap-6 items-start p-6 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] rounded-[22px] border border-white/10">
+                      <div className={cn(
+                        "w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br transition-transform group-hover:scale-110 shadow-xl",
+                        item.gradient
+                      )}>
+                        <item.icon className={cn("w-7 h-7", item.iconColor)} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-[10px] font-bold uppercase tracking-widest text-white/40 mb-2">
+                          {item.label}
+                        </p>
+                        <p className="text-lg md:text-xl font-bold mb-1 text-white transition-colors">
+                          {item.value}
+                        </p>
+                        <p className="text-xs text-white/50">
+                          {item.detail}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-1">{item.label}</p>
-                    <p className="text-xl font-bold mb-1 text-white group-hover:text-brand-red transition-colors">{item.value}</p>
-                    <p className="text-xs text-white/40">{item.detail}</p>
-                  </div>
-                </div>
+                </motion.div>
               ))}
             </div>
 
-            <div className="mt-16 flex items-center gap-6">
-              {[Instagram, Facebook, Linkedin].map((Icon, idx) => (
-                <a key={idx} href="#" className="w-10 h-10 glass rounded-full flex items-center justify-center text-white/40 hover:text-brand-red hover:border-brand-red transition-all">
-                  <Icon className="w-5 h-5" />
-                </a>
+            {/* Social Links */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+              className="mt-16 flex items-center gap-4"
+            >
+              {[
+                { icon: Instagram, name: 'Instagram' },
+                { icon: Facebook, name: 'Facebook' },
+                { icon: Linkedin, name: 'LinkedIn' }
+              ].map((social, i) => (
+                <motion.a
+                  key={social.name}
+                  href="#"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5 + i * 0.1, type: "spring" }}
+                  whileHover={{ scale: 1.1, y: -4 }}
+                  className="w-12 h-12 backdrop-blur-xl bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/10 transition-all"
+                >
+                  <social.icon className="w-5 h-5" />
+                </motion.a>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
 
-          {/* Form Side */}
+          {/* Premium Form Side */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="glass p-8 md:p-12 rounded-[40px] border-white/5 relative overflow-hidden group">
-              {/* Decorative background glow */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-red/10 blur-[100px] -z-10 group-hover:bg-brand-red/20 transition-colors duration-700" />
+            <div className="relative p-1 rounded-[48px] bg-gradient-to-br from-white/10 to-white/5">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 p-8 md:p-12 rounded-[44px] border border-white/10 relative overflow-hidden">
+                {/* Animated Gradient Orbs */}
+                <motion.div
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.1, 0.2, 0.1],
+                  }}
+                  transition={{
+                    duration: 4,
+                    repeat: Infinity,
+                    ease: "easeInOut"
+                  }}
+                  className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 blur-[100px] -z-10"
+                />
+                <motion.div
+                  animate={{
+                    scale: [1, 1.3, 1],
+                    opacity: [0.1, 0.15, 0.1],
+                  }}
+                  transition={{
+                    duration: 5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                  className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[100px] -z-10"
+                />
+
+                <h2 className="text-4xl font-display font-black mb-10 text-white relative z-10">
+                  Send a Message
+                </h2>
               
-              <h2 className="text-3xl font-bold mb-8">Send a Message</h2>
-              
-              {formState === 'success' ? (
-                <motion.div 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-20"
-                >
-                  <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Send className="w-10 h-10 text-white" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2">Message Sent</h3>
-                  <p className="text-white/50">One of our specialists will get back to you shortly.</p>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">Your Name</label>
-                    <input
-                      {...register('name')}
-                      type="text"
-                      className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm"
-                      placeholder="Jane Cooper"
-                    />
-                    {errors.name && (
-                      <p className="text-red-400 text-xs px-2">{errors.name.message}</p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">Email Address</label>
-                    <input
-                      {...register('email')}
-                      type="email"
-                      className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm"
-                      placeholder="jane@example.com"
-                    />
-                    {errors.email && (
-                      <p className="text-red-400 text-xs px-2">{errors.email.message}</p>
-                    )}
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">Message Topic</label>
-                    <select {...register('topic')} className="w-full glass bg-white/5 border-white/5 rounded-2xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm appearance-none cursor-pointer">
-                      <option className="bg-[#0A1F44]">General Inquiry</option>
-                      <option className="bg-[#0A1F44]">Key Support</option>
-                      <option className="bg-[#0A1F44]">B2B Partnerships</option>
-                      <option className="bg-[#0A1F44]">Careers</option>
-                    </select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-bold uppercase tracking-widest text-white/30 px-2">How can we help?</label>
-                    <textarea
-                      {...register('message')}
-                      rows={5}
-                      className="w-full glass bg-white/5 border-white/5 rounded-3xl py-4 px-6 focus:outline-none focus:border-brand-red transition-all text-sm resize-none"
-                      placeholder="Share some details about your problem..."
-                    />
-                    {errors.message && (
-                      <p className="text-red-400 text-xs px-2">{errors.message.message}</p>
-                    )}
-                  </div>
-                  
-                  <button 
-                    type="submit"
-                    disabled={formState === 'submitting'}
-                    className="w-full py-5 bg-brand-red text-white rounded-full font-black text-xl hover:scale-105 active:scale-95 transition-all bg-glow-red flex items-center justify-center gap-3 disabled:opacity-50"
+                {formState === 'success' ? (
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="text-center py-20 relative z-10"
                   >
-                    {formState === 'submitting' ? (
-                      <>Processing <span className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" /></>
-                    ) : (
-                      <>SEND MESSAGE <Send className="w-5 h-5" /></>
-                    )}
-                  </button>
-                </form>
-              )}
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ type: "spring", stiffness: 200 }}
+                      className="relative w-24 h-24 mx-auto mb-8"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl">
+                        <Send className="w-12 h-12 text-white" />
+                      </div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full blur-2xl opacity-50 animate-pulse" />
+                    </motion.div>
+                    <h3 className="text-3xl font-display font-black mb-3 text-white">Message Sent</h3>
+                    <p className="text-white/60 text-lg">One of our specialists will get back to you shortly.</p>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative z-10">
+                    <div className="space-y-3">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
+                        Your Name
+                      </label>
+                      <input
+                        {...register('name')}
+                        type="text"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        placeholder="Jane Cooper"
+                      />
+                      {errors.name && (
+                        <p className="text-red-400 text-xs px-2">{errors.name.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
+                        Email Address
+                      </label>
+                      <input
+                        {...register('email')}
+                        type="email"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        placeholder="jane@example.com"
+                      />
+                      {errors.email && (
+                        <p className="text-red-400 text-xs px-2">{errors.email.message}</p>
+                      )}
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
+                        Message Topic
+                      </label>
+                      <select
+                        {...register('topic')}
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white appearance-none cursor-pointer"
+                      >
+                        <option className="bg-[#0A1F44]">General Inquiry</option>
+                        <option className="bg-[#0A1F44]">Key Support</option>
+                        <option className="bg-[#0A1F44]">B2B Partnerships</option>
+                        <option className="bg-[#0A1F44]">Careers</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
+                        How can we help?
+                      </label>
+                      <textarea
+                        {...register('message')}
+                        rows={5}
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30 resize-none"
+                        placeholder="Share some details about your problem..."
+                      />
+                      {errors.message && (
+                        <p className="text-red-400 text-xs px-2">{errors.message.message}</p>
+                      )}
+                    </div>
+
+                    <motion.button
+                      type="submit"
+                      disabled={formState === 'submitting'}
+                      whileHover={{ scale: formState === 'submitting' ? 1 : 1.02 }}
+                      whileTap={{ scale: formState === 'submitting' ? 1 : 0.98 }}
+                      className="group relative w-full py-6 rounded-full font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-full animate-gradient" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 rounded-full blur-xl opacity-50" />
+                      {formState === 'submitting' ? (
+                        <>
+                          <span className="relative z-10 text-white">Processing</span>
+                          <span className="relative z-10 w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                        </>
+                      ) : (
+                        <>
+                          <span className="relative z-10 text-white">SEND MESSAGE</span>
+                          <Send className="relative z-10 w-5 h-5 text-white" />
+                        </>
+                      )}
+                    </motion.button>
+                  </form>
+                )}
+              </div>
             </div>
           </motion.div>
         </div>
