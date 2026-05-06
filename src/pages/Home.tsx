@@ -24,21 +24,21 @@ const services = [
     title: "Car Key Specialist",
     description: "Lost all keys? We can program and cut new keys on-site for almost any vehicle model.",
     icon: Key,
-    gradient: "from-cyan-500 via-blue-500 to-purple-600",
+    gradient: "from-[#FF6B2C] to-[#FF8C4D]",
     features: ["All Key Lost Recovery", "Smart Key Programming", "Remote Diagnostics"]
   },
   {
     title: "Full Diagnostics",
     description: "Deep binary scans of your vehicle electronics using dealer-level specialized equipment.",
     icon: Cpu,
-    gradient: "from-purple-500 via-pink-500 to-rose-600",
+    gradient: "from-[#FF6B2C] to-[#FFA06D]",
     features: ["ECU Analysis", "Network Scan", "Performance Tuning"]
   },
   {
     title: "Immobilizer Repairs",
     description: "Fixing ECU synchronization issues and complex immobilizer system failures.",
     icon: Settings,
-    gradient: "from-orange-500 via-red-500 to-pink-600",
+    gradient: "from-[#FF8C4D] to-[#FF6B2C]",
     features: ["Module Coding", "Immo Sync", "Software Updates"]
   }
 ];
@@ -71,23 +71,23 @@ export default function Home() {
 
   return (
     <div className="relative overflow-hidden pt-20">
-      {/* Hero Section - Premium Immersive */}
+      {/* Hero Section - Automotive Style */}
       <section className="relative min-h-screen flex items-center justify-center pt-10 px-6 sm:px-12" onMouseMove={handleMouseMove}>
-        {/* Advanced Background with Mesh Gradient */}
+        {/* Automotive Dark Background */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-br from-[#020617] via-[#0A1F44]/50 to-[#020617]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0D0D0D] via-[#1A1A1A] to-[#0D0D0D]" />
 
           <motion.div
             style={{ x: springX, y: springY }}
-            className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-600/20 blur-[120px] rounded-full"
+            className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/5 blur-[120px] rounded-full"
           />
           <motion.div
             style={{ x: -springX, y: -springY }}
-            className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-pink-500/10 via-brand-red/10 to-orange-500/10 blur-[100px] rounded-full"
+            className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-brand-red/5 to-[#FF6B2C]/10 blur-[100px] rounded-full"
           />
 
-          {/* Grid Pattern Overlay */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:4rem_4rem]" />
+          {/* Automotive Grid Pattern */}
+          <div className="absolute inset-0 automotive-grid opacity-50" />
         </div>
 
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center relative z-10 text-center lg:text-left">
@@ -96,20 +96,20 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {/* Premium Badge */}
+            {/* Automotive Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-600/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
             >
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400">
+              <Sparkles className="w-3.5 h-3.5 text-[#FF6B2C]" />
+              <span className="text-[#FF6B2C]">
                 Premium Mobile Service
               </span>
             </motion.div>
 
-            {/* Hero Headline with Gradient */}
+            {/* Hero Headline - Automotive Style */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -117,7 +117,7 @@ export default function Home() {
               className="font-display text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-[1.05]"
             >
               <span className="block text-white">Technicien</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-glow-strong">
                 Auto Mobile
               </span>
             </motion.h1>
@@ -129,10 +129,10 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="text-lg md:text-xl text-white/70 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
             >
-              Clés, Diagnostic, Programmation. Solution technique <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 font-bold">haut de gamme</span> directement chez vous.
+              Clés, Diagnostic, Programmation. Solution technique <span className="text-[#FF6B2C] font-bold">haut de gamme</span> directement chez vous.
             </motion.p>
 
-            {/* Animated Gradient CTAs */}
+            {/* Automotive CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -143,8 +143,8 @@ export default function Home() {
                 to="/quote"
                 className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 animate-gradient" />
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl" />
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]" />
+                <div className="absolute inset-0 bg-glow-orange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <span className="relative z-10 flex items-center gap-2 text-white">
                   Request Service <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </span>
@@ -152,7 +152,7 @@ export default function Home() {
 
               <Link
                 to="/services"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden border border-white/10 backdrop-blur-xl hover:bg-white/5 transition-all"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden border border-white/10 backdrop-blur-xl hover:border-[#FF6B2C]/30 hover:bg-white/5 transition-all"
               >
                 <span className="relative z-10 text-white/90 group-hover:text-white transition-colors">
                   Explore Services
@@ -270,9 +270,9 @@ export default function Home() {
                     whileInView={{ scale: 1 }}
                     transition={{ delay: idx * 0.1 + 0.2, type: "spring", stiffness: 200 }}
                     viewport={{ once: true }}
-                    className="w-12 h-12 mx-auto mb-6 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center border border-white/10"
+                    className="w-12 h-12 mx-auto mb-6 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 rounded-2xl flex items-center justify-center border border-[#FF6B2C]/20"
                   >
-                    <stat.icon className="w-6 h-6 text-cyan-400" />
+                    <stat.icon className="w-6 h-6 text-[#FF6B2C]" />
                   </motion.div>
 
                   {/* Value */}
@@ -286,7 +286,7 @@ export default function Home() {
                   </p>
 
                   {/* Hover Glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 rounded-3xl transition-all duration-300 -z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C]/0 to-[#FF8C4D]/0 group-hover:from-[#FF6B2C]/10 group-hover:to-[#FF8C4D]/10 rounded-3xl transition-all duration-300 -z-10" />
                 </div>
               </motion.div>
             ))}
@@ -312,17 +312,17 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-xl"
               >
-                <Zap className="w-3.5 h-3.5 text-purple-400" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+                <Zap className="w-3.5 h-3.5 text-[#FF6B2C]" />
+                <span className="text-[#FF6B2C]">
                   Our Expertise
                 </span>
               </motion.div>
 
               <h2 className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]">
                 <span className="block text-white">Premium Solutions</span>
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-rose-600">
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-glow-strong">
                   For Your Vehicle
                 </span>
               </h2>
@@ -410,12 +410,9 @@ export default function Home() {
                   {/* CTA */}
                   <Link
                     to={`/services#${service.title.toLowerCase()}`}
-                    className={cn(
-                      "inline-flex items-center gap-2 text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r transition-all relative z-10",
-                      service.gradient
-                    )}
+                    className="inline-flex items-center gap-2 text-sm font-bold text-[#FF6B2C] transition-all relative z-10 group-hover:text-[#FF8C4D]"
                   >
-                    Learn More <ArrowRight className="w-4 h-4 text-white/70 group-hover:translate-x-1 transition-transform" />
+                    Learn More <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.div>
@@ -424,34 +421,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Premium CTA Section */}
+      {/* Automotive CTA Section */}
       <section className="py-32 px-6 sm:px-12 relative">
         <div className="max-w-6xl mx-auto relative">
-          {/* Premium Card with Gradient Border */}
-          <div className="relative p-1 rounded-[56px] bg-gradient-to-br from-cyan-500/20 via-blue-500/20 to-purple-600/20">
-            <div className="relative overflow-hidden rounded-[52px] bg-gradient-to-br from-[#0A1F44] to-[#020617] p-12 md:p-20 text-center border border-white/10">
+          {/* Automotive Card with Orange Border */}
+          <div className="relative p-1 rounded-[56px] bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20">
+            <div className="relative overflow-hidden rounded-[52px] bg-gradient-to-br from-[#1A1A1A] to-[#0D0D0D] p-12 md:p-20 text-center border border-white/10">
               {/* Advanced Background Pattern */}
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:3rem_3rem]" />
               </div>
 
-              {/* Animated Gradient Orbs */}
+              {/* Animated Orange Orbs */}
               <motion.div
                 animate={{
                   scale: [1, 1.2, 1],
-                  opacity: [0.3, 0.5, 0.3],
+                  opacity: [0.2, 0.4, 0.2],
                 }}
                 transition={{
                   duration: 4,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-cyan-500/30 to-blue-500/30 blur-[100px] rounded-full"
+                className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-[100px] rounded-full"
               />
               <motion.div
                 animate={{
                   scale: [1, 1.3, 1],
-                  opacity: [0.2, 0.4, 0.2],
+                  opacity: [0.15, 0.3, 0.15],
                 }}
                 transition={{
                   duration: 5,
@@ -459,7 +456,7 @@ export default function Home() {
                   ease: "easeInOut",
                   delay: 1
                 }}
-                className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[100px] rounded-full"
+                className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-br from-brand-red/15 to-[#FF6B2C]/20 blur-[100px] rounded-full"
               />
 
               {/* Content */}
@@ -468,10 +465,10 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-red-500/10 to-orange-500/10 border border-red-500/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
                 >
-                  <PhoneCall className="w-3.5 h-3.5 text-red-400" />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">
+                  <PhoneCall className="w-3.5 h-3.5 text-[#FF6B2C]" />
+                  <span className="text-[#FF6B2C]">
                     24/7 Emergency Service
                   </span>
                 </motion.div>
@@ -484,7 +481,7 @@ export default function Home() {
                   className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]"
                 >
                   <span className="block text-white">Locked out or need</span>
-                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
+                  <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-glow-strong">
                     urgent assistance?
                   </span>
                 </motion.h2>
@@ -496,7 +493,7 @@ export default function Home() {
                   transition={{ delay: 0.2 }}
                   className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed"
                 >
-                  Our priority mobile units are dispatching <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 font-bold">24/7</span>. Average response time in central areas is under <span className="text-white font-bold">30 minutes</span>.
+                  Our priority mobile units are dispatching <span className="text-[#FF6B2C] font-bold">24/7</span>. Average response time in central areas is under <span className="text-white font-bold">30 minutes</span>.
                 </motion.p>
 
                 {/* Premium CTAs */}
@@ -507,15 +504,15 @@ export default function Home() {
                   transition={{ delay: 0.3 }}
                   className="flex flex-col sm:flex-row items-center justify-center gap-6"
                 >
-                  {/* Primary CTA - Animated Gradient */}
+                  {/* Primary CTA - Automotive Orange */}
                   <motion.a
                     href="tel:+1234567890"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="group relative w-full sm:w-auto"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-                    <div className="relative px-10 py-5 bg-white text-[#020617] rounded-full font-black text-xl flex items-center justify-center gap-3 shadow-2xl">
+                    <div className="absolute inset-0 bg-glow-orange opacity-50 group-hover:opacity-100 transition-opacity rounded-full" />
+                    <div className="relative px-10 py-5 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-white rounded-full font-black text-xl flex items-center justify-center gap-3 shadow-2xl">
                       <PhoneCall className="w-6 h-6" />
                       <span>CALL NOW</span>
                     </div>
@@ -524,7 +521,7 @@ export default function Home() {
                   {/* Secondary CTA */}
                   <Link
                     to="/contact"
-                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-white/10 text-white rounded-full font-bold text-xl hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-[#FF6B2C]/30 text-white rounded-full font-bold text-xl hover:bg-white/10 hover:border-[#FF6B2C]/50 transition-all flex items-center justify-center gap-3"
                   >
                     Contact Support
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

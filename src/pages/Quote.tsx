@@ -74,8 +74,8 @@ export default function Quote() {
     <div className="pt-32 pb-20 px-6 sm:px-12 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-cyan-500/10 to-blue-500/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
@@ -85,10 +85,10 @@ export default function Quote() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
           >
-            <Zap className="w-3.5 h-3.5 text-purple-400" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+            <Zap className="w-3.5 h-3.5 text-[#FF6B2C]" />
+            <span className="text-[#FF6B2C]">
               Premium Mobile Technical Assistance
             </span>
           </motion.div>
@@ -100,7 +100,7 @@ export default function Quote() {
             className="text-5xl md:text-7xl font-display font-black mb-4 leading-[1.1]"
           >
             <span className="block text-white">Request</span>
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 animate-gradient">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] animate-gradient">
               Service
             </span>
           </motion.h1>
@@ -126,12 +126,12 @@ export default function Quote() {
                   <div className={cn(
                     "relative w-10 h-10 rounded-full flex items-center justify-center text-sm font-black transition-all",
                     step === s
-                      ? "bg-gradient-to-br from-cyan-500 to-blue-500 text-white shadow-lg shadow-cyan-500/50"
+                      ? "bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] text-white shadow-lg shadow-[#FF6B2C]/50"
                       : "bg-white/5 border border-white/10 text-white/50"
                   )}>
                     <span className="relative z-10">{idx + 1}</span>
                     {step === s && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-blue-400 rounded-full blur-md opacity-50 animate-pulse" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-md opacity-50 animate-pulse" />
                     )}
                   </div>
                   <span className={cn(
@@ -145,7 +145,7 @@ export default function Quote() {
                   <div className={cn(
                     "w-16 h-0.5 rounded-full transition-all",
                     ['service', 'vehicle', 'details'].indexOf(step) > idx
-                      ? "bg-gradient-to-r from-cyan-500 to-blue-500"
+                      ? "bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]"
                       : "bg-white/10"
                   )} />
                 )}
@@ -185,19 +185,19 @@ export default function Quote() {
                         className={cn(
                           "group relative flex items-start gap-6 p-8 rounded-3xl border-2 text-left transition-all",
                           serviceType === opt.id
-                            ? "border-cyan-500/50 bg-gradient-to-br from-cyan-500/10 to-blue-500/10"
+                            ? "border-[#FF6B2C]/50 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10"
                             : "border-white/10 bg-white/5 hover:border-white/20"
                         )}
                       >
                         {/* Glow effect when selected */}
                         {serviceType === opt.id && (
-                          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 rounded-3xl blur-xl -z-10 animate-pulse" />
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 rounded-3xl blur-xl -z-10 animate-pulse" />
                         )}
 
                         <div className={cn(
                           "w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-xl",
                           serviceType === opt.id
-                            ? "bg-gradient-to-br from-cyan-500 to-blue-500 text-white"
+                            ? "bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] text-white"
                             : "bg-white/10 text-white/50 group-hover:bg-white/15"
                         )}>
                           <opt.icon className="w-7 h-7" />
@@ -229,12 +229,12 @@ export default function Quote() {
                       <div className={cn(
                         "absolute inset-0 rounded-full transition-all",
                         serviceType
-                          ? "bg-gradient-to-r from-cyan-500 to-blue-500"
+                          ? "bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]"
                           : "bg-white/10"
                       )} />
                       <div className={cn(
                         "absolute inset-0 rounded-full blur-xl opacity-0 transition-opacity",
-                        serviceType && "opacity-50 bg-gradient-to-r from-cyan-400 to-blue-400"
+                        serviceType && "opacity-50 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]"
                       )} />
                       <span className="relative z-10 text-white">Continue</span>
                       <ChevronRight className="relative z-10 w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
@@ -275,7 +275,7 @@ export default function Quote() {
                         {...register('brand')}
                         type="text"
                         placeholder="e.g. BMW, Audi, Mercedes"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.brand && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -292,7 +292,7 @@ export default function Quote() {
                         {...register('model')}
                         type="text"
                         placeholder="e.g. 5 Series, A4, G-Wagon"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.model && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -309,7 +309,7 @@ export default function Quote() {
                         {...register('year')}
                         type="text"
                         placeholder="e.g. 2021"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.year && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -326,7 +326,7 @@ export default function Quote() {
                         {...register('location')}
                         type="text"
                         placeholder="e.g. Paris, Lyon, Marseille"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.location && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -343,8 +343,8 @@ export default function Quote() {
                       whileTap={{ scale: 0.95 }}
                       className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-blue-400 rounded-full blur-xl opacity-50" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-xl opacity-50" />
                       <span className="relative z-10 text-white">Final Step</span>
                       <ChevronRight className="relative z-10 w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                     </motion.button>
@@ -384,7 +384,7 @@ export default function Quote() {
                         {...register('name')}
                         type="text"
                         placeholder="John Doe"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.name && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -401,7 +401,7 @@ export default function Quote() {
                         {...register('phone')}
                         type="tel"
                         placeholder="01 23 45 67 89"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.phone && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -418,7 +418,7 @@ export default function Quote() {
                         {...register('email')}
                         type="email"
                         placeholder="john@example.com"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.email && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -435,7 +435,7 @@ export default function Quote() {
                         {...register('message')}
                         placeholder="Describe the issue in more detail..."
                         rows={5}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl py-4 px-6 focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 transition-all resize-none text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all resize-none text-white placeholder:text-white/30"
                       />
                     </div>
 
@@ -447,8 +447,8 @@ export default function Quote() {
                         whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                         className="group relative w-full py-6 rounded-full font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-full animate-gradient" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 rounded-full blur-xl opacity-50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full animate-gradient" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-xl opacity-50" />
                         <span className="relative z-10 text-white">
                           {isSubmitting ? 'SENDING...' : 'SEND REQUEST'}
                         </span>
