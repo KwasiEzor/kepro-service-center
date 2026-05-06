@@ -45,7 +45,7 @@ export default function About() {
             animate={{ opacity: 1, scale: 1 }}
             className="relative"
           >
-            <div className="rounded-[40px] overflow-hidden shadow-2xl border border-white/10">
+            <div className="clip-angular-lg overflow-hidden shadow-2xl border border-white/10">
               <img 
                 src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200" 
                 alt="Our Engineering Team"
@@ -69,7 +69,7 @@ export default function About() {
               viewport={{ once: true }}
               className="glass p-10 rounded-[35px] border-white/5 hover:bg-white/10 transition-all group"
             >
-              <div className="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center p-3 mb-8 group-hover:scale-110 transition-transform">
+              <div className="w-14 h-14 bg-brand-blue clip-angular-sm flex items-center justify-center p-3 mb-8 group-hover:scale-110 transition-transform">
                 <v.icon className="w-full h-full text-brand-red" />
               </div>
               <h3 className="text-2xl font-bold mb-4">{v.title}</h3>
@@ -117,7 +117,7 @@ export default function About() {
                   <p className="text-white/40 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
-              <div className="w-16 h-16 bg-brand-red rounded-full flex items-center justify-center font-black text-white relative z-10 border-4 border-[#020617] bg-glow-red">
+              <div className="w-16 h-16 bg-brand-red clip-angular-sm flex items-center justify-center font-black text-white relative z-10 border-4 border-[#020617] bg-glow-red">
                 {item.year.slice(2)}
               </div>
               <div className="flex-1">

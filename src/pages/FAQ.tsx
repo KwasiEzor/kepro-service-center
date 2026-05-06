@@ -45,7 +45,7 @@ export default function FAQ() {
         <motion.div
            initial={{ opacity: 0, scale: 0.8 }}
            animate={{ opacity: 1, scale: 1 }}
-           className="w-20 h-20 bg-brand-red rounded-3xl flex items-center justify-center mx-auto mb-8 bg-glow-red"
+           className="w-20 h-20 bg-brand-red clip-angular-md flex items-center justify-center mx-auto mb-8 bg-glow-red"
         >
           <HelpCircle className="w-10 h-10 text-white" />
         </motion.div>
@@ -59,7 +59,7 @@ export default function FAQ() {
             placeholder="Search our knowledge base..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full glass bg-white/5 border-white/10 rounded-full py-4 px-12 focus:outline-none focus:border-brand-red focus:bg-white/10 transition-all text-white placeholder:text-white/20"
+            className="w-full glass bg-white/5 border-white/10 clip-angular-sm py-4 px-12 focus:outline-none focus:border-brand-red focus:bg-white/10 transition-all text-white placeholder:text-white/20"
           />
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20" />
         </div>
@@ -86,7 +86,7 @@ export default function FAQ() {
                   {faq.question}
                 </span>
                 <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center transition-all",
+                  "w-8 h-8 clip-angular-sm flex items-center justify-center transition-all",
                   openIndex === idx ? "bg-brand-red rotate-180" : "bg-white/5"
                 )}>
                   {openIndex === idx ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
@@ -123,11 +123,11 @@ export default function FAQ() {
         <motion.div 
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          className="mt-20 p-10 glass rounded-[40px] text-center"
+          className="mt-20 p-10 glass clip-angular-lg text-center"
         >
           <h3 className="text-2xl font-bold mb-4">Still have questions?</h3>
           <p className="text-white/40 mb-8 max-w-md mx-auto">If you couldn't find the answer you were looking for, feel free to contact our expert team directly.</p>
-          <button className="bg-white text-brand-blue px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform">
+          <button className="bg-white text-brand-blue px-8 py-3 clip-angular-sm font-bold hover:scale-105 transition-transform">
             Contact Support
           </button>
         </motion.div>

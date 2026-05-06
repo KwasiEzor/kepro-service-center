@@ -79,11 +79,11 @@ export default function Home() {
 
           <motion.div
             style={{ x: springX, y: springY }}
-            className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/5 blur-[120px] rounded-full"
+            className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/5 blur-[120px] clip-angular-sm"
           />
           <motion.div
             style={{ x: -springX, y: -springY }}
-            className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-brand-red/5 to-[#FF6B2C]/10 blur-[100px] rounded-full"
+            className="absolute bottom-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-br from-brand-red/5 to-[#FF6B2C]/10 blur-[100px] clip-angular-sm"
           />
 
           {/* Automotive Grid Pattern */}
@@ -101,7 +101,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+              className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
             >
               <Sparkles className="w-3.5 h-3.5 text-[#FF6B2C]" />
               <span className="text-[#FF6B2C]">
@@ -141,7 +141,7 @@ export default function Home() {
             >
               <Link
                 to="/quote"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 clip-angular-sm font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]" />
                 <div className="absolute inset-0 bg-glow-orange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -152,7 +152,7 @@ export default function Home() {
 
               <Link
                 to="/services"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-full font-bold text-lg overflow-hidden border border-white/10 backdrop-blur-xl hover:border-[#FF6B2C]/30 hover:bg-white/5 transition-all"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 clip-angular-sm font-bold text-lg overflow-hidden border border-white/10 backdrop-blur-xl hover:border-[#FF6B2C]/30 hover:bg-white/5 transition-all"
               >
                 <span className="relative z-10 text-white/90 group-hover:text-white transition-colors">
                   Explore Services
@@ -192,9 +192,9 @@ export default function Home() {
             {/* Main Image Card with Gradient Border */}
             <motion.div
               style={{ y: y2 }}
-              className="relative z-10 rounded-[48px] overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-br from-white/5 to-transparent p-1"
+              className="relative z-10 clip-angular-xl overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-br from-white/5 to-transparent p-1"
             >
-              <div className="rounded-[44px] overflow-hidden relative group">
+              <div className="clip-angular-lg overflow-hidden relative group">
                 <img
                   src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1200"
                   alt="Premium Car Key Service"
@@ -212,10 +212,10 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="absolute top-12 -left-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 rounded-3xl shadow-2xl max-w-[240px] border border-white/10"
+              className="absolute top-12 -left-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md shadow-2xl max-w-[240px] border border-white/10"
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-green-500/20 clip-angular-sm flex items-center justify-center">
                   <CheckCircle2 className="text-emerald-400 w-6 h-6" />
                 </div>
                 <span className="text-xs font-bold tracking-wider text-emerald-400 uppercase">Verified</span>
@@ -229,7 +229,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.7 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="absolute bottom-12 -right-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 rounded-3xl shadow-2xl max-w-[260px] border border-white/10"
+              className="absolute bottom-12 -right-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md shadow-2xl max-w-[260px] border border-white/10"
             >
               <div className="flex items-center gap-1 mb-3">
                 {[1, 2, 3, 4, 5].map(i => (
@@ -242,8 +242,8 @@ export default function Home() {
             </motion.div>
 
             {/* Glowing Orbs */}
-            <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 blur-[100px] rounded-full -z-10" />
-            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[100px] rounded-full -z-10" />
+            <div className="absolute -top-20 -right-20 w-64 h-64 bg-gradient-to-br from-cyan-500/20 to-blue-500/20 blur-[100px] clip-angular-sm -z-10" />
+            <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-[100px] clip-angular-sm -z-10" />
           </motion.div>
         </div>
       </section>
@@ -263,14 +263,14 @@ export default function Home() {
                 className="relative group"
               >
                 {/* Card with Gradient Border */}
-                <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-3xl border border-white/10 hover:border-white/20 transition-all duration-300">
+                <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 clip-angular-md border border-white/10 hover:border-white/20 transition-all duration-300">
                   {/* Icon */}
                   <motion.div
                     initial={{ scale: 0 }}
                     whileInView={{ scale: 1 }}
                     transition={{ delay: idx * 0.1 + 0.2, type: "spring", stiffness: 200 }}
                     viewport={{ once: true }}
-                    className="w-12 h-12 mx-auto mb-6 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 rounded-2xl flex items-center justify-center border border-[#FF6B2C]/20"
+                    className="w-12 h-12 mx-auto mb-6 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 clip-angular-sm flex items-center justify-center border border-[#FF6B2C]/20"
                   >
                     <stat.icon className="w-6 h-6 text-[#FF6B2C]" />
                   </motion.div>
@@ -286,7 +286,7 @@ export default function Home() {
                   </p>
 
                   {/* Hover Glow */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C]/0 to-[#FF8C4D]/0 group-hover:from-[#FF6B2C]/10 group-hover:to-[#FF8C4D]/10 rounded-3xl transition-all duration-300 -z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C]/0 to-[#FF8C4D]/0 group-hover:from-[#FF6B2C]/10 group-hover:to-[#FF8C4D]/10 clip-angular-md transition-all duration-300 -z-10" />
                 </div>
               </motion.div>
             ))}
@@ -312,7 +312,7 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-xl"
+                className="inline-flex items-center gap-2 px-4 py-2 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-6 backdrop-blur-xl"
               >
                 <Zap className="w-3.5 h-3.5 text-[#FF6B2C]" />
                 <span className="text-[#FF6B2C]">
@@ -338,7 +338,7 @@ export default function Home() {
             >
               <Link
                 to="/services"
-                className="group inline-flex items-center gap-3 px-8 py-4 rounded-full bg-gradient-to-r from-white/5 to-white/10 border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all font-bold"
+                className="group inline-flex items-center gap-3 px-8 py-4 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all font-bold"
               >
                 <span className="text-white">See All Services</span>
                 <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
@@ -359,10 +359,10 @@ export default function Home() {
                 className="group relative"
               >
                 {/* Card */}
-                <div className="relative backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-[40px] border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
+                <div className="relative backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-8 clip-angular-lg border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
                   {/* Gradient Overlay on Hover */}
                   <div className={cn(
-                    "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-[40px]",
+                    "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500 clip-angular-lg",
                     service.gradient
                   )} />
 
@@ -373,7 +373,7 @@ export default function Home() {
                     className="relative z-10"
                   >
                     <div className={cn(
-                      "w-20 h-20 rounded-3xl bg-gradient-to-br mb-8 flex items-center justify-center text-white shadow-2xl",
+                      "w-20 h-20 clip-angular-md bg-gradient-to-br mb-8 flex items-center justify-center text-white shadow-2xl",
                       service.gradient
                     )}>
                       <service.icon className="w-10 h-10" />
@@ -401,7 +401,7 @@ export default function Home() {
                         viewport={{ once: true }}
                         className="flex items-center gap-2 text-xs text-white/50"
                       >
-                        <div className="w-1 h-1 rounded-full bg-gradient-to-r from-cyan-400 to-blue-400" />
+                        <div className="w-1 h-1 clip-angular-sm bg-gradient-to-r from-cyan-400 to-blue-400" />
                         {feature}
                       </motion.li>
                     ))}
@@ -443,7 +443,7 @@ export default function Home() {
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-[100px] rounded-full"
+                className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-[100px] clip-angular-sm"
               />
               <motion.div
                 animate={{
@@ -456,7 +456,7 @@ export default function Home() {
                   ease: "easeInOut",
                   delay: 1
                 }}
-                className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-br from-brand-red/15 to-[#FF6B2C]/20 blur-[100px] rounded-full"
+                className="absolute bottom-0 left-1/4 w-96 h-96 bg-gradient-to-br from-brand-red/15 to-[#FF6B2C]/20 blur-[100px] clip-angular-sm"
               />
 
               {/* Content */}
@@ -465,7 +465,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+                  className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-[#FF6B2C]/20 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
                 >
                   <PhoneCall className="w-3.5 h-3.5 text-[#FF6B2C]" />
                   <span className="text-[#FF6B2C]">
@@ -511,8 +511,8 @@ export default function Home() {
                     whileTap={{ scale: 0.95 }}
                     className="group relative w-full sm:w-auto"
                   >
-                    <div className="absolute inset-0 bg-glow-orange opacity-50 group-hover:opacity-100 transition-opacity rounded-full" />
-                    <div className="relative px-10 py-5 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-white rounded-full font-black text-xl flex items-center justify-center gap-3 shadow-2xl">
+                    <div className="absolute inset-0 bg-glow-orange opacity-50 group-hover:opacity-100 transition-opacity clip-angular-sm" />
+                    <div className="relative px-10 py-5 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-white clip-angular-sm font-black text-xl flex items-center justify-center gap-3 shadow-2xl">
                       <PhoneCall className="w-6 h-6" />
                       <span>CALL NOW</span>
                     </div>
@@ -521,7 +521,7 @@ export default function Home() {
                   {/* Secondary CTA */}
                   <Link
                     to="/contact"
-                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-[#FF6B2C]/30 text-white rounded-full font-bold text-xl hover:bg-white/10 hover:border-[#FF6B2C]/50 transition-all flex items-center justify-center gap-3"
+                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-[#FF6B2C]/30 text-white clip-angular-sm font-bold text-xl hover:bg-white/10 hover:border-[#FF6B2C]/50 transition-all flex items-center justify-center gap-3"
                   >
                     Contact Support
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

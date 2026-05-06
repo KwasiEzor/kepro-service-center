@@ -52,8 +52,8 @@ export default function Contact() {
     <div className="pt-32 pb-20 px-6 sm:px-12 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
@@ -68,7 +68,7 @@ export default function Contact() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+              className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
             >
               <MessageSquare className="w-3.5 h-3.5 text-[#FF6B2C]" />
               <span className="text-[#FF6B2C]">
@@ -102,10 +102,10 @@ export default function Contact() {
                   whileHover={{ x: 8, scale: 1.02 }}
                   className="group"
                 >
-                  <div className="relative p-1 rounded-3xl bg-gradient-to-br from-white/10 to-white/5">
+                  <div className="relative p-1 clip-angular-md bg-gradient-to-br from-white/10 to-white/5">
                     <div className="flex gap-6 items-start p-6 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] rounded-[22px] border border-white/10">
                       <div className={cn(
-                        "w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br transition-transform group-hover:scale-110 shadow-xl",
+                        "w-14 h-14 clip-angular-sm flex items-center justify-center bg-gradient-to-br transition-transform group-hover:scale-110 shadow-xl",
                         item.gradient
                       )}>
                         <item.icon className={cn("w-7 h-7", item.iconColor)} />
@@ -146,7 +146,7 @@ export default function Contact() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5 + i * 0.1, type: "spring" }}
                   whileHover={{ scale: 1.1, y: -4 }}
-                  className="w-12 h-12 backdrop-blur-xl bg-white/5 border border-white/10 rounded-full flex items-center justify-center text-white/50 hover:text-white hover:border-[#FF6B2C]/50 hover:bg-[#FF6B2C]/10 transition-all"
+                  className="w-12 h-12 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm flex items-center justify-center text-white/50 hover:text-white hover:border-[#FF6B2C]/50 hover:bg-[#FF6B2C]/10 transition-all"
                 >
                   <social.icon className="w-5 h-5" />
                 </motion.a>
@@ -160,8 +160,8 @@ export default function Contact() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="relative p-1 rounded-[48px] bg-gradient-to-br from-white/10 to-white/5">
-              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 p-8 md:p-12 rounded-[44px] border border-white/10 relative overflow-hidden">
+            <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/10 to-white/5">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 p-8 md:p-12 clip-angular-lg border border-white/10 relative overflow-hidden">
                 {/* Animated Gradient Orbs */}
                 <motion.div
                   animate={{
@@ -205,10 +205,10 @@ export default function Contact() {
                       transition={{ type: "spring", stiffness: 200 }}
                       className="relative w-24 h-24 mx-auto mb-8"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl">
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-600 clip-angular-sm flex items-center justify-center shadow-2xl">
                         <Send className="w-12 h-12 text-white" />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full blur-2xl opacity-50 animate-pulse" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 clip-angular-sm blur-2xl opacity-50 animate-pulse" />
                     </motion.div>
                     <h3 className="text-3xl font-display font-black mb-3 text-white">Message Sent</h3>
                     <p className="text-white/60 text-lg">One of our specialists will get back to you shortly.</p>
@@ -222,7 +222,7 @@ export default function Contact() {
                       <input
                         {...register('name')}
                         type="text"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                         placeholder="Jane Cooper"
                       />
                       {errors.name && (
@@ -237,7 +237,7 @@ export default function Contact() {
                       <input
                         {...register('email')}
                         type="email"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                         placeholder="jane@example.com"
                       />
                       {errors.email && (
@@ -251,7 +251,7 @@ export default function Contact() {
                       </label>
                       <select
                         {...register('topic')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white appearance-none cursor-pointer"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white appearance-none cursor-pointer"
                       >
                         <option className="bg-[#0A1F44]">General Inquiry</option>
                         <option className="bg-[#0A1F44]">Key Support</option>
@@ -267,7 +267,7 @@ export default function Contact() {
                       <textarea
                         {...register('message')}
                         rows={5}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30 resize-none"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30 resize-none"
                         placeholder="Share some details about your problem..."
                       />
                       {errors.message && (
@@ -280,14 +280,14 @@ export default function Contact() {
                       disabled={formState === 'submitting'}
                       whileHover={{ scale: formState === 'submitting' ? 1 : 1.02 }}
                       whileTap={{ scale: formState === 'submitting' ? 1 : 0.98 }}
-                      className="group relative w-full py-6 rounded-full font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+                      className="group relative w-full py-6 clip-angular-sm font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full animate-gradient" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-xl opacity-50" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm animate-gradient" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm blur-xl opacity-50" />
                       {formState === 'submitting' ? (
                         <>
                           <span className="relative z-10 text-white">Processing</span>
-                          <span className="relative z-10 w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                          <span className="relative z-10 w-5 h-5 border-2 border-white/20 border-t-white clip-angular-sm animate-spin" />
                         </>
                       ) : (
                         <>

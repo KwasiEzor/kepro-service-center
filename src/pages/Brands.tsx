@@ -70,20 +70,20 @@ export default function Brands() {
 
               <div className="grid md:grid-cols-2 gap-8">
                 {cat.brands.map((brand) => (
-                  <div key={brand.name} className="glass p-10 rounded-[40px] hover:bg-white/5 transition-all group border-white/5">
+                  <div key={brand.name} className="glass p-10 clip-angular-lg hover:bg-white/5 transition-all group border-white/5">
                     <div className="flex items-center justify-between mb-8">
                       <div>
                         <h3 className="text-4xl font-display font-black tracking-tighter mb-1 tracking-wider text-white group-hover:text-brand-red transition-colors">{brand.name}</h3>
                         <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/30">{brand.series}</p>
                       </div>
-                      <div className="w-12 h-12 glass rounded-2xl flex items-center justify-center p-3">
+                      <div className="w-12 h-12 glass clip-angular-sm flex items-center justify-center p-3">
                          <Cpu className="text-white/40 w-full h-full" />
                       </div>
                     </div>
                     
                     <div className="flex flex-wrap gap-2">
                        {brand.features.map(f => (
-                         <span key={f} className="text-[10px] font-bold uppercase tracking-widest border border-white/10 px-3 py-1.5 rounded-full text-white/50 group-hover:border-brand-red/30 group-hover:text-white transition-all">
+                         <span key={f} className="text-[10px] font-bold uppercase tracking-widest border border-white/10 px-3 py-1.5 clip-angular-sm text-white/50 group-hover:border-brand-red/30 group-hover:text-white transition-all">
                            {f}
                          </span>
                        ))}
@@ -105,7 +105,7 @@ export default function Brands() {
            <p className="text-white/40 max-w-xl mx-auto mb-10 leading-relaxed">
              Our technical toolchain expands monthly. Even if your manufacturer isn't listed above, we likely have the protocols to support its basic diagnostic and key coding requirements.
            </p>
-           <button className="px-8 py-3 bg-white text-brand-blue rounded-full font-bold hover:scale-105 transition-all bg-glow-red">
+           <button className="px-8 py-3 bg-white text-brand-blue clip-angular-sm font-bold hover:scale-105 transition-all bg-glow-red">
              Inquire about your model
            </button>
         </div>

@@ -42,7 +42,7 @@ export default function AdminPreview() {
              { icon: Bell, label: "Alerts" }
            ].map(item => (
              <button key={item.label} className={cn(
-               "w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-bold transition-all",
+               "w-full flex items-center gap-4 px-4 py-3 clip-angular-sm text-sm font-bold transition-all",
                item.active ? "bg-white/10 text-white" : "text-white/40 hover:bg-white/5 hover:text-white"
              )}>
                <item.icon className="w-5 h-5" />
@@ -51,13 +51,13 @@ export default function AdminPreview() {
            ))}
         </nav>
         
-        <div className="p-4 glass rounded-2xl border-white/5">
+        <div className="p-4 glass clip-angular-sm border-white/5">
            <p className="text-[10px] uppercase tracking-widest text-white/30 font-bold mb-3">System Health</p>
            <div className="flex items-center gap-2 mb-2">
-             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+             <div className="w-2 h-2 bg-green-500 clip-angular-sm animate-pulse" />
              <span className="text-xs font-bold">Relay Node Online</span>
            </div>
-           <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+           <div className="w-full h-1.5 bg-white/5 clip-angular-sm overflow-hidden">
              <div className="w-3/4 h-full bg-brand-red" />
            </div>
         </div>
@@ -77,14 +77,14 @@ export default function AdminPreview() {
               <input 
                 type="text" 
                 placeholder="Search job ID..."
-                className="glass bg-white/5 border-white/5 rounded-full py-3 px-12 focus:outline-none focus:border-brand-red transition-all text-xs"
+                className="glass bg-white/5 border-white/5 clip-angular-sm py-3 px-12 focus:outline-none focus:border-brand-red transition-all text-xs"
               />
             </div>
-            <div className="w-10 h-10 glass rounded-full flex items-center justify-center relative">
+            <div className="w-10 h-10 glass clip-angular-sm flex items-center justify-center relative">
                <Bell className="w-5 h-5 text-white/60" />
-               <span className="absolute top-0 right-0 w-3 h-3 bg-brand-red rounded-full border-2 border-brand-blue" />
+               <span className="absolute top-0 right-0 w-3 h-3 bg-brand-red clip-angular-sm border-2 border-brand-blue" />
             </div>
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-white/20">
+            <div className="w-10 h-10 clip-angular-sm overflow-hidden border-2 border-white/20">
                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100" />
             </div>
           </div>
@@ -111,7 +111,7 @@ export default function AdminPreview() {
         </div>
 
         {/* Jobs List */}
-        <div className="glass rounded-[40px] border-white/5 overflow-hidden">
+        <div className="glass clip-angular-lg border-white/5 overflow-hidden">
            <div className="p-8 border-b border-white/5 flex items-center justify-between">
               <h2 className="text-xl font-bold">Priority Dispatches</h2>
               <button className="text-xs font-bold uppercase tracking-widest text-brand-red">View Dispatch Map</button>
@@ -137,14 +137,14 @@ export default function AdminPreview() {
                        <td className="px-8 py-6 font-bold">{job.client}</td>
                        <td className="px-8 py-6 text-white/60">{job.vehicle}</td>
                        <td className="px-8 py-6">
-                         <span className="px-3 py-1 bg-white/5 rounded-full text-[10px] font-bold border border-white/10 uppercase tracking-widest">
+                         <span className="px-3 py-1 bg-white/5 clip-angular-sm text-[10px] font-bold border border-white/10 uppercase tracking-widest">
                            {job.service}
                          </span>
                        </td>
                        <td className="px-8 py-6">
                           <div className="flex items-center gap-2">
                              <div className={cn(
-                               "w-2 h-2 rounded-full shadow-[0_0_10px]",
+                               "w-2 h-2 clip-angular-sm shadow-[0_0_10px]",
                                job.status === 'Priority' ? "bg-red-500 shadow-red-500" : 
                                job.status === 'In Progress' ? "bg-blue-500 shadow-blue-500" : "bg-orange-500 shadow-orange-500"
                              )} />

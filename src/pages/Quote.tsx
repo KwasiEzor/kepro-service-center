@@ -74,8 +74,8 @@ export default function Quote() {
     <div className="pt-32 pb-20 px-6 sm:px-12 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute bottom-1/4 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
@@ -85,7 +85,7 @@ export default function Quote() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+            className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
           >
             <Zap className="w-3.5 h-3.5 text-[#FF6B2C]" />
             <span className="text-[#FF6B2C]">
@@ -124,14 +124,14 @@ export default function Quote() {
                   className="flex items-center gap-3"
                 >
                   <div className={cn(
-                    "relative w-10 h-10 rounded-full flex items-center justify-center text-sm font-black transition-all",
+                    "relative w-10 h-10 clip-angular-sm flex items-center justify-center text-sm font-black transition-all",
                     step === s
                       ? "bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] text-white shadow-lg shadow-[#FF6B2C]/50"
                       : "bg-white/5 border border-white/10 text-white/50"
                   )}>
                     <span className="relative z-10">{idx + 1}</span>
                     {step === s && (
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-md opacity-50 animate-pulse" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm blur-md opacity-50 animate-pulse" />
                     )}
                   </div>
                   <span className={cn(
@@ -143,7 +143,7 @@ export default function Quote() {
                 </motion.div>
                 {idx < 2 && (
                   <div className={cn(
-                    "w-16 h-0.5 rounded-full transition-all",
+                    "w-16 h-0.5 clip-angular-sm transition-all",
                     ['service', 'vehicle', 'details'].indexOf(step) > idx
                       ? "bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]"
                       : "bg-white/10"
@@ -155,8 +155,8 @@ export default function Quote() {
         )}
 
         {/* Premium Form Container */}
-        <div className="relative p-1 rounded-[48px] bg-gradient-to-br from-white/10 to-white/5">
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 rounded-[44px] overflow-hidden border border-white/10 shadow-2xl">
+        <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/10 to-white/5">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 clip-angular-lg overflow-hidden border border-white/10 shadow-2xl">
             <AnimatePresence mode="wait">
               {step === 'service' && (
                 <motion.div
@@ -183,7 +183,7 @@ export default function Quote() {
                         whileHover={{ y: -4, scale: 1.02 }}
                         onClick={() => setServiceType(opt.id)}
                         className={cn(
-                          "group relative flex items-start gap-6 p-8 rounded-3xl border-2 text-left transition-all",
+                          "group relative flex items-start gap-6 p-8 clip-angular-md border-2 text-left transition-all",
                           serviceType === opt.id
                             ? "border-[#FF6B2C]/50 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10"
                             : "border-white/10 bg-white/5 hover:border-white/20"
@@ -191,11 +191,11 @@ export default function Quote() {
                       >
                         {/* Glow effect when selected */}
                         {serviceType === opt.id && (
-                          <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 rounded-3xl blur-xl -z-10 animate-pulse" />
+                          <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 clip-angular-md blur-xl -z-10 animate-pulse" />
                         )}
 
                         <div className={cn(
-                          "w-14 h-14 rounded-2xl flex items-center justify-center transition-all shadow-xl",
+                          "w-14 h-14 clip-angular-sm flex items-center justify-center transition-all shadow-xl",
                           serviceType === opt.id
                             ? "bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] text-white"
                             : "bg-white/10 text-white/50 group-hover:bg-white/15"
@@ -224,16 +224,16 @@ export default function Quote() {
                       onClick={handleNext}
                       whileHover={{ scale: serviceType ? 1.05 : 1 }}
                       whileTap={{ scale: serviceType ? 0.95 : 1 }}
-                      className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                      className="group relative inline-flex items-center gap-3 px-10 py-5 clip-angular-sm font-bold text-lg disabled:opacity-40 disabled:cursor-not-allowed transition-all"
                     >
                       <div className={cn(
-                        "absolute inset-0 rounded-full transition-all",
+                        "absolute inset-0 clip-angular-sm transition-all",
                         serviceType
                           ? "bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]"
                           : "bg-white/10"
                       )} />
                       <div className={cn(
-                        "absolute inset-0 rounded-full blur-xl opacity-0 transition-opacity",
+                        "absolute inset-0 clip-angular-sm blur-xl opacity-0 transition-opacity",
                         serviceType && "opacity-50 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]"
                       )} />
                       <span className="relative z-10 text-white">Continue</span>
@@ -275,7 +275,7 @@ export default function Quote() {
                         {...register('brand')}
                         type="text"
                         placeholder="e.g. BMW, Audi, Mercedes"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.brand && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -292,7 +292,7 @@ export default function Quote() {
                         {...register('model')}
                         type="text"
                         placeholder="e.g. 5 Series, A4, G-Wagon"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.model && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -309,7 +309,7 @@ export default function Quote() {
                         {...register('year')}
                         type="text"
                         placeholder="e.g. 2021"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.year && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -326,7 +326,7 @@ export default function Quote() {
                         {...register('location')}
                         type="text"
                         placeholder="e.g. Paris, Lyon, Marseille"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.location && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -341,10 +341,10 @@ export default function Quote() {
                       onClick={handleNext}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg"
+                      className="group relative inline-flex items-center gap-3 px-10 py-5 clip-angular-sm font-bold text-lg"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-xl opacity-50" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm blur-xl opacity-50" />
                       <span className="relative z-10 text-white">Final Step</span>
                       <ChevronRight className="relative z-10 w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                     </motion.button>
@@ -384,7 +384,7 @@ export default function Quote() {
                         {...register('name')}
                         type="text"
                         placeholder="John Doe"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.name && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -401,7 +401,7 @@ export default function Quote() {
                         {...register('phone')}
                         type="tel"
                         placeholder="01 23 45 67 89"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.phone && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -418,7 +418,7 @@ export default function Quote() {
                         {...register('email')}
                         type="email"
                         placeholder="john@example.com"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.email && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -435,7 +435,7 @@ export default function Quote() {
                         {...register('message')}
                         placeholder="Describe the issue in more detail..."
                         rows={5}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all resize-none text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all resize-none text-white placeholder:text-white/30"
                       />
                     </div>
 
@@ -445,10 +445,10 @@ export default function Quote() {
                         disabled={isSubmitting}
                         whileHover={{ scale: isSubmitting ? 1 : 1.02 }}
                         whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
-                        className="group relative w-full py-6 rounded-full font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="group relative w-full py-6 clip-angular-sm font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed"
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full animate-gradient" />
-                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] rounded-full blur-xl opacity-50" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm animate-gradient" />
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm blur-xl opacity-50" />
                         <span className="relative z-10 text-white">
                           {isSubmitting ? 'SENDING...' : 'SEND REQUEST'}
                         </span>
@@ -477,10 +477,10 @@ export default function Quote() {
                     transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
                     className="relative w-32 h-32 mx-auto mb-12"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-2xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-green-600 clip-angular-sm flex items-center justify-center shadow-2xl">
                       <CheckCircle2 className="w-16 h-16 text-white" />
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full blur-2xl opacity-50 animate-pulse" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 clip-angular-sm blur-2xl opacity-50 animate-pulse" />
                   </motion.div>
 
                   <motion.h2
@@ -508,10 +508,10 @@ export default function Quote() {
                     transition={{ delay: 0.5 }}
                     className="inline-block mb-16"
                   >
-                    <div className="relative p-1 rounded-3xl bg-gradient-to-br from-orange-500/20 to-red-500/20">
+                    <div className="relative p-1 clip-angular-md bg-gradient-to-br from-orange-500/20 to-red-500/20">
                       <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-[22px] border border-white/10 text-left min-w-[320px]">
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-10 h-10 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-xl flex items-center justify-center">
+                          <div className="w-10 h-10 bg-gradient-to-br from-orange-500/20 to-red-500/20 clip-angular-sm flex items-center justify-center">
                             <Zap className="w-5 h-5 text-orange-400" />
                           </div>
                           <span className="font-bold text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">
@@ -537,9 +537,9 @@ export default function Quote() {
                       onClick={() => window.location.href = '/'}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="group relative inline-flex items-center gap-3 px-12 py-5 rounded-full font-bold text-lg"
+                      className="group relative inline-flex items-center gap-3 px-12 py-5 clip-angular-sm font-bold text-lg"
                     >
-                      <div className="absolute inset-0 backdrop-blur-xl bg-white/5 border border-white/10 rounded-full" />
+                      <div className="absolute inset-0 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm" />
                       <span className="relative z-10 text-white group-hover:text-white/90 transition-colors">
                         Return Home
                       </span>
@@ -568,7 +568,7 @@ export default function Quote() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.7 + i * 0.1 }}
-              className="flex items-center gap-3 px-4 py-2 backdrop-blur-xl bg-white/5 border border-white/10 rounded-full"
+              className="flex items-center gap-3 px-4 py-2 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm"
             >
               <badge.icon className="w-4 h-4 text-white/40" />
               <span className="text-xs font-bold uppercase tracking-wider text-white/50">

@@ -60,8 +60,8 @@ export default function Services() {
     <div className="pt-32 pb-20 overflow-hidden relative">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] rounded-full" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
@@ -71,7 +71,7 @@ export default function Services() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+          className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
         >
           <Settings className="w-3.5 h-3.5 text-[#FF6B2C]" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]">
@@ -125,7 +125,7 @@ export default function Services() {
                 transition={{ delay: 0.2 }}
                 className="flex items-center gap-6"
               >
-                <div className="w-20 h-20 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 rounded-3xl flex items-center justify-center border border-white/10 backdrop-blur-xl">
+                <div className="w-20 h-20 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 clip-angular-md flex items-center justify-center border border-white/10 backdrop-blur-xl">
                   <cat.icon className="w-10 h-10 text-[#FF6B2C]" />
                 </div>
                 <h2 className="text-4xl md:text-6xl font-display font-black leading-none text-white">
@@ -160,10 +160,10 @@ export default function Services() {
                     viewport={{ once: true }}
                     transition={{ delay: 0.5 + i * 0.1 }}
                     whileHover={{ y: -4, scale: 1.02 }}
-                    className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-6 rounded-3xl border border-white/10 hover:border-white/20 transition-all"
+                    className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md border border-white/10 hover:border-white/20 transition-all"
                   >
                     {/* Gradient glow on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 rounded-3xl transition-all duration-300 -z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 clip-angular-md transition-all duration-300 -z-10" />
 
                     <h4 className="font-bold text-white mb-2 text-sm">{s.name}</h4>
                     <p className="text-xs text-white/50 leading-relaxed">
@@ -183,8 +183,8 @@ export default function Services() {
               className="flex-1 relative group"
             >
               {/* Main Image Card with Gradient Border */}
-              <div className="relative p-1 rounded-[48px] bg-gradient-to-br from-white/20 to-white/5">
-                <div className="relative rounded-[44px] overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
+              <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/20 to-white/5">
+                <div className="relative clip-angular-lg overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
                   <img
                     src={cat.image}
                     alt={cat.title}
@@ -199,7 +199,7 @@ export default function Services() {
 
               {/* Decorative Glow */}
               <div className={cn(
-                "absolute -z-10 w-full h-full rounded-[48px] bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-3xl transition-all duration-700 group-hover:blur-2xl group-hover:scale-105",
+                "absolute -z-10 w-full h-full clip-angular-xl bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-3xl transition-all duration-700 group-hover:blur-2xl group-hover:scale-105",
                 idx % 2 === 0 ? "top-8 right-8" : "top-8 left-8"
               )} />
             </motion.div>
@@ -220,7 +220,7 @@ export default function Services() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <div className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-white/5 to-white/10 border border-white/10 text-xs font-bold tracking-widest uppercase backdrop-blur-xl">
+            <div className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-white/10 text-xs font-bold tracking-widest uppercase backdrop-blur-xl">
               <ShieldCheck className="w-3.5 h-3.5 text-white/40" />
               <span className="text-white/40">Supporting Leading Manufacturers</span>
             </div>
@@ -235,7 +235,7 @@ export default function Services() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05 }}
                 whileHover={{ y: -4, opacity: 1 }}
-                className="group flex items-center justify-center p-8 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] rounded-3xl border border-white/5 hover:border-white/10 transition-all cursor-default"
+                className="group flex items-center justify-center p-8 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] clip-angular-md border border-white/5 hover:border-white/10 transition-all cursor-default"
               >
                 <span className="text-lg md:text-xl font-display font-black tracking-tight text-white/30 group-hover:text-white/70 transition-colors">
                   {brand}
