@@ -52,8 +52,8 @@ export default function Contact() {
     <div className="pt-32 pb-20 px-6 sm:px-12 relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 blur-[120px] clip-angular-sm" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
@@ -68,17 +68,17 @@ export default function Contact() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+              className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
             >
-              <MessageSquare className="w-3.5 h-3.5 text-[#FF6B2C]" />
-              <span className="text-[#FF6B2C]">
+              <MessageSquare className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
+              <span className="text-[var(--color-brand-orange-primary)]">
                 Get in Touch
               </span>
             </motion.div>
 
             <h1 className="text-6xl md:text-8xl font-display font-black mb-8 leading-[1.05]">
               <span className="block text-white">Let's Talk</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] animate-gradient">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
                 Binary.
               </span>
             </h1>
@@ -90,9 +90,9 @@ export default function Contact() {
             {/* Premium Contact Cards */}
             <div className="space-y-6">
               {[
-                { icon: Phone, label: "Emergency Hotline", value: "01 23 45 67 89", detail: "24/7 Rapid Response", gradient: "from-[#FF6B2C]/20 to-[#FF8C4D]/20", iconColor: "text-[#FF6B2C]" },
-                { icon: Mail, label: "Technical Support", value: "support@keypro.service", detail: "Reply within 4 hours", gradient: "from-[#FF8C4D]/20 to-[#FFA06D]/20", iconColor: "text-[#FF8C4D]" },
-                { icon: MapPin, label: "Service Hub", value: "8 Rue de la Paix, Paris", detail: "Appointments Only", gradient: "from-[#FF6B2C]/15 to-[#FF8C4D]/15", iconColor: "text-[#FF6B2C]" }
+                { icon: Phone, label: "Emergency Hotline", value: "01 23 45 67 89", detail: "24/7 Rapid Response", gradient: "from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20", iconColor: "text-[var(--color-brand-orange-primary)]" },
+                { icon: Mail, label: "Technical Support", value: "support@keypro.service", detail: "Reply within 4 hours", gradient: "from-[var(--color-brand-orange-secondary)]/20 to-[var(--color-brand-orange-light)]/20", iconColor: "text-[var(--color-brand-orange-secondary)]" },
+                { icon: MapPin, label: "Service Hub", value: "8 Rue de la Paix, Paris", detail: "Appointments Only", gradient: "from-[var(--color-brand-orange-primary)]/15 to-[var(--color-brand-orange-secondary)]/15", iconColor: "text-[var(--color-brand-orange-primary)]" }
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
@@ -146,7 +146,7 @@ export default function Contact() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5 + i * 0.1, type: "spring" }}
                   whileHover={{ scale: 1.1, y: -4 }}
-                  className="w-12 h-12 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm flex items-center justify-center text-white/50 hover:text-white hover:border-[#FF6B2C]/50 hover:bg-[#FF6B2C]/10 transition-all"
+                  className="w-12 h-12 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm flex items-center justify-center text-white/50 hover:text-white hover:border-[var(--color-brand-orange-primary)]/50 hover:bg-[var(--color-brand-orange-primary)]/10 transition-all"
                 >
                   <social.icon className="w-5 h-5" />
                 </motion.a>
@@ -161,7 +161,7 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/10 to-white/5">
-              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1A1A1A]/80 to-[#0D0D0D]/80 p-8 md:p-12 clip-angular-lg border border-white/10 relative overflow-hidden">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[var(--color-brand-gray)]/80 to-[var(--color-brand-dark)]/80 p-8 md:p-12 clip-angular-lg border border-white/10 relative overflow-hidden">
                 {/* Animated Gradient Orbs */}
                 <motion.div
                   animate={{
@@ -173,7 +173,7 @@ export default function Contact() {
                     repeat: Infinity,
                     ease: "easeInOut"
                   }}
-                  className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-[100px] -z-10"
+                  className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 blur-[100px] -z-10"
                 />
                 <motion.div
                   animate={{
@@ -222,7 +222,7 @@ export default function Contact() {
                       <input
                         {...register('name')}
                         type="text"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                         placeholder="Jane Cooper"
                       />
                       {errors.name && (
@@ -237,7 +237,7 @@ export default function Contact() {
                       <input
                         {...register('email')}
                         type="email"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                         placeholder="jane@example.com"
                       />
                       {errors.email && (
@@ -251,12 +251,12 @@ export default function Contact() {
                       </label>
                       <select
                         {...register('topic')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white appearance-none cursor-pointer"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white appearance-none cursor-pointer"
                       >
-                        <option className="bg-[#1A1A1A]">General Inquiry</option>
-                        <option className="bg-[#1A1A1A]">Key Support</option>
-                        <option className="bg-[#1A1A1A]">B2B Partnerships</option>
-                        <option className="bg-[#1A1A1A]">Careers</option>
+                        <option className="bg-[var(--color-brand-gray)]">General Inquiry</option>
+                        <option className="bg-[var(--color-brand-gray)]">Key Support</option>
+                        <option className="bg-[var(--color-brand-gray)]">B2B Partnerships</option>
+                        <option className="bg-[var(--color-brand-gray)]">Careers</option>
                       </select>
                     </div>
 
@@ -267,7 +267,7 @@ export default function Contact() {
                       <textarea
                         {...register('message')}
                         rows={5}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white placeholder:text-white/30 resize-none"
+                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30 resize-none"
                         placeholder="Share some details about your problem..."
                       />
                       {errors.message && (
@@ -282,8 +282,8 @@ export default function Contact() {
                       whileTap={{ scale: formState === 'submitting' ? 1 : 0.98 }}
                       className="group relative w-full py-6 clip-angular-sm font-black text-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
                     >
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm animate-gradient" />
-                      <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] clip-angular-sm blur-xl opacity-50" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm animate-gradient" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm blur-xl opacity-50" />
                       {formState === 'submitting' ? (
                         <>
                           <span className="relative z-10 text-white">Processing</span>

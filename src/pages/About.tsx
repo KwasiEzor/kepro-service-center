@@ -117,7 +117,7 @@ export default function About() {
                   <p className="text-white/40 leading-relaxed">{item.desc}</p>
                 </div>
               </div>
-              <div className="w-16 h-16 bg-brand-red clip-angular-sm flex items-center justify-center font-black text-white relative z-10 border-4 border-[#0D0D0D] bg-glow-red">
+              <div className="w-16 h-16 bg-brand-red clip-angular-sm flex items-center justify-center font-black text-white relative z-10 border-4 border-[var(--color-brand-dark)] bg-glow-red">
                 {item.year.slice(2)}
               </div>
               <div className="flex-1">

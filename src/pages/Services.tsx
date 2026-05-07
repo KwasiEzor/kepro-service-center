@@ -60,8 +60,8 @@ export default function Services() {
     <div className="pt-32 pb-20 overflow-hidden relative">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[#FF6B2C]/10 to-[#FF8C4D]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 blur-[120px] clip-angular-sm" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 blur-[120px] clip-angular-sm" />
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:4rem_4rem]" />
       </div>
 
@@ -71,10 +71,10 @@ export default function Services() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[#FF6B2C]/10 to-[#FF8C4D]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+          className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
         >
-          <Settings className="w-3.5 h-3.5 text-[#FF6B2C]" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]">
+          <Settings className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]">
             Specialist Automotive Tech
           </span>
         </motion.div>
@@ -86,7 +86,7 @@ export default function Services() {
           className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-[1.05]"
         >
           <span className="block text-white">Technical</span>
-          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] animate-gradient">
+          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
             Expertise
           </span>
         </motion.h1>
@@ -125,8 +125,8 @@ export default function Services() {
                 transition={{ delay: 0.2 }}
                 className="flex items-center gap-6"
               >
-                <div className="w-20 h-20 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 clip-angular-md flex items-center justify-center border border-white/10 backdrop-blur-xl">
-                  <cat.icon className="w-10 h-10 text-[#FF6B2C]" />
+                <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 clip-angular-md flex items-center justify-center border border-white/10 backdrop-blur-xl">
+                  <cat.icon className="w-10 h-10 text-[var(--color-brand-orange-primary)]" />
                 </div>
                 <h2 className="text-4xl md:text-6xl font-display font-black leading-none text-white">
                   {cat.title}
@@ -193,13 +193,13 @@ export default function Services() {
                   />
                   {/* Gradient Overlays */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-blue-500/20 to-purple-600/30 mix-blend-overlay" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D0D0D] via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-dark)] via-transparent to-transparent opacity-80" />
                 </div>
               </div>
 
               {/* Decorative Glow */}
               <div className={cn(
-                "absolute -z-10 w-full h-full clip-angular-xl bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 blur-3xl transition-all duration-700 group-hover:blur-2xl group-hover:scale-105",
+                "absolute -z-10 w-full h-full clip-angular-xl bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 blur-3xl transition-all duration-700 group-hover:blur-2xl group-hover:scale-105",
                 idx % 2 === 0 ? "top-8 right-8" : "top-8 left-8"
               )} />
             </motion.div>

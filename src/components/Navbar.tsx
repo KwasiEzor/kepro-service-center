@@ -47,14 +47,14 @@ export default function Navbar() {
       }}
       >
         {/* Beveled corner overlays */}
-        <div className="absolute top-0 left-0 w-6 h-6 bg-[#FF6B2C] opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
-        <div className="absolute bottom-0 right-0 w-6 h-6 bg-[#FF6B2C] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
+        <div className="absolute top-0 left-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
+        <div className="absolute bottom-0 right-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
 
         {/* Logo - Hexagonal Design */}
         <Link to="/" className="flex items-center gap-3 group z-50">
           <div className="relative w-10 h-10 sm:w-12 sm:h-12">
             {/* Hexagonal shape */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B2C] to-[#FF8C4D] flex items-center justify-center group-hover:scale-110 transition-transform bg-glow-orange"
+            <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] flex items-center justify-center group-hover:scale-110 transition-transform bg-glow-orange"
               style={{ clipPath: 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)' }}
             >
               <Key className="text-white w-5 h-5 sm:w-6 sm:h-6" />
@@ -62,7 +62,7 @@ export default function Navbar() {
           </div>
           <div className="flex flex-col">
             <span className="font-display font-black text-lg sm:text-xl tracking-tighter leading-none text-white">KEYPRO</span>
-            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-[#FF6B2C] leading-none mt-1 font-bold">Service Center</span>
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-[var(--color-brand-orange-primary)] leading-none mt-1 font-bold">Service Center</span>
           </div>
         </Link>
 
@@ -75,7 +75,7 @@ export default function Navbar() {
               className={cn(
                 'relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
                 location.pathname === item.href
-                  ? 'text-[#FF6B2C]'
+                  ? 'text-[var(--color-brand-orange-primary)]'
                   : 'text-white/70 hover:text-white'
               )}
             >
@@ -84,7 +84,7 @@ export default function Navbar() {
                 {location.pathname === item.href && (
                   <motion.div
                     layoutId="nav-bg"
-                    className="absolute inset-0 bg-[#FF6B2C]/10 border border-[#FF6B2C]/30"
+                    className="absolute inset-0 bg-[var(--color-brand-orange-primary)]/10 border border-[var(--color-brand-orange-primary)]/30"
                     style={{ clipPath: 'polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px)' }}
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
@@ -98,7 +98,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link
             to="/quote"
-            className="hidden sm:block relative px-6 py-3 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-white text-xs font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 bg-glow-orange overflow-hidden group"
+            className="hidden sm:block relative px-6 py-3 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white text-xs font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 bg-glow-orange overflow-hidden group"
             style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
           >
             <span className="relative z-10">Get Quote</span>
@@ -139,7 +139,7 @@ export default function Navbar() {
                     className={cn(
                       "relative flex items-center justify-between p-5 glass border text-xl font-display font-black uppercase tracking-tight",
                       location.pathname === item.href
-                        ? "bg-[#FF6B2C]/10 border-[#FF6B2C]/30 text-[#FF6B2C]"
+                        ? "bg-[var(--color-brand-orange-primary)]/10 border-[var(--color-brand-orange-primary)]/30 text-[var(--color-brand-orange-primary)]"
                         : "border-white/10 text-white"
                     )}
                     style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
@@ -161,7 +161,7 @@ export default function Navbar() {
               >
                 <Link
                   to="/quote"
-                  className="block w-full py-5 bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D] text-white text-center font-black text-xl uppercase tracking-wider bg-glow-orange"
+                  className="block w-full py-5 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white text-center font-black text-xl uppercase tracking-wider bg-glow-orange"
                   style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
                 >
                   GET A QUOTE
