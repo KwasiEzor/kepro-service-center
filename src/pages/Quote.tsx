@@ -508,13 +508,13 @@ export default function Quote() {
                     transition={{ delay: 0.5 }}
                     className="inline-block mb-16"
                   >
-                    <div className="relative p-1 clip-angular-md bg-gradient-to-br from-orange-500/20 to-red-500/20">
+                    <div className="relative p-1 clip-angular-md bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20">
                       <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-[22px] border border-white/10 text-left min-w-[320px]">
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-10 h-10 bg-gradient-to-br from-orange-500/20 to-red-500/20 clip-angular-sm flex items-center justify-center">
+                          <div className="w-10 h-10 bg-gradient-to-br from-[#FF6B2C]/20 to-[#FF8C4D]/20 clip-angular-sm flex items-center justify-center">
                             <Zap className="w-5 h-5 text-orange-400" />
                           </div>
-                          <span className="font-bold text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-400">
+                          <span className="font-bold text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#FF6B2C] to-[#FF8C4D]">
                             Urgency Priority: High
                           </span>
                         </div>
