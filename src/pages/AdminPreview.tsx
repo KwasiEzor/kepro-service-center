@@ -25,7 +25,7 @@ const jobs = [
 
 export default function AdminPreview() {
   return (
-    <div className="min-h-screen bg-[#020617] text-white flex">
+    <div className="min-h-screen bg-[#0D0D0D] text-white flex">
       {/* Sidebar */}
       <div className="w-64 glass border-r border-white/5 flex flex-col p-6 gap-8">
         <div className="flex items-center gap-2 mb-4">

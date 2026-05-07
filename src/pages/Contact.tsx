@@ -161,7 +161,7 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/10 to-white/5">
-              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 p-8 md:p-12 clip-angular-lg border border-white/10 relative overflow-hidden">
+              <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1A1A1A]/80 to-[#0D0D0D]/80 p-8 md:p-12 clip-angular-lg border border-white/10 relative overflow-hidden">
                 {/* Animated Gradient Orbs */}
                 <motion.div
                   animate={{
@@ -253,10 +253,10 @@ export default function Contact() {
                         {...register('topic')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[#FF6B2C] focus:ring-2 focus:ring-[#FF6B2C]/20 transition-all text-white appearance-none cursor-pointer"
                       >
-                        <option className="bg-[#0A1F44]">General Inquiry</option>
-                        <option className="bg-[#0A1F44]">Key Support</option>
-                        <option className="bg-[#0A1F44]">B2B Partnerships</option>
-                        <option className="bg-[#0A1F44]">Careers</option>
+                        <option className="bg-[#1A1A1A]">General Inquiry</option>
+                        <option className="bg-[#1A1A1A]">Key Support</option>
+                        <option className="bg-[#1A1A1A]">B2B Partnerships</option>
+                        <option className="bg-[#1A1A1A]">Careers</option>
                       </select>
                     </div>
 

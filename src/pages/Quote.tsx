@@ -156,7 +156,7 @@ export default function Quote() {
 
         {/* Premium Form Container */}
         <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/10 to-white/5">
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#0A1F44]/80 to-[#020617]/80 clip-angular-lg overflow-hidden border border-white/10 shadow-2xl">
+          <div className="backdrop-blur-2xl bg-gradient-to-br from-[#1A1A1A]/80 to-[#0D0D0D]/80 clip-angular-lg overflow-hidden border border-white/10 shadow-2xl">
             <AnimatePresence mode="wait">
               {step === 'service' && (
                 <motion.div
