@@ -17,40 +17,54 @@ import {
   Zap
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
-const services = [
-  {
-    title: "Car Key Specialist",
-    description: "Lost all keys? We can program and cut new keys on-site for almost any vehicle model.",
-    icon: Key,
-    gradient: "from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]",
-    features: ["All Key Lost Recovery", "Smart Key Programming", "Remote Diagnostics"]
-  },
-  {
-    title: "Full Diagnostics",
-    description: "Deep binary scans of your vehicle electronics using dealer-level specialized equipment.",
-    icon: Cpu,
-    gradient: "from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-light)]",
-    features: ["ECU Analysis", "Network Scan", "Performance Tuning"]
-  },
-  {
-    title: "Immobilizer Repairs",
-    description: "Fixing ECU synchronization issues and complex immobilizer system failures.",
-    icon: Settings,
-    gradient: "from-[var(--color-brand-orange-secondary)] to-[var(--color-brand-orange-primary)]",
-    features: ["Module Coding", "Immo Sync", "Software Updates"]
-  }
-];
-
-const stats = [
-  { label: "Successful Services", value: "12k+", icon: CheckCircle2 },
-  { label: "Expert Technicians", value: "24", icon: ShieldCheck },
-  { label: "Response Time", value: "30min", icon: Clock },
-  { label: "Client Rating", value: "4.9/5", icon: Star }
-];
-
 export default function Home() {
+  const { t } = useTranslation();
+
+  const services = [
+    {
+      title: t('home.services.carKey.title'),
+      description: t('home.services.carKey.description'),
+      icon: Key,
+      gradient: "from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]",
+      features: [
+        t('home.services.carKey.features.0'),
+        t('home.services.carKey.features.1'),
+        t('home.services.carKey.features.2')
+      ]
+    },
+    {
+      title: t('home.services.diagnostics.title'),
+      description: t('home.services.diagnostics.description'),
+      icon: Cpu,
+      gradient: "from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-light)]",
+      features: [
+        t('home.services.diagnostics.features.0'),
+        t('home.services.diagnostics.features.1'),
+        t('home.services.diagnostics.features.2')
+      ]
+    },
+    {
+      title: t('home.services.immobilizer.title'),
+      description: t('home.services.immobilizer.description'),
+      icon: Settings,
+      gradient: "from-[var(--color-brand-orange-secondary)] to-[var(--color-brand-orange-primary)]",
+      features: [
+        t('home.services.immobilizer.features.0'),
+        t('home.services.immobilizer.features.1'),
+        t('home.services.immobilizer.features.2')
+      ]
+    }
+  ];
+
+  const stats = [
+    { label: t('home.stats.services'), value: "12k+", icon: CheckCircle2 },
+    { label: t('home.stats.technicians'), value: "24", icon: ShieldCheck },
+    { label: t('home.stats.response'), value: "30min", icon: Clock },
+    { label: t('home.stats.rating'), value: "4.9/5", icon: Star }
+  ];
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 200]);
   const y2 = useTransform(scrollY, [0, 500], [0, -100]);

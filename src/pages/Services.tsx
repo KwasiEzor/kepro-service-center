@@ -1,61 +1,81 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { 
-  Key, 
-  Settings, 
-  Cpu, 
-  ShieldCheck, 
-  FileSearch, 
-  Zap, 
-  Lock, 
+import {
+  Key,
+  Settings,
+  Cpu,
+  ShieldCheck,
+  FileSearch,
+  Zap,
+  Lock,
   RefreshCcw,
   Microchip
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
-const serviceCategories = [
-  {
-    id: "keys",
-    title: "Car Key Solutions",
-    description: "State-of-the-art key cutting and programming for high-end automotive brands.",
-    services: [
-      { name: "Backup Key Creation", detail: "Professional duplication of smart keys and fobs." },
-      { name: "Lost All Keys (AKL)", detail: "Complete key recovery without vehicle disassembly." },
-      { name: "Remote Repair", detail: "Restoring signal strength and battery management." },
-      { name: "Emergency Lockout", detail: "Non-destructive vehicle entry using Lishi tools." }
-    ],
-    icon: Key,
-    image: "https://images.unsplash.com/photo-1619641782822-233bc69f5601?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: "diagnostics",
-    title: "Advanced Diagnostics",
-    description: "Dealer-level binary analysis of vehicle control units and electronic systems.",
-    services: [
-      { name: "Full System Scan", detail: "DTC clearing and deep network analysis." },
-      { name: "EGR / DPF Analysis", detail: "Checking particulate filter and valve efficiency." },
-      { name: "Sensor Calibration", detail: "ADAS and radar system alignment." },
-      { name: "Performance Logging", detail: "Real-time data capture for power profiling." }
-    ],
-    icon: Cpu,
-    image: "https://images.unsplash.com/photo-1593583845845-7d67ede93328?auto=format&fit=crop&q=80&w=800"
-  },
-  {
-    id: "programming",
-    title: "ECU & Modules",
-    description: "Complex software synchronization and unit replacements for modern automotive architectures.",
-    services: [
-      { name: "Module Coding", detail: "Programming new components to the factory network." },
-      { name: "Immo Synchronization", detail: "Fixing pairing issues between ECU and BCM." },
-      { name: "Software Updates", detail: "Flashing official firmware to fix factory bugs." },
-      { name: "Odometer Sync", detail: "Correcting mileage after cluster replacement." }
-    ],
-    icon: Microchip,
-    image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
-  }
-];
+const serviceImages = {
+  keys: "https://images.unsplash.com/photo-1619641782822-233bc69f5601?auto=format&fit=crop&q=80&w=800",
+  diagnostics: "https://images.unsplash.com/photo-1593583845845-7d67ede93328?auto=format&fit=crop&q=80&w=800",
+  programming: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+};
 
 export default function Services() {
+  const { t } = useTranslation();
+
+  const serviceCategories = [
+    {
+      id: "keys",
+      title: t('services.categories.keys.title'),
+      description: t('services.categories.keys.description'),
+      services: [
+        { name: t('services.categories.keys.services.backup.name'), detail: t('services.categories.keys.services.backup.detail') },
+        { name: t('services.categories.keys.services.akl.name'), detail: t('services.categories.keys.services.akl.detail') },
+        { name: t('services.categories.keys.services.remote.name'), detail: t('services.categories.keys.services.remote.detail') },
+        { name: t('services.categories.keys.services.lockout.name'), detail: t('services.categories.keys.services.lockout.detail') }
+      ],
+      icon: Key,
+      image: serviceImages.keys
+    },
+    {
+      id: "diagnostics",
+      title: t('services.categories.diagnostics.title'),
+      description: t('services.categories.diagnostics.description'),
+      services: [
+        { name: t('services.categories.diagnostics.services.fullScan.name'), detail: t('services.categories.diagnostics.services.fullScan.detail') },
+        { name: t('services.categories.diagnostics.services.egrDpf.name'), detail: t('services.categories.diagnostics.services.egrDpf.detail') },
+        { name: t('services.categories.diagnostics.services.sensorCalib.name'), detail: t('services.categories.diagnostics.services.sensorCalib.detail') },
+        { name: t('services.categories.diagnostics.services.perfLog.name'), detail: t('services.categories.diagnostics.services.perfLog.detail') }
+      ],
+      icon: Cpu,
+      image: serviceImages.diagnostics
+    },
+    {
+      id: "programming",
+      title: t('services.categories.programming.title'),
+      description: t('services.categories.programming.description'),
+      services: [
+        { name: t('services.categories.programming.services.moduleCoding.name'), detail: t('services.categories.programming.services.moduleCoding.detail') },
+        { name: t('services.categories.programming.services.immoSync.name'), detail: t('services.categories.programming.services.immoSync.detail') },
+        { name: t('services.categories.programming.services.softwareUpdates.name'), detail: t('services.categories.programming.services.softwareUpdates.detail') },
+        { name: t('services.categories.programming.services.odoSync.name'), detail: t('services.categories.programming.services.odoSync.detail') }
+      ],
+      icon: Microchip,
+      image: serviceImages.programming
+    }
+  ];
+
+  const brands = [
+    t('services.brandCoverage.brands.volkswagen'),
+    t('services.brandCoverage.brands.audi'),
+    t('services.brandCoverage.brands.bmw'),
+    t('services.brandCoverage.brands.mercedes'),
+    t('services.brandCoverage.brands.porsche'),
+    t('services.brandCoverage.brands.landRover'),
+    t('services.brandCoverage.brands.peugeot'),
+    t('services.brandCoverage.brands.renault')
+  ];
+
   return (
     <div className="pt-32 pb-20 overflow-hidden relative">
       {/* Background Effects */}
@@ -75,7 +95,7 @@ export default function Services() {
         >
           <Settings className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]">
-            Specialist Automotive Tech
+            {t('services.header.badge')}
           </span>
         </motion.div>
 
@@ -85,9 +105,9 @@ export default function Services() {
           transition={{ delay: 0.1, duration: 0.8 }}
           className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-[1.05]"
         >
-          <span className="block text-white">Technical</span>
+          <span className="block text-white">{t('services.header.title').split(' ')[0]}</span>
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
-            Expertise
+            {t('services.header.title').split(' ')[1]}
           </span>
         </motion.h1>
 
@@ -97,7 +117,7 @@ export default function Services() {
           transition={{ delay: 0.2 }}
           className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
         >
-          We bridge the gap between mechanical hardware and digital software. Our technicians are trained in the <span className="text-white font-bold">latest immobilizer technologies</span> and diagnostic protocols.
+          {t('services.header.description')}
         </motion.p>
       </section>
 
@@ -222,12 +242,12 @@ export default function Services() {
           >
             <div className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-white/10 text-xs font-bold tracking-widest uppercase backdrop-blur-xl">
               <ShieldCheck className="w-3.5 h-3.5 text-white/40" />
-              <span className="text-white/40">Supporting Leading Manufacturers</span>
+              <span className="text-white/40">{t('services.brandCoverage.title')}</span>
             </div>
           </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {['VOLKSWAGEN', 'AUDI', 'BMW', 'MERCEDES', 'PORSCHE', 'LAND ROVER', 'PEUGEOT', 'RENAULT'].map((brand, i) => (
+            {brands.map((brand, i) => (
               <motion.div
                 key={brand}
                 initial={{ opacity: 0, y: 20 }}

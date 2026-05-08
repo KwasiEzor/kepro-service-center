@@ -1,27 +1,36 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Shield, Target, Users, Zap, Award, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
-const values = [
-  {
-    title: "Technical Excellence",
-    text: "We don't just clear errors; we analyze root causes within the vehicle's binary architecture.",
-    icon: Target
-  },
-  {
-    title: "Mobile Freedom",
-    text: "Dealer-grade service delivered to your location, saving you time and towing costs.",
-    icon: Globe
-  },
-  {
-    title: "Unmatched Reliability",
-    text: "Our success rate with complex immobilizer issues is over 98% for premium brands.",
-    icon: Shield
-  }
-];
-
 export default function About() {
+  const { t } = useTranslation();
+
+  const values = [
+    {
+      title: t('about.values.excellence.title'),
+      text: t('about.values.excellence.description'),
+      icon: Target
+    },
+    {
+      title: t('about.values.mobile.title'),
+      text: t('about.values.mobile.description'),
+      icon: Globe
+    },
+    {
+      title: t('about.values.reliability.title'),
+      text: t('about.values.reliability.description'),
+      icon: Shield
+    }
+  ];
+
+  const timeline = [
+    { year: "2018", title: t('about.timeline.launch.title'), desc: t('about.timeline.launch.desc') },
+    { year: "2020", title: t('about.timeline.tech.title'), desc: t('about.timeline.tech.desc') },
+    { year: "2022", title: t('about.timeline.regional.title'), desc: t('about.timeline.regional.desc') },
+    { year: "2024", title: t('about.timeline.ai.title'), desc: t('about.timeline.ai.desc') }
+  ];
   return (
     <div className="pt-32 pb-20">
       <section className="px-6 sm:px-12 max-w-7xl mx-auto">
@@ -32,11 +41,11 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-7xl font-display font-bold mb-8">
-              Redefining <br />
-              <span className="text-brand-red">Auto Support</span>
+              {t('about.hero.title1')} <br />
+              <span className="text-brand-red">{t('about.hero.title2')}</span>
             </h1>
             <p className="text-xl text-white/60 leading-relaxed max-w-xl">
-              Founded in 2018, KeyPro was born out of a frustration with traditional dealer lead times and rigid workshop schedules. We envisioned a world where elite technical skill could be dispatched on-demand.
+              {t('about.hero.description')}
             </p>
           </motion.div>
           
@@ -84,20 +93,15 @@ export default function About() {
       {/* Experience Timeline */}
       <section className="py-32 px-6 sm:px-12 bg-white/5 mt-32">
         <div className="max-w-4xl mx-auto text-center mb-20">
-          <h2 className="text-4xl md:text-6xl font-display font-bold mb-8">Our Journey</h2>
-          <p className="text-white/60 text-lg">Continuous evolution in the rapidly changing world of automotive software.</p>
+          <h2 className="text-4xl md:text-6xl font-display font-bold mb-8">{t('about.journey.title')}</h2>
+          <p className="text-white/60 text-lg">{t('about.journey.subtitle')}</p>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-20 relative">
           {/* Vertical Line */}
           <div className="absolute left-[30px] md:left-1/2 top-0 bottom-0 w-px bg-white/10" />
 
-          {[
-            { year: "2018", title: "Launch", desc: "Started as a small local mobile locksmith service with one technician." },
-            { year: "2020", title: "Tech Expansion", desc: "Implemented dealer-level ODIS and Star Diagnosis capabilities." },
-            { year: "2022", title: "Regional Hubs", desc: "Opened three rapid response centers covering the entire metro area." },
-            { year: "2024", title: "AI Integration", desc: "Launched automated diagnostic profiling for faster client quotes." }
-          ].map((item, idx) => (
+          {timeline.map((item, idx) => (
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

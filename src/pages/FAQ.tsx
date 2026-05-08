@@ -1,40 +1,42 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Minus, Search, HelpCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
-const faqs = [
-  {
-    question: "Do you come to my location if I've lost all my keys?",
-    answer: "Yes, we are a fully mobile service. We can travel to your home, workplace, or the roadside. We have all the necessary equipment in our vans to cut and program a brand new key from scratch on-site."
-  },
-  {
-    question: "Which car brands do you support?",
-    answer: "We specialize in premium European brands including BMW, Mercedes-Benz, Audi, Volkswagen, Porsche, and Land Rover. However, we also support most major manufacturers like Peugeot, Renault, Ford, and various Japanese brands."
-  },
-  {
-    question: "How long does a diagnostic scan take?",
-    answer: "A standard full system scan typically takes between 30 to 45 minutes. This includes a complete report of all electronic modules, clearing of intermittent fault codes, and a professional consultation on any existing issues."
-  },
-  {
-    question: "Are your keys and modules original parts?",
-    answer: "We offer both OEM (Original Equipment Manufacturer) and high-quality aftermarket alternatives. All our parts are strictly tested and come with a technical warranty to match or exceed factory standards."
-  },
-  {
-    question: "Can you fix immobilizer issues that the dealer says require a full ECU replacement?",
-    answer: "Often, yes. Many immobilizer faults are software-based synchronization errors. While dealers prefer to replace entire modules, we have the binary tools to repair the data inside the modules, potentially saving you thousands."
-  },
-  {
-    question: "What information do I need to provide for a quote?",
-    answer: "To give an accurate quote, we need the vehicle make, model, year, and its VIN (Vehicle Identification Number) if possible. For key issues, please specify if it's a backup key or if all keys are lost."
-  }
-];
-
 export default function FAQ() {
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = React.useState('');
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
-  const filteredFaqs = faqs.filter(faq => 
+  const faqs = [
+    {
+      question: t('faq.questions.q1.question'),
+      answer: t('faq.questions.q1.answer')
+    },
+    {
+      question: t('faq.questions.q2.question'),
+      answer: t('faq.questions.q2.answer')
+    },
+    {
+      question: t('faq.questions.q3.question'),
+      answer: t('faq.questions.q3.answer')
+    },
+    {
+      question: t('faq.questions.q4.question'),
+      answer: t('faq.questions.q4.answer')
+    },
+    {
+      question: t('faq.questions.q5.question'),
+      answer: t('faq.questions.q5.answer')
+    },
+    {
+      question: t('faq.questions.q6.question'),
+      answer: t('faq.questions.q6.answer')
+    }
+  ];
+
+  const filteredFaqs = faqs.filter(faq =>
     faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -49,14 +51,14 @@ export default function FAQ() {
         >
           <HelpCircle className="w-10 h-10 text-white" />
         </motion.div>
-        
-        <h1 className="text-5xl md:text-7xl font-display font-bold mb-6">Got <span className="text-white/30">Questions?</span></h1>
-        <p className="text-white/60 text-lg mb-10">Everything you need to know about our specialized automotive technical services.</p>
-        
+
+        <h1 className="text-5xl md:text-7xl font-display font-bold mb-6">{t('faq.title')}</h1>
+        <p className="text-white/60 text-lg mb-10">{t('faq.subtitle')}</p>
+
         <div className="relative max-w-xl mx-auto">
           <input
             type="text"
-            placeholder="Search our knowledge base..."
+            placeholder={t('faq.search.placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full glass bg-white/5 border-white/10 clip-angular-sm py-4 px-12 focus:outline-none focus:border-brand-red focus:bg-white/10 transition-all text-white placeholder:text-white/20"
@@ -114,21 +116,21 @@ export default function FAQ() {
           
           {filteredFaqs.length === 0 && (
             <div className="text-center py-20 opacity-40">
-              <p className="text-lg italic">No matching questions found. Try a different search term.</p>
+              <p className="text-lg italic">{t('faq.noResults')}</p>
             </div>
           )}
         </div>
 
         {/* Still have questions? */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           className="mt-20 p-10 glass clip-angular-lg text-center"
         >
-          <h3 className="text-2xl font-bold mb-4">Still have questions?</h3>
-          <p className="text-white/40 mb-8 max-w-md mx-auto">If you couldn't find the answer you were looking for, feel free to contact our expert team directly.</p>
+          <h3 className="text-2xl font-bold mb-4">{t('faq.cta.title')}</h3>
+          <p className="text-white/40 mb-8 max-w-md mx-auto">{t('faq.cta.description')}</p>
           <button className="bg-white text-brand-blue px-8 py-3 clip-angular-sm font-bold hover:scale-105 transition-transform">
-            Contact Support
+            {t('faq.cta.button')}
           </button>
         </motion.div>
       </section>

@@ -2,38 +2,40 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { 
-  Car, 
-  Key, 
-  Settings, 
-  Cpu, 
-  ChevronRight, 
-  ChevronLeft, 
-  CheckCircle2, 
-  MapPin, 
-  Phone, 
+import {
+  Car,
+  Key,
+  Settings,
+  Cpu,
+  ChevronRight,
+  ChevronLeft,
+  CheckCircle2,
+  MapPin,
+  Phone,
   Mail,
   Zap,
   Lock,
   ShieldCheck,
   Info
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
 
 type Step = 'service' | 'vehicle' | 'details' | 'success';
 
-const serviceOptions = [
-  { id: 'keys', label: 'Car Key Specialist', icon: Key, description: 'Lost keys, spare keys, or remote repair' },
-  { id: 'diagnostic', label: 'Full Diagnostics', icon: Cpu, description: 'ECU scans, sensor check, or performance logging' },
-  { id: 'immobilizer', label: 'Immobilizer Repair', icon: Settings, description: 'ECU replacement or sync issues' },
-  { id: 'other', label: 'Other Technical', icon: Zap, description: 'Module coding and specific electronic fixes' },
-];
-
 export default function Quote() {
+  const { t } = useTranslation();
   const [step, setStep] = React.useState<Step>('service');
   const [serviceType, setServiceType] = React.useState('');
   const [refId, setRefId] = React.useState('');
+
+  const serviceOptions = [
+    { id: 'keys', label: t('quote.services.keys.label'), icon: Key, description: t('quote.services.keys.description') },
+    { id: 'diagnostic', label: t('quote.services.diagnostic.label'), icon: Cpu, description: t('quote.services.diagnostic.description') },
+    { id: 'immobilizer', label: t('quote.services.immobilizer.label'), icon: Settings, description: t('quote.services.immobilizer.description') },
+    { id: 'other', label: t('quote.services.other.label'), icon: Zap, description: t('quote.services.other.description') },
+  ];
 
   const {
     register,
@@ -89,7 +91,7 @@ export default function Quote() {
           >
             <Zap className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
             <span className="text-[var(--color-brand-orange-primary)]">
-              Premium Mobile Technical Assistance
+              {t('quote.header.badge')}
             </span>
           </motion.div>
 
@@ -99,9 +101,9 @@ export default function Quote() {
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl font-display font-black mb-4 leading-[1.1]"
           >
-            <span className="block text-white">Request</span>
+            <span className="block text-white">{t('quote.header.title').split('.')[0]}</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
-              Service
+              {t('quote.header.title').split('.')[1]?.split(' ')[1] || 'Service'}
             </span>
           </motion.h1>
         </div>
@@ -138,7 +140,7 @@ export default function Quote() {
                     "text-xs font-bold uppercase tracking-widest hidden sm:block transition-colors",
                     step === s ? "text-white" : "text-white/40"
                   )}>
-                    {s}
+                    {t(`quote.steps.${s}`)}
                   </span>
                 </motion.div>
                 {idx < 2 && (
@@ -168,9 +170,9 @@ export default function Quote() {
                 >
                   <div className="text-center mb-12">
                     <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-white">
-                      What do you need help with?
+                      {t('quote.header.description')}
                     </h2>
-                    <p className="text-white/60 text-lg">Select the primary service required for your vehicle.</p>
+                    <p className="text-white/60 text-lg">{t('quote.header.description')}</p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6 mb-12">
@@ -236,7 +238,7 @@ export default function Quote() {
                         "absolute inset-0 clip-angular-sm blur-xl opacity-0 transition-opacity",
                         serviceType && "opacity-50 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]"
                       )} />
-                      <span className="relative z-10 text-white">Continue</span>
+                      <span className="relative z-10 text-white">{t('quote.form.next')}</span>
                       <ChevronRight className="relative z-10 w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                     </motion.button>
                   </div>
@@ -256,25 +258,25 @@ export default function Quote() {
                     className="group flex items-center gap-2 text-xs font-bold text-white/50 hover:text-white transition-colors mb-10 uppercase tracking-widest"
                   >
                     <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Back to service
+                    {t('quote.form.back')}
                   </button>
 
                   <div className="text-center mb-12">
                     <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-white">
-                      Vehicle Information
+                      {t('quote.steps.vehicle')}
                     </h2>
-                    <p className="text-white/60 text-lg">Provide the basic details of the vehicle requiring assistance.</p>
+                    <p className="text-white/60 text-lg">{t('quote.header.description')}</p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6 mb-12">
                     <div className="space-y-3">
                       <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Brand
+                        {t('quote.form.brand.label')}
                       </label>
                       <input
                         {...register('brand')}
                         type="text"
-                        placeholder="e.g. BMW, Audi, Mercedes"
+                        placeholder={t('quote.form.brand.placeholder')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.brand && (
@@ -286,12 +288,12 @@ export default function Quote() {
 
                     <div className="space-y-3">
                       <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Model
+                        {t('quote.form.model.label')}
                       </label>
                       <input
                         {...register('model')}
                         type="text"
-                        placeholder="e.g. 5 Series, A4, G-Wagon"
+                        placeholder={t('quote.form.model.placeholder')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.model && (
@@ -303,12 +305,12 @@ export default function Quote() {
 
                     <div className="space-y-3">
                       <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Year
+                        {t('quote.form.year.label')}
                       </label>
                       <input
                         {...register('year')}
                         type="text"
-                        placeholder="e.g. 2021"
+                        placeholder={t('quote.form.year.placeholder')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.year && (
@@ -320,12 +322,12 @@ export default function Quote() {
 
                     <div className="space-y-3">
                       <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Location (City)
+                        {t('quote.form.location.label')}
                       </label>
                       <input
                         {...register('location')}
                         type="text"
-                        placeholder="e.g. Paris, Lyon, Marseille"
+                        placeholder={t('quote.form.location.placeholder')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.location && (
@@ -383,7 +385,7 @@ export default function Quote() {
                       <input
                         {...register('name')}
                         type="text"
-                        placeholder="John Doe"
+                        placeholder={t('quote.form.placeholder.name')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
                       />
                       {errors.name && (
@@ -433,7 +435,7 @@ export default function Quote() {
                       </label>
                       <textarea
                         {...register('message')}
-                        placeholder="Describe the issue in more detail..."
+                        placeholder={t('quote.form.placeholder.description')}
                         rows={5}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all resize-none text-white placeholder:text-white/30"
                       />
