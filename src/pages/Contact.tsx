@@ -220,7 +220,7 @@ export default function Contact() {
                         {...register('name')}
                         type="text"
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                        placeholder={t('contact.form.placeholder.name')}
+                        placeholder={t('contact.form.name.placeholder')}
                       />
                       {errors.name && (
                         <p className="text-red-400 text-xs px-2">{errors.name.message}</p>
@@ -235,7 +235,7 @@ export default function Contact() {
                         {...register('email')}
                         type="email"
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                        placeholder={t('contact.form.placeholder.email')}
+                        placeholder={t('contact.form.email.placeholder')}
                       />
                       {errors.email && (
                         <p className="text-red-400 text-xs px-2">{errors.email.message}</p>
@@ -265,7 +265,7 @@ export default function Contact() {
                         {...register('message')}
                         rows={5}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30 resize-none"
-                        placeholder={t('contact.form.placeholder.message')}
+                        placeholder={t('contact.form.message.placeholder')}
                       />
                       {errors.message && (
                         <p className="text-red-400 text-xs px-2">{errors.message.message}</p>
