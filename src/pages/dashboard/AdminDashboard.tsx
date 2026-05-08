@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, FileText, MessageSquare, Image, Users, Settings } from 'lucide-react';
+import { Logo } from '../../components/Logo';
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -18,10 +19,7 @@ export default function AdminDashboard() {
       <header className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center p-2">
-              <div className="w-full h-full bg-white/20 rounded-sm" />
-            </div>
-            <span className="font-display font-bold text-xl tracking-tight">KEYPRO</span>
+            <Logo size="md" showSubtitle={false} />
             <span className="px-2 py-1 bg-brand-red/20 text-brand-red text-xs font-semibold rounded">
               ADMIN
             </span>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
+import { Logo } from '../../components/Logo';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,12 +53,7 @@ export default function Login() {
     <div className="min-h-screen gradient-bg flex items-center justify-center px-6 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <Link to="/" className="flex items-center justify-center gap-3 mb-8 group">
-          <div className="w-12 h-12 bg-brand-red rounded-lg flex items-center justify-center p-2">
-            <div className="w-full h-full bg-white/20 rounded-sm" />
-          </div>
-          <span className="font-display font-bold text-2xl tracking-tight">KEYPRO</span>
-        </Link>
+        <Logo className="justify-center mb-8" size="lg" />
 
         {/* Login Card */}
         <div className="card-dark p-8">

@@ -2,10 +2,11 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { Key, PenTool as Tool, Phone, Info, HelpCircle, MessageSquare, Car, Menu, X, ChevronRight, User, LogOut, LayoutDashboard, Shield } from 'lucide-react';
+import { PenTool as Tool, Phone, Info, HelpCircle, MessageSquare, Car, Menu, X, ChevronRight, User, LogOut, LayoutDashboard, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { Logo } from './Logo';
 import { useAuth } from '../hooks/useAuth';
 import { UserRole } from '../types';
 
@@ -55,21 +56,8 @@ export default function Navbar() {
         <div className="absolute top-0 left-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
         <div className="absolute bottom-0 right-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
 
-        {/* Logo - Hexagonal Design */}
-        <Link to="/" className="flex items-center gap-3 group z-50">
-          <div className="relative w-10 h-10 sm:w-12 sm:h-12">
-            {/* Hexagonal shape */}
-            <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] flex items-center justify-center group-hover:scale-110 transition-transform bg-glow-orange"
-              style={{ clipPath: 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)' }}
-            >
-              <Key className="text-white w-5 h-5 sm:w-6 sm:h-6" />
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display font-black text-lg sm:text-xl tracking-tighter leading-none text-white">KEYPRO</span>
-            <span className="text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-[var(--color-brand-orange-primary)] leading-none mt-1 font-bold">Service Center</span>
-          </div>
-        </Link>
+        {/* Logo */}
+        <Logo className="z-50" size="md" />
 
         {/* Desktop Nav - Industrial Style */}
         <div className="hidden md:flex items-center gap-1">
