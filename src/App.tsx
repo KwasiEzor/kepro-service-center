@@ -8,11 +8,18 @@ import FAQ from './pages/FAQ';
 import Quote from './pages/Quote';
 import Contact from './pages/Contact';
 import Brands from './pages/Brands';
-import AdminPreview from './pages/AdminPreview';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import UserDashboard from './pages/dashboard/UserDashboard';
+import AdminDashboard from './pages/dashboard/AdminDashboard';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
+import { RoleGuard } from './components/auth/RoleGuard';
+import { UserRole } from './types';
 
 function App() {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="services" element={<Services />} />
@@ -22,7 +29,32 @@ function App() {
         <Route path="quote" element={<Quote />} />
         <Route path="faq" element={<FAQ />} />
       </Route>
-      <Route path="admin" element={<AdminPreview />} />
+
+      {/* Auth Routes */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+
+      {/* Protected User Dashboard */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <UserDashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Protected Admin Dashboard */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <RoleGuard requiredRole={UserRole.ADMIN}>
+              <AdminDashboard />
+            </RoleGuard>
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

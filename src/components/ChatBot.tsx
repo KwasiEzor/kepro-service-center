@@ -1,13 +1,15 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, X, Send, User, Bot, Loader2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
 export default function ChatBot() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = React.useState(false);
   const [message, setMessage] = React.useState('');
   const [messages, setMessages] = React.useState([
-    { role: 'bot', content: 'Hello! I am your KeyPro assistant. How can I help you today? I can assist with service quotes, car key issues, or diagnostic questions.' }
+    { role: 'bot', content: t('chatbot.greeting') }
   ]);
   const [isLoading, setIsLoading] = React.useState(false);
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -48,7 +50,7 @@ export default function ChatBot() {
         ...prev,
         {
           role: 'bot',
-          content: "I'm sorry, I encountered an error. Please try again or call us at 01 23 45 67 89.",
+          content: t('chatbot.error'),
         },
       ]);
     } finally {
@@ -73,10 +75,10 @@ export default function ChatBot() {
                   <Bot className="text-white w-full h-full" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white leading-none">KeyPro AI</h3>
+                  <h3 className="font-bold text-white leading-none">{t('chatbot.title')}</h3>
                   <span className="text-[10px] text-green-400 flex items-center gap-1 mt-1 font-medium">
                     <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-                    Online Support
+                    {t('chatbot.status')}
                   </span>
                 </div>
               </div>
@@ -132,7 +134,7 @@ export default function ChatBot() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                  placeholder="Ask about car keys, diagnostics..."
+                  placeholder={t('chatbot.placeholder')}
                   className="w-full bg-white/5 border border-white/10 rounded-full py-3 px-5 pr-12 focus:outline-none focus:border-brand-red focus:bg-white/10 transition-all text-sm"
                 />
                 <button
