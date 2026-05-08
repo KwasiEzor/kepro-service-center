@@ -1,26 +1,67 @@
 import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { validateEnv } from './env';
 import chatRouter from './api';
+import authRoutes from './src/routes/auth.routes';
+import { errorHandler } from './src/middleware/errorHandler';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 validateEnv();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
+// Security middleware
+app.use(helmet());
 
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
+// CORS configuration
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
+// Body parsers
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
+
+// Serve static uploads
+const uploadDir = process.env.UPLOAD_DIR || './uploads';
+app.use('/uploads', express.static(path.join(__dirname, '..', uploadDir)));
+
+// API routes
+app.use('/api/chat', chatRouter); // Existing Gemini chatbot route
+app.use('/api/auth', authRoutes); // New auth routes
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-app.use('/api', chatRouter);
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    error: 'Route not found',
+  });
+});
+
+// Global error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`✅ API server on http://localhost:${PORT}`);
+  console.log(`📁 Uploads directory: ${uploadDir}`);
+  console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);
+  console.log(`💬 Chat endpoint: http://localhost:${PORT}/api/chat`);
 });

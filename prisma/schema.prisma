@@ -1,0 +1,170 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum QuoteStatus {
+  PENDING
+  REVIEWING
+  APPROVED
+  REJECTED
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  phone         String?
+  role          UserRole  @default(USER)
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      Session[]
+  quotes        Quote[]
+  contacts      Contact[]
+  uploadedImages Image[] @relation("UploadedBy")
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Image {
+  id          String   @id @default(cuid())
+  url         String
+  filename    String
+  alt         String?
+  category    String?  // "services", "gallery", "brands", "hero"
+  size        Int      // bytes
+  mimeType    String
+  uploadedBy  String
+  createdAt   DateTime @default(now())
+
+  uploader    User     @relation("UploadedBy", fields: [uploadedBy], references: [id])
+
+  @@index([category])
+  @@index([uploadedBy])
+  @@map("images")
+}
+
+model Quote {
+  id          String      @id @default(cuid())
+  userId      String?
+
+  // Vehicle info
+  brand       String
+  model       String
+  year        String
+  vin         String?
+
+  // Service info
+  serviceType String      // "key_programming", "diagnostic", "ecu"
+  description String
+  urgency     String?     // "normal", "urgent", "emergency"
+
+  // Contact info (for non-logged users)
+  name        String?
+  email       String?
+  phone       String?
+
+  status      QuoteStatus @default(PENDING)
+  adminNotes  String?
+  estimatedPrice Float?
+
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user        User?       @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@map("quotes")
+}
+
+model Contact {
+  id        String        @id @default(cuid())
+  userId    String?
+
+  name      String
+  email     String
+  phone     String?
+  subject   String
+  message   String
+
+  status    ContactStatus @default(NEW)
+  adminReply String?
+
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  user      User?         @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([status])
+  @@map("contacts")
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  nameFr        String
+  nameEn        String
+  descriptionFr String
+  descriptionEn String
+  icon          String?
+  priceFrom     Float?
+  priceTo       Float?
+  duration      String?
+  order         Int      @default(0)
+  active        Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("services")
+}
+
+model FAQ {
+  id         String   @id @default(cuid())
+  questionFr String
+  questionEn String
+  answerFr   String
+  answerEn   String
+  category   String?
+  order      Int      @default(0)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("faqs")
+}
