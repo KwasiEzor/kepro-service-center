@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "brands": "Brands",
+    "contact": "Contact",
+    "quote": "Quote"
+  },
+  "home": {
+    "hero": {
+      "title": "Advanced Automotive Service",
+      "subtitle": "Keys. Diagnostics. Mobile.",
+      "description": "Our certified technicians unlock the most complex immobilizer systems and program keys for all premium brands - directly at your location.",
+      "emergency": "24/7 Emergency",
+      "quote": "Request Quote",
+      "phone": "Emergency Hotline"
+    },
+    "stats": {
+      "vehicles": "Vehicles Solved",
+      "response": "Rapid Response",
+      "success": "Success Rate",
+      "years": "Years of Excellence"
+    },
+    "services": {
+      "badge": "Our Expertise",
+      "title": "Technical Services",
+      "subtitle": "From basic key programming to complex ECU diagnostics, we master your vehicle's electronic architecture.",
+      "lostKeys": {
+        "title": "Lost Keys & Immobilizer",
+        "description": "Complete key programming from scratch, even when all keys are lost. Direct ECU and BSI access."
+      },
+      "diagnostics": {
+        "title": "Professional Diagnostics",
+        "description": "Deep analysis via ODIS, Star Diagnosis, and proprietary tools to identify hidden electronic issues."
+      },
+      "coding": {
+        "title": "Coding & Retrofitting",
+        "description": "Feature activation, module coding, and software updates to unlock your vehicle's full potential."
+      },
+      "learn": "Learn More"
+    },
+    "cta": {
+      "badge": "Ready to Start",
+      "title": "Get Expert Diagnostics",
+      "description": "Every service begins with thorough technical analysis. We identify the exact issue, explain repair options, and provide transparent pricing before any work.",
+      "emergency": "Emergency Call",
+      "schedule": "Schedule Service"
+    }
+  },
+  "services": {
+    "badge": "Technical Solutions",
+    "title": "Expert Services",
+    "subtitle": "Diagnostics. Programming. Coding.",
+    "description": "From emergency key replacement to complex ECU diagnostics and retrofitting, we bring dealer-level expertise directly to your location."
+  },
+  "about": {
+    "title": "Redefining Auto Support",
+    "description": "Founded in 2018, KeyPro was born out of frustration with traditional dealer lead times and rigid workshop schedules. We envisioned a world where elite technical skill could be dispatched on-demand.",
+    "values": {
+      "excellence": {
+        "title": "Technical Excellence",
+        "description": "We don't just clear errors; we analyze root causes within the vehicle's binary architecture."
+      },
+      "mobile": {
+        "title": "Mobile Freedom",
+        "description": "Dealer-grade service delivered to your location, saving you time and towing costs."
+      },
+      "reliability": {
+        "title": "Unmatched Reliability",
+        "description": "Our success rate with complex immobilizer issues is over 98% for premium brands."
+      }
+    },
+    "journey": {
+      "title": "Our Journey",
+      "subtitle": "Continuous evolution in the rapidly changing world of automotive software."
+    }
+  },
+  "contact": {
+    "badge": "Get in Touch",
+    "title": "Let's Talk",
+    "subtitle": "Binary.",
+    "description": "Whether it's an emergency lockout or a complex ECU programming question, our specialists are ready to <strong>decode your problem</strong>.",
+    "hotline": {
+      "label": "Emergency Hotline",
+      "value": "01 23 45 67 89",
+      "detail": "24/7 Rapid Response"
+    },
+    "support": {
+      "label": "Technical Support",
+      "value": "support@keypro.service",
+      "detail": "Reply within 4 hours"
+    },
+    "location": {
+      "label": "Service Hub",
+      "value": "8 Rue de la Paix, Paris",
+      "detail": "Appointments Only"
+    },
+    "form": {
+      "title": "Send a Message",
+      "name": "Your Name",
+      "email": "Email Address",
+      "topic": "Message Topic",
+      "message": "How can we help?",
+      "placeholder": {
+        "name": "Jane Cooper",
+        "email": "jane@example.com",
+        "message": "Share some details about your problem..."
+      },
+      "topics": {
+        "general": "General Inquiry",
+        "support": "Key Support",
+        "b2b": "B2B Partnerships",
+        "careers": "Careers"
+      },
+      "submit": "SEND MESSAGE",
+      "submitting": "Processing",
+      "success": {
+        "title": "Message Sent",
+        "description": "One of our specialists will get back to you shortly."
+      }
+    }
+  },
+  "quote": {
+    "badge": "Instant Quote",
+    "title": "Get Your",
+    "subtitle": "Estimate.",
+    "description": "Answer a few questions about your vehicle and issue. Our AI system analyzes your case and provides instant pricing estimation with recommended next steps.",
+    "form": {
+      "step1": "Vehicle Information",
+      "step2": "Service Type",
+      "step3": "Issue Details",
+      "brand": "Brand",
+      "model": "Model",
+      "year": "Year",
+      "vin": "VIN (Optional)",
+      "service": "Service Type",
+      "description": "Describe your issue",
+      "name": "Your Name",
+      "phone": "Phone",
+      "email": "Email",
+      "next": "NEXT",
+      "back": "BACK",
+      "submit": "GET ESTIMATE"
+    }
+  },
+  "chatbot": {
+    "title": "KeyPro AI Assistant",
+    "placeholder": "Ask about our services...",
+    "send": "Send",
+    "greeting": "Hello! How can I help you today?"
+  },
+  "footer": {
+    "tagline": "Premium Automotive Expertise",
+    "company": "Company",
+    "services": "Services",
+    "support": "Support",
+    "legal": "Legal",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "rights": "All rights reserved."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "close": "Close",
+    "open": "Open",
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "contactUs": "Contact Us"
+  }
+}

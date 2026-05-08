@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À Propos",
+    "brands": "Marques",
+    "contact": "Contact",
+    "quote": "Devis"
+  },
+  "home": {
+    "hero": {
+      "title": "Service Automobile Avancé",
+      "subtitle": "Clés. Diagnostic. Mobile.",
+      "description": "Nos techniciens certifiés débloquent les systèmes d'immobilisation les plus complexes et programment les clés pour toutes les marques premium - directement à votre emplacement.",
+      "emergency": "Urgence 24/7",
+      "quote": "Demander un Devis",
+      "phone": "Numéro d'urgence"
+    },
+    "stats": {
+      "vehicles": "Véhicules Résolus",
+      "response": "Réponse Rapide",
+      "success": "Taux de Succès",
+      "years": "Années d'Excellence"
+    },
+    "services": {
+      "badge": "Nos Expertises",
+      "title": "Services Techniques",
+      "subtitle": "De la programmation de clés de base aux diagnostics ECU complexes, nous maîtrisons l'architecture électronique de votre véhicule.",
+      "lostKeys": {
+        "title": "Clés Perdues & Immobilisateur",
+        "description": "Programmation complète des clés à partir de zéro, même lorsque toutes les clés sont perdues. Accès direct à l'ECU et au BSI."
+      },
+      "diagnostics": {
+        "title": "Diagnostic Professionnel",
+        "description": "Analyse en profondeur via ODIS, Star Diagnosis et outils propriétaires pour identifier les problèmes électroniques cachés."
+      },
+      "coding": {
+        "title": "Codage & Retrofitting",
+        "description": "Activation de fonctionnalités, codage de modules et mise à jour logicielle pour débloquer le potentiel complet de votre véhicule."
+      },
+      "learn": "En Savoir Plus"
+    },
+    "cta": {
+      "badge": "Prêt à Démarrer",
+      "title": "Obtenez un Diagnostic Expert",
+      "description": "Chaque intervention commence par une analyse technique approfondie. Nous identifions le problème exact, vous expliquons les options de réparation et fournissons un devis transparent avant tout travail.",
+      "emergency": "Appel d'Urgence",
+      "schedule": "Planifier"
+    }
+  },
+  "services": {
+    "badge": "Solutions Techniques",
+    "title": "Services d'Experts",
+    "subtitle": "Diagnostic. Programmation. Codage.",
+    "description": "Du remplacement de clés d'urgence aux diagnostics ECU complexes et au retrofitting, nous apportons une expertise de niveau concessionnaire directement à votre emplacement."
+  },
+  "about": {
+    "title": "Redéfinir le Support Auto",
+    "description": "Fondé en 2018, KeyPro est né d'une frustration face aux délais des concessionnaires et aux horaires rigides des ateliers. Nous avons imaginé un monde où des compétences techniques d'élite pourraient être déployées à la demande.",
+    "values": {
+      "excellence": {
+        "title": "Excellence Technique",
+        "description": "Nous n'effaçons pas seulement les erreurs ; nous analysons les causes profondes dans l'architecture binaire du véhicule."
+      },
+      "mobile": {
+        "title": "Liberté Mobile",
+        "description": "Service de qualité concessionnaire livré à votre emplacement, vous faisant économiser du temps et des frais de remorquage."
+      },
+      "reliability": {
+        "title": "Fiabilité Inégalée",
+        "description": "Notre taux de réussite sur les problèmes d'immobilisateur complexes dépasse 98% pour les marques premium."
+      }
+    },
+    "journey": {
+      "title": "Notre Parcours",
+      "subtitle": "Évolution continue dans le monde en rapide évolution du logiciel automobile."
+    }
+  },
+  "contact": {
+    "badge": "Entrer en Contact",
+    "title": "Parlons",
+    "subtitle": "Binaire.",
+    "description": "Qu'il s'agisse d'un verrouillage d'urgence ou d'une question complexe de programmation ECU, nos spécialistes sont prêts à <strong>décoder votre problème</strong>.",
+    "hotline": {
+      "label": "Ligne d'Urgence",
+      "value": "01 23 45 67 89",
+      "detail": "Réponse Rapide 24/7"
+    },
+    "support": {
+      "label": "Support Technique",
+      "value": "support@keypro.service",
+      "detail": "Réponse dans les 4 heures"
+    },
+    "location": {
+      "label": "Centre de Service",
+      "value": "8 Rue de la Paix, Paris",
+      "detail": "Sur Rendez-vous Uniquement"
+    },
+    "form": {
+      "title": "Envoyer un Message",
+      "name": "Votre Nom",
+      "email": "Adresse Email",
+      "topic": "Sujet du Message",
+      "message": "Comment pouvons-nous vous aider ?",
+      "placeholder": {
+        "name": "Marie Dupont",
+        "email": "marie@exemple.com",
+        "message": "Partagez quelques détails sur votre problème..."
+      },
+      "topics": {
+        "general": "Demande Générale",
+        "support": "Support Clés",
+        "b2b": "Partenariats B2B",
+        "careers": "Carrières"
+      },
+      "submit": "ENVOYER LE MESSAGE",
+      "submitting": "Envoi en cours",
+      "success": {
+        "title": "Message Envoyé",
+        "description": "L'un de nos spécialistes vous répondra sous peu."
+      }
+    }
+  },
+  "quote": {
+    "badge": "Devis Instantané",
+    "title": "Obtenez Votre",
+    "subtitle": "Estimation.",
+    "description": "Répondez à quelques questions sur votre véhicule et votre problème. Notre système IA analyse votre cas et fournit une estimation de prix instantanée avec les prochaines étapes recommandées.",
+    "form": {
+      "step1": "Informations Véhicule",
+      "step2": "Type de Service",
+      "step3": "Détails du Problème",
+      "brand": "Marque",
+      "model": "Modèle",
+      "year": "Année",
+      "vin": "VIN (Optionnel)",
+      "service": "Type de Service",
+      "description": "Décrivez votre problème",
+      "name": "Votre Nom",
+      "phone": "Téléphone",
+      "email": "Email",
+      "next": "SUIVANT",
+      "back": "RETOUR",
+      "submit": "OBTENIR L'ESTIMATION"
+    }
+  },
+  "chatbot": {
+    "title": "Assistant IA KeyPro",
+    "placeholder": "Posez une question sur nos services...",
+    "send": "Envoyer",
+    "greeting": "Bonjour ! Comment puis-je vous aider aujourd'hui ?"
+  },
+  "footer": {
+    "tagline": "Expertise Automobile Premium",
+    "company": "Entreprise",
+    "services": "Services",
+    "support": "Support",
+    "legal": "Mentions Légales",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "rights": "Tous droits réservés."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "readMore": "Lire Plus",
+    "learnMore": "En Savoir Plus",
+    "getStarted": "Commencer",
+    "contactUs": "Nous Contacter"
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "brands": "Brands",
+    "contact": "Contact",
+    "quote": "Quote"
+  },
+  "home": {
+    "hero": {
+      "badge": "Premium Mobile Service",
+      "title": "Mobile Auto Technician",
+      "subtitle": "Keys, Diagnostics, Programming",
+      "description": "Premium technical solution directly at your location.",
+      "requestService": "Request Service",
+      "exploreServices": "Explore Services",
+      "premiumBrands": {
+        "bmw": "BMW",
+        "audi": "Audi",
+        "mercedes": "Mercedes",
+        "rangeRover": "Range Rover",
+        "porsche": "Porsche"
+      }
+    },
+    "stats": {
+      "successfulServices": "Successful Services",
+      "expertTechnicians": "Expert Technicians",
+      "responseTime": "Response Time",
+      "clientRating": "Client Rating"
+    },
+    "services": {
+      "badge": "Our Expertise",
+      "title": "Premium Solutions",
+      "subtitle": "For Your Vehicle",
+      "description": "We use the latest European diagnostic tools and authentic components to ensure your car's electronics remain factory-standard.",
+      "seeAll": "See All Services",
+      "carKeys": {
+        "title": "Car Key Specialist",
+        "description": "Lost all keys? We can program and cut new keys on-site for almost any vehicle model.",
+        "features": {
+          "allKeyLost": "All Key Lost Recovery",
+          "smartKey": "Smart Key Programming",
+          "remoteDiag": "Remote Diagnostics"
+        }
+      },
+      "diagnostics": {
+        "title": "Full Diagnostics",
+        "description": "Deep binary scans of your vehicle electronics using dealer-level specialized equipment.",
+        "features": {
+          "ecuAnalysis": "ECU Analysis",
+          "networkScan": "Network Scan",
+          "perfTuning": "Performance Tuning"
+        }
+      },
+      "immobilizer": {
+        "title": "Immobilizer Repairs",
+        "description": "Fixing ECU synchronization issues and complex immobilizer system failures.",
+        "features": {
+          "moduleCoding": "Module Coding",
+          "immoSync": "Immo Sync",
+          "softwareUpdates": "Software Updates"
+        }
+      },
+      "learnMore": "Learn More"
+    },
+    "cta": {
+      "badge": "24/7 Emergency Service",
+      "title": "Locked out or need urgent assistance?",
+      "description": "Our priority mobile units are dispatching 24/7. Average response time in central areas is under 30 minutes.",
+      "callNow": "CALL NOW",
+      "contactSupport": "Contact Support"
+    }
+  },
+  "services": {
+    "header": {
+      "badge": "Specialist Automotive Tech",
+      "title": "Technical Expertise",
+      "description": "We bridge the gap between mechanical hardware and digital software. Our technicians are trained in the latest immobilizer technologies and diagnostic protocols."
+    },
+    "categories": {
+      "keys": {
+        "title": "Car Key Solutions",
+        "description": "State-of-the-art key cutting and programming for high-end automotive brands.",
+        "services": {
+          "backup": {
+            "name": "Backup Key Creation",
+            "detail": "Professional duplication of smart keys and fobs."
+          },
+          "akl": {
+            "name": "Lost All Keys (AKL)",
+            "detail": "Complete key recovery without vehicle disassembly."
+          },
+          "remote": {
+            "name": "Remote Repair",
+            "detail": "Restoring signal strength and battery management."
+          },
+          "lockout": {
+            "name": "Emergency Lockout",
+            "detail": "Non-destructive vehicle entry using Lishi tools."
+          }
+        }
+      },
+      "diagnostics": {
+        "title": "Advanced Diagnostics",
+        "description": "Dealer-level binary analysis of vehicle control units and electronic systems.",
+        "services": {
+          "fullScan": {
+            "name": "Full System Scan",
+            "detail": "DTC clearing and deep network analysis."
+          },
+          "egrDpf": {
+            "name": "EGR / DPF Analysis",
+            "detail": "Checking particulate filter and valve efficiency."
+          },
+          "sensorCalib": {
+            "name": "Sensor Calibration",
+            "detail": "ADAS and radar system alignment."
+          },
+          "perfLog": {
+            "name": "Performance Logging",
+            "detail": "Real-time data capture for power profiling."
+          }
+        }
+      },
+      "programming": {
+        "title": "ECU & Modules",
+        "description": "Complex software synchronization and unit replacements for modern automotive architectures.",
+        "services": {
+          "moduleCoding": {
+            "name": "Module Coding",
+            "detail": "Programming new components to the factory network."
+          },
+          "immoSync": {
+            "name": "Immo Synchronization",
+            "detail": "Fixing pairing issues between ECU and BCM."
+          },
+          "softwareUpdates": {
+            "name": "Software Updates",
+            "detail": "Flashing official firmware to fix factory bugs."
+          },
+          "odoSync": {
+            "name": "Odometer Sync",
+            "detail": "Correcting mileage after cluster replacement."
+          }
+        }
+      }
+    },
+    "brandCoverage": {
+      "title": "Supporting Leading Manufacturers",
+      "brands": {
+        "volkswagen": "VOLKSWAGEN",
+        "audi": "AUDI",
+        "bmw": "BMW",
+        "mercedes": "MERCEDES",
+        "porsche": "PORSCHE",
+        "landRover": "LAND ROVER",
+        "peugeot": "PEUGEOT",
+        "renault": "RENAULT"
+      }
+    }
+  },
+  "about": {
+    "title": "Redefining Auto Support",
+    "description": "Founded in 2018, KeyPro was born out of frustration with traditional dealer lead times and rigid workshop schedules. We envisioned a world where elite technical skill could be dispatched on-demand.",
+    "values": {
+      "excellence": {
+        "title": "Technical Excellence",
+        "description": "We don't just clear errors; we analyze root causes within the vehicle's binary architecture."
+      },
+      "mobile": {
+        "title": "Mobile Freedom",
+        "description": "Dealer-grade service delivered to your location, saving you time and towing costs."
+      },
+      "reliability": {
+        "title": "Unmatched Reliability",
+        "description": "Our success rate with complex immobilizer issues is over 98% for premium brands."
+      }
+    },
+    "journey": {
+      "title": "Our Journey",
+      "subtitle": "Continuous evolution in the rapidly changing world of automotive software.",
+      "timeline": {
+        "2018": {
+          "title": "Launch",
+          "description": "Started as a small local mobile locksmith service with one technician."
+        },
+        "2020": {
+          "title": "Tech Expansion",
+          "description": "Implemented dealer-level ODIS and Star Diagnosis capabilities."
+        },
+        "2022": {
+          "title": "Regional Hubs",
+          "description": "Opened three rapid response centers covering the entire metro area."
+        },
+        "2024": {
+          "title": "AI Integration",
+          "description": "Launched automated diagnostic profiling for faster client quotes."
+        }
+      }
+    }
+  },
+  "contact": {
+    "header": {
+      "badge": "Get in Touch",
+      "title": "Let's Talk Binary.",
+      "description": "Whether it's an emergency lockout or a complex ECU programming question, our specialists are ready to decode your problem."
+    },
+    "contactInfo": {
+      "hotline": {
+        "label": "Emergency Hotline",
+        "value": "01 23 45 67 89",
+        "detail": "24/7 Rapid Response"
+      },
+      "support": {
+        "label": "Technical Support",
+        "value": "support@keypro.service",
+        "detail": "Reply within 4 hours"
+      },
+      "location": {
+        "label": "Service Hub",
+        "value": "8 Rue de la Paix, Paris",
+        "detail": "Appointments Only"
+      }
+    },
+    "form": {
+      "title": "Send a Message",
+      "name": {
+        "label": "Your Name",
+        "placeholder": "Jane Cooper"
+      },
+      "email": {
+        "label": "Email Address",
+        "placeholder": "jane@example.com"
+      },
+      "topic": {
+        "label": "Message Topic",
+        "options": {
+          "general": "General Inquiry",
+          "support": "Key Support",
+          "b2b": "B2B Partnerships",
+          "careers": "Careers"
+        }
+      },
+      "message": {
+        "label": "How can we help?",
+        "placeholder": "Share some details about your problem..."
+      },
+      "submit": "SEND MESSAGE",
+      "submitting": "Processing",
+      "success": {
+        "title": "Message Sent",
+        "description": "One of our specialists will get back to you shortly."
+      }
+    },
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "quote": {
+    "header": {
+      "badge": "Instant Quote",
+      "title": "Get Your Estimate.",
+      "description": "Answer a few questions about your vehicle and issue. Our AI system analyzes your case and provides instant pricing estimation with recommended next steps."
+    },
+    "services": {
+      "keys": {
+        "label": "Car Key Specialist",
+        "description": "Lost keys, spare keys, or remote repair"
+      },
+      "diagnostic": {
+        "label": "Full Diagnostics",
+        "description": "ECU scans, sensor check, or performance logging"
+      },
+      "immobilizer": {
+        "label": "Immobilizer Repair",
+        "description": "ECU replacement or sync issues"
+      },
+      "other": {
+        "label": "Other Technical",
+        "description": "Module coding and specific electronic fixes"
+      }
+    },
+    "steps": {
+      "service": "Service Type",
+      "vehicle": "Vehicle Information",
+      "details": "Issue Details"
+    },
+    "form": {
+      "brand": {
+        "label": "Brand",
+        "placeholder": "Select brand..."
+      },
+      "model": {
+        "label": "Model",
+        "placeholder": "e.g., A4, 3 Series, C-Class"
+      },
+      "year": {
+        "label": "Year",
+        "placeholder": "e.g., 2020"
+      },
+      "vin": {
+        "label": "VIN (Optional)",
+        "placeholder": "17 characters"
+      },
+      "description": {
+        "label": "Describe your issue",
+        "placeholder": "Share as much detail as possible about the technical problem..."
+      },
+      "location": {
+        "label": "Your Location",
+        "placeholder": "City or postal code"
+      },
+      "name": {
+        "label": "Your Name",
+        "placeholder": "Full name"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "+33 6 12 34 56 78"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "your@email.com"
+      },
+      "next": "NEXT",
+      "back": "BACK",
+      "submit": "GET ESTIMATE",
+      "submitting": "Processing"
+    },
+    "success": {
+      "title": "Estimate Generated",
+      "refNumber": "Reference Number",
+      "subtitle": "We'll Call You Back Shortly",
+      "description": "Our technical team will review your request and reach out within 2 hours with detailed pricing and next steps.",
+      "done": "DONE"
+    }
+  },
+  "faq": {
+    "title": "Got Questions?",
+    "subtitle": "Everything you need to know about our specialized automotive technical services.",
+    "search": {
+      "placeholder": "Search our knowledge base..."
+    },
+    "questions": {
+      "q1": {
+        "question": "Do you come to my location if I've lost all my keys?",
+        "answer": "Yes, we are a fully mobile service. We can travel to your home, workplace, or the roadside. We have all the necessary equipment in our vans to cut and program a brand new key from scratch on-site."
+      },
+      "q2": {
+        "question": "Which car brands do you support?",
+        "answer": "We specialize in premium European brands including BMW, Mercedes-Benz, Audi, Volkswagen, Porsche, and Land Rover. However, we also support most major manufacturers like Peugeot, Renault, Ford, and various Japanese brands."
+      },
+      "q3": {
+        "question": "How long does a diagnostic scan take?",
+        "answer": "A standard full system scan typically takes between 30 to 45 minutes. This includes a complete report of all electronic modules, clearing of intermittent fault codes, and a professional consultation on any existing issues."
+      },
+      "q4": {
+        "question": "Are your keys and modules original parts?",
+        "answer": "We offer both OEM (Original Equipment Manufacturer) and high-quality aftermarket alternatives. All our parts are strictly tested and come with a technical warranty to match or exceed factory standards."
+      },
+      "q5": {
+        "question": "Can you fix immobilizer issues that the dealer says require a full ECU replacement?",
+        "answer": "Often, yes. Many immobilizer faults are software-based synchronization errors. While dealers prefer to replace entire modules, we have the binary tools to repair the data inside the modules, potentially saving you thousands."
+      },
+      "q6": {
+        "question": "What information do I need to provide for a quote?",
+        "answer": "To give an accurate quote, we need the vehicle make, model, year, and its VIN (Vehicle Identification Number) if possible. For key issues, please specify if it's a backup key or if all keys are lost."
+      }
+    },
+    "noResults": "No matching questions found. Try a different search term.",
+    "cta": {
+      "title": "Still have questions?",
+      "description": "If you couldn't find the answer you were looking for, feel free to contact our expert team directly.",
+      "button": "Contact Support"
+    }
+  },
+  "brands": {
+    "title": "Supported Manufacturers",
+    "subtitle": "We invest heavily in specialized hardware licenses for each manufacturer to provide dealer-equivalent or superior service capabilities.",
+    "categories": {
+      "german": {
+        "title": "German Precision",
+        "description": "Full module coding and key support for high-end German manufacturers.",
+        "bmw": {
+          "name": "BMW",
+          "series": "E, F, G Series Support",
+          "features": ["Key Programming", "ECU Coding", "ISN Recovery"]
+        },
+        "mercedes": {
+          "name": "Mercedes",
+          "series": "FBS 3 & 4 Systems",
+          "features": ["EIS Repair", "ELV Repair", "AMG Coding"]
+        },
+        "audiVw": {
+          "name": "Audi / VW",
+          "series": "MQB & MLB Platform",
+          "features": ["Immo 4th/5th Gen", "Component Protection", "Virtual Cockpit Sync"]
+        },
+        "porsche": {
+          "name": "Porsche",
+          "series": "All Modern Models",
+          "features": ["PDK Programming", "Brake Bleeding", "Main Battery Coding"]
+        }
+      },
+      "british": {
+        "title": "British Luxury",
+        "description": "Specialized diagnostics for Land Rover and Jaguar platforms.",
+        "landRover": {
+          "name": "Land Rover",
+          "series": "Discovery, Range Rover",
+          "features": ["KVM Programming", "NGE Repair", "Terrain Response Code"]
+        },
+        "jaguar": {
+          "name": "Jaguar",
+          "series": "XE, XF, F-Type",
+          "features": ["Smart Key Integration", "BCM Pairing", "Diagnostic Logging"]
+        }
+      },
+      "french": {
+        "title": "French Tech",
+        "description": "Complete coverage for local automotive leaders.",
+        "renault": {
+          "name": "Renault",
+          "series": "All Card & Key Models",
+          "features": ["UCH Programming", "Card Recovery", "Electronic Steering Lock"]
+        },
+        "peugeot": {
+          "name": "Peugeot",
+          "series": "All BSI Platforms",
+          "features": ["Pin Code Reading", "Key Matching", "DiagBox Analysis"]
+        }
+      }
+    },
+    "certification": "Certified Coverage",
+    "cta": {
+      "title": "Can't see your brand?",
+      "description": "Our technical toolchain expands monthly. Even if your manufacturer isn't listed above, we likely have the protocols to support its basic diagnostic and key coding requirements.",
+      "button": "Inquire about your model"
+    }
+  },
+  "chatbot": {
+    "title": "KeyPro AI",
+    "status": "Online Support",
+    "greeting": "Hello! I am your KeyPro assistant. How can I help you today? I can assist with service quotes, car key issues, or diagnostic questions.",
+    "placeholder": "Ask about car keys, diagnostics...",
+    "send": "Send",
+    "you": "You",
+    "ai": "KeyPro AI",
+    "thinking": "AI IS THINKING...",
+    "error": "I'm sorry, I encountered an error. Please try again or call us at 01 23 45 67 89."
+  },
+  "footer": {
+    "tagline": "Premium automotive technology specialist based in France. Certified mobile intervention experts.",
+    "company": {
+      "title": "Company",
+      "about": "About Us",
+      "serviceArea": "Our Service Area",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "services": {
+      "title": "Services",
+      "keyProgramming": "Car Key Programming",
+      "diagnostics": "Diagnostic Scans",
+      "ecuRemap": "ECU Remapping",
+      "lockout": "Emergency Lockout"
+    },
+    "support": {
+      "title": "Support",
+      "emergency": "Emergency",
+      "schedule": "Mon - Sat / 08:00 - 20:00"
+    },
+    "social": {
+      "instagram": "INSTAGRAM",
+      "facebook": "FACEBOOK",
+      "linkedin": "LINKEDIN"
+    },
+    "copyright": "© 2025 KEYPRO SERVICE CENTER. ALL RIGHTS RESERVED."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "close": "Close",
+    "open": "Open",
+    "readMore": "Read More",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "contactUs": "Contact Us"
+  }
+}

@@ -1,0 +1,494 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "services": "Services",
+    "about": "À Propos",
+    "brands": "Marques",
+    "contact": "Contact",
+    "quote": "Devis"
+  },
+  "home": {
+    "hero": {
+      "badge": "Service Mobile Premium",
+      "title": "Technicien Auto Mobile",
+      "subtitle": "Clés, Diagnostic, Programmation",
+      "description": "Solution technique haut de gamme directement chez vous.",
+      "requestService": "Demander un Service",
+      "exploreServices": "Explorer les Services",
+      "premiumBrands": {
+        "bmw": "BMW",
+        "audi": "Audi",
+        "mercedes": "Mercedes",
+        "rangeRover": "Range Rover",
+        "porsche": "Porsche"
+      }
+    },
+    "stats": {
+      "successfulServices": "Services Réussis",
+      "expertTechnicians": "Techniciens Experts",
+      "responseTime": "Temps de Réponse",
+      "clientRating": "Note Client"
+    },
+    "services": {
+      "badge": "Notre Expertise",
+      "title": "Solutions Premium",
+      "subtitle": "Pour Votre Véhicule",
+      "description": "Nous utilisons les derniers outils de diagnostic européens et des composants authentiques pour garantir que l'électronique de votre voiture reste aux normes d'usine.",
+      "seeAll": "Voir Tous les Services",
+      "carKeys": {
+        "title": "Clés de Voiture Spécialisées",
+        "description": "Avez-vous perdu toutes vos clés ? Nous pouvons programmer et couper de nouvelles clés sur place pour presque tous les modèles de véhicules.",
+        "features": {
+          "allKeyLost": "Récupération de Toutes Clés Perdues",
+          "smartKey": "Programmation de Clé Intelligente",
+          "remoteDiag": "Diagnostic à Distance"
+        }
+      },
+      "diagnostics": {
+        "title": "Diagnostic Complet",
+        "description": "Analyses binaires approfondies de l'électronique de votre véhicule à l'aide d'équipements spécialisés de niveau concessionnaire.",
+        "features": {
+          "ecuAnalysis": "Analyse ECU",
+          "networkScan": "Scan Réseau",
+          "perfTuning": "Réglage Performance"
+        }
+      },
+      "immobilizer": {
+        "title": "Réparations Antidémarrage",
+        "description": "Résolution des problèmes de synchronisation ECU et des pannes complexes du système antidémarrage.",
+        "features": {
+          "moduleCoding": "Codage de Module",
+          "immoSync": "Synchronisation Immo",
+          "softwareUpdates": "Mises à Jour Logiciel"
+        }
+      },
+      "learnMore": "En Savoir Plus"
+    },
+    "cta": {
+      "badge": "Service d'Urgence 24/7",
+      "title": "Verrouillé ou besoin d'aide urgente ?",
+      "description": "Nos unités mobiles prioritaires interviennent 24/7. Le temps de réponse moyen dans les zones centrales est inférieur à 30 minutes.",
+      "callNow": "APPELER MAINTENANT",
+      "contactSupport": "Contacter le Support"
+    }
+  },
+  "services": {
+    "header": {
+      "badge": "Technologies Automobiles Spécialisées",
+      "title": "Expertise Technique",
+      "description": "Nous comblons le fossé entre le matériel mécanique et le logiciel numérique. Nos techniciens sont formés aux dernières technologies d'antidémarrage et protocoles de diagnostic."
+    },
+    "categories": {
+      "keys": {
+        "title": "Solutions de Clés Auto",
+        "description": "Découpe et programmation de clés de pointe pour les marques automobiles haut de gamme.",
+        "services": {
+          "backup": {
+            "name": "Création de Clé de Secours",
+            "detail": "Duplication professionnelle de clés intelligentes et de télécommandes."
+          },
+          "akl": {
+            "name": "Toutes Clés Perdues (AKL)",
+            "detail": "Récupération complète des clés sans démontage du véhicule."
+          },
+          "remote": {
+            "name": "Réparation de Télécommande",
+            "detail": "Restauration de la puissance du signal et gestion de la batterie."
+          },
+          "lockout": {
+            "name": "Verrouillage d'Urgence",
+            "detail": "Entrée non destructive du véhicule à l'aide d'outils Lishi."
+          }
+        }
+      },
+      "diagnostics": {
+        "title": "Diagnostics Avancés",
+        "description": "Analyse binaire de niveau concessionnaire des unités de contrôle et des systèmes électroniques du véhicule.",
+        "services": {
+          "fullScan": {
+            "name": "Scan Système Complet",
+            "detail": "Effacement DTC et analyse réseau approfondie."
+          },
+          "egrDpf": {
+            "name": "Analyse EGR / DPF",
+            "detail": "Vérification de l'efficacité du filtre à particules et de la vanne."
+          },
+          "sensorCalib": {
+            "name": "Calibration des Capteurs",
+            "detail": "Alignement des systèmes ADAS et radar."
+          },
+          "perfLog": {
+            "name": "Enregistrement de Performance",
+            "detail": "Capture de données en temps réel pour le profilage de puissance."
+          }
+        }
+      },
+      "programming": {
+        "title": "ECU & Modules",
+        "description": "Synchronisation logicielle complexe et remplacement d'unités pour les architectures automobiles modernes.",
+        "services": {
+          "moduleCoding": {
+            "name": "Codage de Module",
+            "detail": "Programmation de nouveaux composants sur le réseau d'usine."
+          },
+          "immoSync": {
+            "name": "Synchronisation Antidémarrage",
+            "detail": "Correction des problèmes d'appairage entre ECU et BCM."
+          },
+          "softwareUpdates": {
+            "name": "Mises à Jour Logiciel",
+            "detail": "Flashage du firmware officiel pour corriger les bugs d'usine."
+          },
+          "odoSync": {
+            "name": "Synchronisation Odomètre",
+            "detail": "Correction du kilométrage après remplacement du tableau de bord."
+          }
+        }
+      }
+    },
+    "brandCoverage": {
+      "title": "Soutien aux Principaux Fabricants",
+      "brands": {
+        "volkswagen": "VOLKSWAGEN",
+        "audi": "AUDI",
+        "bmw": "BMW",
+        "mercedes": "MERCEDES",
+        "porsche": "PORSCHE",
+        "landRover": "LAND ROVER",
+        "peugeot": "PEUGEOT",
+        "renault": "RENAULT"
+      }
+    }
+  },
+  "about": {
+    "title": "Redéfinir le Support Auto",
+    "description": "Fondé en 2018, KeyPro est né d'une frustration face aux délais des concessionnaires traditionnels et aux horaires d'atelier rigides. Nous avons imaginé un monde où des compétences techniques d'élite pourraient être déployées à la demande.",
+    "values": {
+      "excellence": {
+        "title": "Excellence Technique",
+        "description": "Nous n'effaçons pas seulement les erreurs ; nous analysons les causes profondes dans l'architecture binaire du véhicule."
+      },
+      "mobile": {
+        "title": "Liberté Mobile",
+        "description": "Service de qualité concessionnaire livré à votre emplacement, vous faisant économiser du temps et des frais de remorquage."
+      },
+      "reliability": {
+        "title": "Fiabilité Inégalée",
+        "description": "Notre taux de réussite sur les problèmes d'antidémarrage complexes dépasse 98% pour les marques premium."
+      }
+    },
+    "journey": {
+      "title": "Notre Parcours",
+      "subtitle": "Évolution continue dans le monde en rapide évolution du logiciel automobile.",
+      "timeline": {
+        "2018": {
+          "title": "Lancement",
+          "description": "Démarré comme un petit service de serrurier mobile local avec un seul technicien."
+        },
+        "2020": {
+          "title": "Expansion Technologique",
+          "description": "Mise en œuvre de capacités ODIS et Star Diagnosis de niveau concessionnaire."
+        },
+        "2022": {
+          "title": "Centres Régionaux",
+          "description": "Ouverture de trois centres d'intervention rapide couvrant toute la zone métropolitaine."
+        },
+        "2024": {
+          "title": "Intégration IA",
+          "description": "Lancement du profilage diagnostique automatisé pour des devis clients plus rapides."
+        }
+      }
+    }
+  },
+  "contact": {
+    "header": {
+      "badge": "Entrer en Contact",
+      "title": "Parlons Binaire.",
+      "description": "Qu'il s'agisse d'un verrouillage d'urgence ou d'une question complexe de programmation ECU, nos spécialistes sont prêts à décoder votre problème."
+    },
+    "contactInfo": {
+      "hotline": {
+        "label": "Ligne d'Urgence",
+        "value": "01 23 45 67 89",
+        "detail": "Réponse Rapide 24/7"
+      },
+      "support": {
+        "label": "Support Technique",
+        "value": "support@keypro.service",
+        "detail": "Réponse dans les 4 heures"
+      },
+      "location": {
+        "label": "Centre de Service",
+        "value": "8 Rue de la Paix, Paris",
+        "detail": "Sur Rendez-vous Uniquement"
+      }
+    },
+    "form": {
+      "title": "Envoyer un Message",
+      "name": {
+        "label": "Votre Nom",
+        "placeholder": "Marie Dupont"
+      },
+      "email": {
+        "label": "Adresse Email",
+        "placeholder": "marie@exemple.com"
+      },
+      "topic": {
+        "label": "Sujet du Message",
+        "options": {
+          "general": "Demande Générale",
+          "support": "Support Clés",
+          "b2b": "Partenariats B2B",
+          "careers": "Carrières"
+        }
+      },
+      "message": {
+        "label": "Comment pouvons-nous vous aider ?",
+        "placeholder": "Partagez quelques détails sur votre problème..."
+      },
+      "submit": "ENVOYER LE MESSAGE",
+      "submitting": "Traitement",
+      "success": {
+        "title": "Message Envoyé",
+        "description": "L'un de nos spécialistes vous répondra sous peu."
+      }
+    },
+    "social": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn"
+    }
+  },
+  "quote": {
+    "header": {
+      "badge": "Devis Instantané",
+      "title": "Obtenez Votre Estimation.",
+      "description": "Répondez à quelques questions sur votre véhicule et votre problème. Notre système IA analyse votre cas et fournit une estimation de prix instantanée avec les prochaines étapes recommandées."
+    },
+    "services": {
+      "keys": {
+        "label": "Clés de Voiture Spécialisées",
+        "description": "Clés perdues, clés de rechange ou réparation de télécommande"
+      },
+      "diagnostic": {
+        "label": "Diagnostic Complet",
+        "description": "Scans ECU, vérification des capteurs ou enregistrement de performance"
+      },
+      "immobilizer": {
+        "label": "Réparation Antidémarrage",
+        "description": "Remplacement ECU ou problèmes de synchronisation"
+      },
+      "other": {
+        "label": "Autre Technique",
+        "description": "Codage de module et corrections électroniques spécifiques"
+      }
+    },
+    "steps": {
+      "service": "Type de Service",
+      "vehicle": "Informations Véhicule",
+      "details": "Détails du Problème"
+    },
+    "form": {
+      "brand": {
+        "label": "Marque",
+        "placeholder": "Sélectionnez la marque..."
+      },
+      "model": {
+        "label": "Modèle",
+        "placeholder": "ex: A4, Série 3, Classe C"
+      },
+      "year": {
+        "label": "Année",
+        "placeholder": "ex: 2020"
+      },
+      "vin": {
+        "label": "VIN (Optionnel)",
+        "placeholder": "17 caractères"
+      },
+      "description": {
+        "label": "Décrivez votre problème",
+        "placeholder": "Partagez autant de détails que possible sur le problème technique..."
+      },
+      "location": {
+        "label": "Votre Emplacement",
+        "placeholder": "Ville ou code postal"
+      },
+      "name": {
+        "label": "Votre Nom",
+        "placeholder": "Nom complet"
+      },
+      "phone": {
+        "label": "Téléphone",
+        "placeholder": "+33 6 12 34 56 78"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "votre@email.com"
+      },
+      "next": "SUIVANT",
+      "back": "RETOUR",
+      "submit": "OBTENIR L'ESTIMATION",
+      "submitting": "Traitement"
+    },
+    "success": {
+      "title": "Estimation Générée",
+      "refNumber": "Numéro de Référence",
+      "subtitle": "Nous Vous Rappellerons Sous Peu",
+      "description": "Notre équipe technique examinera votre demande et vous contactera dans les 2 heures avec un devis détaillé et les prochaines étapes.",
+      "done": "TERMINÉ"
+    }
+  },
+  "faq": {
+    "title": "Vous Avez des Questions ?",
+    "subtitle": "Tout ce que vous devez savoir sur nos services techniques automobiles spécialisés.",
+    "search": {
+      "placeholder": "Rechercher dans notre base de connaissances..."
+    },
+    "questions": {
+      "q1": {
+        "question": "Venez-vous à mon emplacement si j'ai perdu toutes mes clés ?",
+        "answer": "Oui, nous sommes un service entièrement mobile. Nous pouvons nous déplacer chez vous, sur votre lieu de travail ou en bordure de route. Nous avons tout l'équipement nécessaire dans nos camionnettes pour couper et programmer une toute nouvelle clé à partir de zéro sur place."
+      },
+      "q2": {
+        "question": "Quelles marques de voitures supportez-vous ?",
+        "answer": "Nous nous spécialisons dans les marques européennes premium notamment BMW, Mercedes-Benz, Audi, Volkswagen, Porsche et Land Rover. Cependant, nous prenons également en charge la plupart des principaux fabricants comme Peugeot, Renault, Ford et diverses marques japonaises."
+      },
+      "q3": {
+        "question": "Combien de temps dure un scan de diagnostic ?",
+        "answer": "Un scan complet du système standard prend généralement entre 30 et 45 minutes. Cela comprend un rapport complet de tous les modules électroniques, l'effacement des codes de défaut intermittents et une consultation professionnelle sur tout problème existant."
+      },
+      "q4": {
+        "question": "Vos clés et modules sont-ils des pièces d'origine ?",
+        "answer": "Nous proposons à la fois des alternatives OEM (fabricant d'équipement d'origine) et des alternatives de rechange de haute qualité. Toutes nos pièces sont rigoureusement testées et sont accompagnées d'une garantie technique pour égaler ou dépasser les normes d'usine."
+      },
+      "q5": {
+        "question": "Pouvez-vous réparer les problèmes d'antidémarrage que le concessionnaire dit nécessiter un remplacement complet de l'ECU ?",
+        "answer": "Souvent, oui. De nombreux défauts d'antidémarrage sont des erreurs de synchronisation logicielles. Alors que les concessionnaires préfèrent remplacer des modules entiers, nous avons les outils binaires pour réparer les données à l'intérieur des modules, ce qui peut vous faire économiser des milliers d'euros."
+      },
+      "q6": {
+        "question": "Quelles informations dois-je fournir pour un devis ?",
+        "answer": "Pour donner un devis précis, nous avons besoin de la marque, du modèle, de l'année du véhicule et de son VIN (numéro d'identification du véhicule) si possible. Pour les problèmes de clés, veuillez préciser s'il s'agit d'une clé de secours ou si toutes les clés sont perdues."
+      }
+    },
+    "noResults": "Aucune question correspondante trouvée. Essayez un autre terme de recherche.",
+    "cta": {
+      "title": "Vous avez encore des questions ?",
+      "description": "Si vous n'avez pas trouvé la réponse que vous cherchiez, n'hésitez pas à contacter directement notre équipe d'experts.",
+      "button": "Contacter le Support"
+    }
+  },
+  "brands": {
+    "title": "Fabricants Pris en Charge",
+    "subtitle": "Nous investissons massivement dans des licences matérielles spécialisées pour chaque fabricant afin de fournir des capacités de service équivalentes ou supérieures au concessionnaire.",
+    "categories": {
+      "german": {
+        "title": "Précision Allemande",
+        "description": "Codage complet de modules et support de clés pour les fabricants allemands haut de gamme.",
+        "bmw": {
+          "name": "BMW",
+          "series": "Support Séries E, F, G",
+          "features": ["Programmation de Clés", "Codage ECU", "Récupération ISN"]
+        },
+        "mercedes": {
+          "name": "Mercedes",
+          "series": "Systèmes FBS 3 & 4",
+          "features": ["Réparation EIS", "Réparation ELV", "Codage AMG"]
+        },
+        "audiVw": {
+          "name": "Audi / VW",
+          "series": "Plateformes MQB & MLB",
+          "features": ["Immo 4e/5e Gén", "Protection Composants", "Synch Cockpit Virtuel"]
+        },
+        "porsche": {
+          "name": "Porsche",
+          "series": "Tous Modèles Modernes",
+          "features": ["Programmation PDK", "Purge Freins", "Codage Batterie Principale"]
+        }
+      },
+      "british": {
+        "title": "Luxe Britannique",
+        "description": "Diagnostics spécialisés pour les plateformes Land Rover et Jaguar.",
+        "landRover": {
+          "name": "Land Rover",
+          "series": "Discovery, Range Rover",
+          "features": ["Programmation KVM", "Réparation NGE", "Code Terrain Response"]
+        },
+        "jaguar": {
+          "name": "Jaguar",
+          "series": "XE, XF, F-Type",
+          "features": ["Intégration Clé Intelligente", "Appairage BCM", "Enregistrement Diagnostic"]
+        }
+      },
+      "french": {
+        "title": "Technologie Française",
+        "description": "Couverture complète pour les leaders automobiles locaux.",
+        "renault": {
+          "name": "Renault",
+          "series": "Tous Modèles Carte & Clé",
+          "features": ["Programmation UCH", "Récupération Carte", "Verrou Direction Électronique"]
+        },
+        "peugeot": {
+          "name": "Peugeot",
+          "series": "Toutes Plateformes BSI",
+          "features": ["Lecture Code Pin", "Appairage Clé", "Analyse DiagBox"]
+        }
+      }
+    },
+    "certification": "Couverture Certifiée",
+    "cta": {
+      "title": "Vous ne voyez pas votre marque ?",
+      "description": "Notre boîte à outils technique s'élargit mensuellement. Même si votre fabricant n'est pas répertorié ci-dessus, nous avons probablement les protocoles pour prendre en charge ses exigences de diagnostic et de codage de clés de base.",
+      "button": "Renseignez-vous sur votre modèle"
+    }
+  },
+  "chatbot": {
+    "title": "KeyPro IA",
+    "status": "Support en Ligne",
+    "greeting": "Bonjour ! Je suis votre assistant KeyPro. Comment puis-je vous aider aujourd'hui ? Je peux vous aider avec des devis de service, des problèmes de clés de voiture ou des questions de diagnostic.",
+    "placeholder": "Posez des questions sur les clés de voiture, les diagnostics...",
+    "send": "Envoyer",
+    "you": "Vous",
+    "ai": "KeyPro IA",
+    "thinking": "L'IA RÉFLÉCHIT...",
+    "error": "Je suis désolé, j'ai rencontré une erreur. Veuillez réessayer ou nous appeler au 01 23 45 67 89."
+  },
+  "footer": {
+    "tagline": "Spécialiste en technologie automobile premium basé en France. Experts certifiés en intervention mobile.",
+    "company": {
+      "title": "Entreprise",
+      "about": "À Propos",
+      "serviceArea": "Notre Zone de Service",
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions de Service"
+    },
+    "services": {
+      "title": "Services",
+      "keyProgramming": "Programmation de Clés Auto",
+      "diagnostics": "Scans de Diagnostic",
+      "ecuRemap": "Remappage ECU",
+      "lockout": "Verrouillage d'Urgence"
+    },
+    "support": {
+      "title": "Support",
+      "emergency": "Urgence",
+      "schedule": "Lun - Sam / 08:00 - 20:00"
+    },
+    "social": {
+      "instagram": "INSTAGRAM",
+      "facebook": "FACEBOOK",
+      "linkedin": "LINKEDIN"
+    },
+    "copyright": "© 2025 KEYPRO SERVICE CENTER. TOUS DROITS RÉSERVÉS."
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Succès",
+    "close": "Fermer",
+    "open": "Ouvrir",
+    "readMore": "Lire Plus",
+    "learnMore": "En Savoir Plus",
+    "getStarted": "Commencer",
+    "contactUs": "Nous Contacter"
+  }
+}
