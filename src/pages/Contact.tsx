@@ -187,7 +187,7 @@ export default function Contact() {
                 />
 
                 <h2 className="text-4xl font-display font-black mb-10 text-white relative z-10">
-                  {t('contact.form.sectionTitle')}
+                  {t('contact.form.title')}
                 </h2>
               
                 {formState === 'success' ? (
@@ -250,10 +250,10 @@ export default function Contact() {
                         {...register('topic')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white appearance-none cursor-pointer"
                       >
-                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.general')}</option>
-                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.support')}</option>
-                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.b2b')}</option>
-                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.careers')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topic.options.general')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topic.options.support')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topic.options.b2b')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topic.options.careers')}</option>
                       </select>
                     </div>
 
