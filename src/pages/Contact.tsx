@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslation } from 'react-i18next';
 import {
   Phone,
   Mail,
@@ -18,6 +19,7 @@ import { cn } from '../lib/utils';
 import { contactFormSchema, type ContactFormData } from '../lib/validation';
 
 export default function Contact() {
+  const { t } = useTranslation();
   const [formState, setFormState] = React.useState<'idle' | 'submitting' | 'success'>('idle');
 
   const {
@@ -72,27 +74,22 @@ export default function Contact() {
             >
               <MessageSquare className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
               <span className="text-[var(--color-brand-orange-primary)]">
-                Get in Touch
+                {t('contact.header.badge')}
               </span>
             </motion.div>
 
             <h1 className="text-6xl md:text-8xl font-display font-black mb-8 leading-[1.05]">
-              <span className="block text-white">Let's Talk</span>
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
-                Binary.
-              </span>
+              <span className="block text-white">{t('contact.header.title')}</span>
             </h1>
 
-            <p className="text-xl text-white/70 leading-relaxed mb-16 max-w-lg">
-              Whether it's an emergency lockout or a complex ECU programming question, our specialists are ready to <span className="text-white font-bold">decode your problem</span>.
-            </p>
+            <p className="text-xl text-white/70 leading-relaxed mb-16 max-w-lg" dangerouslySetInnerHTML={{ __html: t('contact.header.description') }} />
 
             {/* Premium Contact Cards */}
             <div className="space-y-6">
               {[
-                { icon: Phone, label: "Emergency Hotline", value: "01 23 45 67 89", detail: "24/7 Rapid Response", gradient: "from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20", iconColor: "text-[var(--color-brand-orange-primary)]" },
-                { icon: Mail, label: "Technical Support", value: "support@keypro.service", detail: "Reply within 4 hours", gradient: "from-[var(--color-brand-orange-secondary)]/20 to-[var(--color-brand-orange-light)]/20", iconColor: "text-[var(--color-brand-orange-secondary)]" },
-                { icon: MapPin, label: "Service Hub", value: "8 Rue de la Paix, Paris", detail: "Appointments Only", gradient: "from-[var(--color-brand-orange-primary)]/15 to-[var(--color-brand-orange-secondary)]/15", iconColor: "text-[var(--color-brand-orange-primary)]" }
+                { icon: Phone, label: t('contact.contactInfo.hotline.label'), value: t('contact.contactInfo.hotline.value'), detail: t('contact.contactInfo.hotline.detail'), gradient: "from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20", iconColor: "text-[var(--color-brand-orange-primary)]" },
+                { icon: Mail, label: t('contact.contactInfo.support.label'), value: t('contact.contactInfo.support.value'), detail: t('contact.contactInfo.support.detail'), gradient: "from-[var(--color-brand-orange-secondary)]/20 to-[var(--color-brand-orange-light)]/20", iconColor: "text-[var(--color-brand-orange-secondary)]" },
+                { icon: MapPin, label: t('contact.contactInfo.location.label'), value: t('contact.contactInfo.location.value'), detail: t('contact.contactInfo.location.detail'), gradient: "from-[var(--color-brand-orange-primary)]/15 to-[var(--color-brand-orange-secondary)]/15", iconColor: "text-[var(--color-brand-orange-primary)]" }
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
@@ -190,7 +187,7 @@ export default function Contact() {
                 />
 
                 <h2 className="text-4xl font-display font-black mb-10 text-white relative z-10">
-                  Send a Message
+                  {t('contact.form.sectionTitle')}
                 </h2>
               
                 {formState === 'success' ? (
@@ -210,20 +207,20 @@ export default function Contact() {
                       </div>
                       <div className="absolute inset-0 bg-gradient-to-br from-emerald-400 to-green-500 clip-angular-sm blur-2xl opacity-50 animate-pulse" />
                     </motion.div>
-                    <h3 className="text-3xl font-display font-black mb-3 text-white">Message Sent</h3>
-                    <p className="text-white/60 text-lg">One of our specialists will get back to you shortly.</p>
+                    <h3 className="text-3xl font-display font-black mb-3 text-white">{t('contact.form.success.title')}</h3>
+                    <p className="text-white/60 text-lg">{t('contact.form.success.description')}</p>
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                     <div className="space-y-3">
                       <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
-                        Your Name
+                        {t('contact.form.name.label')}
                       </label>
                       <input
                         {...register('name')}
                         type="text"
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                        placeholder="Jane Cooper"
+                        placeholder={t('contact.form.placeholder.name')}
                       />
                       {errors.name && (
                         <p className="text-red-400 text-xs px-2">{errors.name.message}</p>
@@ -232,13 +229,13 @@ export default function Contact() {
 
                     <div className="space-y-3">
                       <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
-                        Email Address
+                        {t('contact.form.email.label')}
                       </label>
                       <input
                         {...register('email')}
                         type="email"
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                        placeholder="jane@example.com"
+                        placeholder={t('contact.form.placeholder.email')}
                       />
                       {errors.email && (
                         <p className="text-red-400 text-xs px-2">{errors.email.message}</p>
@@ -247,28 +244,28 @@ export default function Contact() {
 
                     <div className="space-y-3">
                       <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
-                        Message Topic
+                        {t('contact.form.topic.label')}
                       </label>
                       <select
                         {...register('topic')}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white appearance-none cursor-pointer"
                       >
-                        <option className="bg-[var(--color-brand-gray)]">General Inquiry</option>
-                        <option className="bg-[var(--color-brand-gray)]">Key Support</option>
-                        <option className="bg-[var(--color-brand-gray)]">B2B Partnerships</option>
-                        <option className="bg-[var(--color-brand-gray)]">Careers</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.general')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.support')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.b2b')}</option>
+                        <option className="bg-[var(--color-brand-gray)]">{t('contact.form.topics.careers')}</option>
                       </select>
                     </div>
 
                     <div className="space-y-3">
                       <label className="block text-xs font-bold uppercase tracking-widest text-white/50 px-2">
-                        How can we help?
+                        {t('contact.form.message.label')}
                       </label>
                       <textarea
                         {...register('message')}
                         rows={5}
                         className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30 resize-none"
-                        placeholder="Share some details about your problem..."
+                        placeholder={t('contact.form.placeholder.message')}
                       />
                       {errors.message && (
                         <p className="text-red-400 text-xs px-2">{errors.message.message}</p>
@@ -286,12 +283,12 @@ export default function Contact() {
                       <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm blur-xl opacity-50" />
                       {formState === 'submitting' ? (
                         <>
-                          <span className="relative z-10 text-white">Processing</span>
+                          <span className="relative z-10 text-white">{t('contact.form.submitting')}</span>
                           <span className="relative z-10 w-5 h-5 border-2 border-white/20 border-t-white clip-angular-sm animate-spin" />
                         </>
                       ) : (
                         <>
-                          <span className="relative z-10 text-white">SEND MESSAGE</span>
+                          <span className="relative z-10 text-white">{t('contact.form.submit')}</span>
                           <Send className="relative z-10 w-5 h-5 text-white" />
                         </>
                       )}
