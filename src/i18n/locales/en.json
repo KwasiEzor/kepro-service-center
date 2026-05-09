@@ -181,21 +181,21 @@
       "title": "Our Journey",
       "subtitle": "Continuous evolution in the rapidly changing world of automotive software.",
       "timeline": {
-        "2018": {
+        "launch": {
           "title": "Launch",
-          "description": "Started as a small local mobile locksmith service with one technician."
+          "desc": "Started as a small local mobile locksmith service with one technician."
         },
-        "2020": {
+        "tech": {
           "title": "Tech Expansion",
-          "description": "Implemented dealer-level ODIS and Star Diagnosis capabilities."
+          "desc": "Implemented dealer-level ODIS and Star Diagnosis capabilities."
         },
-        "2022": {
+        "regional": {
           "title": "Regional Hubs",
-          "description": "Opened three rapid response centers covering the entire metro area."
+          "desc": "Opened three rapid response centers covering the entire metro area."
         },
-        "2024": {
+        "ai": {
           "title": "AI Integration",
-          "description": "Launched automated diagnostic profiling for faster client quotes."
+          "desc": "Launched automated diagnostic profiling for faster client quotes."
         }
       }
     }

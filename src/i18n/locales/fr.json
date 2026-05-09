@@ -181,21 +181,21 @@
       "title": "Notre Parcours",
       "subtitle": "Évolution continue dans le monde en rapide évolution du logiciel automobile.",
       "timeline": {
-        "2018": {
+        "launch": {
           "title": "Lancement",
-          "description": "Démarré comme un petit service de serrurier mobile local avec un seul technicien."
+          "desc": "Démarré comme un petit service de serrurier mobile local avec un seul technicien."
         },
-        "2020": {
+        "tech": {
           "title": "Expansion Technologique",
-          "description": "Mise en œuvre de capacités ODIS et Star Diagnosis de niveau concessionnaire."
+          "desc": "Mise en œuvre de capacités ODIS et Star Diagnosis de niveau concessionnaire."
         },
-        "2022": {
+        "regional": {
           "title": "Centres Régionaux",
-          "description": "Ouverture de trois centres d'intervention rapide couvrant toute la zone métropolitaine."
+          "desc": "Ouverture de trois centres d'intervention rapide couvrant toute la zone métropolitaine."
         },
-        "2024": {
+        "ai": {
           "title": "Intégration IA",
-          "description": "Lancement du profilage diagnostique automatisé pour des devis clients plus rapides."
+          "desc": "Lancement du profilage diagnostique automatisé pour des devis clients plus rapides."
         }
       }
     }
