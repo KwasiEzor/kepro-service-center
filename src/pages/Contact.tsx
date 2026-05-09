@@ -18,9 +18,12 @@ import {
 import { cn } from '../lib/utils';
 import { contactFormSchema, type ContactFormData } from '../lib/validation';
 
+import { api } from '../lib/api';
+
 export default function Contact() {
   const { t } = useTranslation();
   const [formState, setFormState] = React.useState<'idle' | 'submitting' | 'success'>('idle');
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
 
   const {
     register,
@@ -32,20 +35,14 @@ export default function Contact() {
 
   const onSubmit = async (data: ContactFormData) => {
     setFormState('submitting');
+    setSubmitError(null);
 
     try {
-      const response = await fetch('http://localhost:3001/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error('Submission failed');
-
+      await api.post('/api/public/contact', data);
       setFormState('success');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Form error:', error);
-      alert('Failed to send. Please call us directly.');
+      setSubmitError(error.response?.data?.error || 'Failed to send. Please call us directly.');
       setFormState('idle');
     }
   };

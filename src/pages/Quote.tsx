@@ -22,6 +22,8 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
 
+import { api } from '../lib/api';
+
 type Step = 'service' | 'vehicle' | 'details' | 'success';
 
 export default function Quote() {
@@ -29,6 +31,7 @@ export default function Quote() {
   const [step, setStep] = React.useState<Step>('service');
   const [serviceType, setServiceType] = React.useState('');
   const [refId, setRefId] = React.useState('');
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
 
   const serviceOptions = [
     { id: 'keys', label: t('quote.services.keys.label'), icon: Key, description: t('quote.services.keys.description') },
@@ -54,21 +57,14 @@ export default function Quote() {
   };
 
   const onSubmit = async (data: QuoteFormData) => {
+    setSubmitError(null);
     try {
-      const response = await fetch('http://localhost:3001/api/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error('Failed');
-
-      const result = await response.json();
-      setRefId(result.refId);
+      const response = await api.post('/api/public/quote', data);
+      setRefId(response.data.data.id.toUpperCase().slice(-6));
       setStep('success');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Quote error:', error);
-      alert('Failed to submit. Please call us directly.');
+      setSubmitError(error.response?.data?.error || 'Failed to submit. Please call us directly.');
     }
   };
 

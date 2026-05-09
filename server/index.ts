@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 import { validateEnv } from './env';
 import chatRouter from './api';
 import authRoutes from './src/routes/auth.routes';
+import publicRoutes from './src/routes/public.routes';
 import { errorHandler } from './src/middleware/errorHandler';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -42,6 +43,7 @@ app.use('/uploads', express.static(path.join(__dirname, '..', uploadDir)));
 // API routes
 app.use('/api/chat', chatRouter); // Existing Gemini chatbot route
 app.use('/api/auth', authRoutes); // New auth routes
+app.use('/api/public', publicRoutes); // New public routes (quotes, contact)
 
 // Health check
 app.get('/health', (req, res) => {

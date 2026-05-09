@@ -12,7 +12,26 @@ export const validateBody = (schema: ZodSchema) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const messages = error.issues.map((issue) => issue.message).join(', ');
+        const messages = error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`).join(', ');
+        next(new ValidationError(messages));
+      } else {
+        next(error);
+      }
+    }
+  };
+};
+
+/**
+ * Generic validator for any part of the request
+ */
+export const validateRequest = (schema: ZodSchema) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    try {
+      schema.parse(req.body);
+      next();
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const messages = error.issues.map((issue) => `${issue.path.join('.')}: ${issue.message}`).join(', ');
         next(new ValidationError(messages));
       } else {
         next(error);
