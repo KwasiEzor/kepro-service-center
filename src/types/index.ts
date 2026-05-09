@@ -93,6 +93,7 @@ export interface Service {
   nameEn: string;
   descriptionFr: string;
   descriptionEn: string;
+  category?: string;
   icon?: string;
   priceFrom?: number;
   priceTo?: number;

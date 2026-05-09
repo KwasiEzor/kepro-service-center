@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { LazyImage } from '../components/LazyImage';
 import {
@@ -6,65 +6,65 @@ import {
   Settings,
   Cpu,
   ShieldCheck,
-  FileSearch,
   Zap,
-  Lock,
-  RefreshCcw,
-  Microchip
+  Microchip,
+  Loader2
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { api } from '../lib/api';
+import { Service, ApiResponse } from '../types';
 
 const serviceImages = {
   keys: "https://images.pexels.com/photos/97075/pexels-photo-97075.jpeg?auto=compress&cs=tinysrgb&w=800",
   diagnostics: "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=800",
-  programming: "https://images.pexels.com/photos/2881232/pexels-photo-2881232.jpeg?auto=compress&cs=tinysrgb&w=800"
+  programming: "https://images.pexels.com/photos/2881232/pexels-photo-2881232.jpeg?auto=compress&cs=tinysrgb&w=800",
+  other: "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800"
+};
+
+const categoryIcons: Record<string, any> = {
+  keys: Key,
+  diagnostics: Cpu,
+  programming: Microchip,
+  other: Settings
 };
 
 export default function Services() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const [services, setServices] = useState<Service[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const serviceCategories = [
-    {
-      id: "keys",
-      title: t('services.categories.keys.title'),
-      description: t('services.categories.keys.description'),
-      services: [
-        { name: t('services.categories.keys.services.backup.name'), detail: t('services.categories.keys.services.backup.detail') },
-        { name: t('services.categories.keys.services.akl.name'), detail: t('services.categories.keys.services.akl.detail') },
-        { name: t('services.categories.keys.services.remote.name'), detail: t('services.categories.keys.services.remote.detail') },
-        { name: t('services.categories.keys.services.lockout.name'), detail: t('services.categories.keys.services.lockout.detail') }
-      ],
-      icon: Key,
-      image: serviceImages.keys
-    },
-    {
-      id: "diagnostics",
-      title: t('services.categories.diagnostics.title'),
-      description: t('services.categories.diagnostics.description'),
-      services: [
-        { name: t('services.categories.diagnostics.services.fullScan.name'), detail: t('services.categories.diagnostics.services.fullScan.detail') },
-        { name: t('services.categories.diagnostics.services.egrDpf.name'), detail: t('services.categories.diagnostics.services.egrDpf.detail') },
-        { name: t('services.categories.diagnostics.services.sensorCalib.name'), detail: t('services.categories.diagnostics.services.sensorCalib.detail') },
-        { name: t('services.categories.diagnostics.services.perfLog.name'), detail: t('services.categories.diagnostics.services.perfLog.detail') }
-      ],
-      icon: Cpu,
-      image: serviceImages.diagnostics
-    },
-    {
-      id: "programming",
-      title: t('services.categories.programming.title'),
-      description: t('services.categories.programming.description'),
-      services: [
-        { name: t('services.categories.programming.services.moduleCoding.name'), detail: t('services.categories.programming.services.moduleCoding.detail') },
-        { name: t('services.categories.programming.services.immoSync.name'), detail: t('services.categories.programming.services.immoSync.detail') },
-        { name: t('services.categories.programming.services.softwareUpdates.name'), detail: t('services.categories.programming.services.softwareUpdates.detail') },
-        { name: t('services.categories.programming.services.odoSync.name'), detail: t('services.categories.programming.services.odoSync.detail') }
-      ],
-      icon: Microchip,
-      image: serviceImages.programming
-    }
-  ];
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await api.get<ApiResponse<Service[]>>('/api/public/services');
+        setServices(response.data.data || []);
+      } catch (error) {
+        console.error('Failed to fetch services:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  const lang = i18n.language.startsWith('fr') ? 'Fr' : 'En';
+
+  // Group services by category
+  const categories = Array.from(new Set(services.map(s => s.category || 'other')));
+  
+  const serviceCategories = categories.map(cat => ({
+    id: cat,
+    title: t(`services.categories.${cat}.title`, { defaultValue: cat.charAt(0).toUpperCase() + cat.slice(1) }),
+    description: t(`services.categories.${cat}.description`, { defaultValue: '' }),
+    services: services.filter(s => (s.category || 'other') === cat).map(s => ({
+      name: (s as any)[`name${lang}`],
+      detail: (s as any)[`description${lang}`],
+      price: s.priceFrom
+    })),
+    icon: categoryIcons[cat] || Settings,
+    image: (serviceImages as any)[cat] || serviceImages.other
+  }));
 
   const brands = [
     t('services.brandCoverage.brands.volkswagen'),
@@ -76,6 +76,14 @@ export default function Services() {
     t('services.brandCoverage.brands.peugeot'),
     t('services.brandCoverage.brands.renault')
   ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center gradient-bg">
+        <Loader2 className="w-12 h-12 text-brand-red animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="pt-32 pb-20 overflow-hidden relative">
@@ -155,15 +163,17 @@ export default function Services() {
               </motion.div>
 
               {/* Description */}
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="text-xl text-white/70 leading-relaxed"
-              >
-                {cat.description}
-              </motion.p>
+              {cat.description && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="text-xl text-white/70 leading-relaxed"
+                >
+                  {cat.description}
+                </motion.p>
+              )}
 
               {/* Service Grid */}
               <motion.div
@@ -187,9 +197,14 @@ export default function Services() {
                     <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 clip-angular-md transition-all duration-300 -z-10" />
 
                     <h4 className="font-bold text-white mb-2 text-sm">{s.name}</h4>
-                    <p className="text-xs text-white/50 leading-relaxed">
+                    <p className="text-xs text-white/50 leading-relaxed mb-3">
                       {s.detail}
                     </p>
+                    {s.price && (
+                      <span className="text-[10px] font-black uppercase tracking-widest text-brand-red">
+                        From €{s.price}
+                      </span>
+                    )}
                   </motion.div>
                 ))}
               </motion.div>
@@ -203,7 +218,6 @@ export default function Services() {
               transition={{ delay: 0.3, duration: 0.8 }}
               className="flex-1 relative group"
             >
-              {/* Main Image Card with Gradient Border */}
               <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/20 to-white/5">
                 <div className="relative clip-angular-lg overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
                   <LazyImage
@@ -211,13 +225,11 @@ export default function Services() {
                     alt={cat.title}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
                   />
-                  {/* Gradient Overlays */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-blue-500/20 to-purple-600/30 mix-blend-overlay" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-dark)] via-transparent to-transparent opacity-80" />
                 </div>
               </div>
 
-              {/* Decorative Glow */}
               <div className={cn(
                 "absolute -z-10 w-full h-full clip-angular-xl bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 blur-3xl transition-all duration-700 group-hover:blur-2xl group-hover:scale-105",
                 idx % 2 === 0 ? "top-8 right-8" : "top-8 left-8"
@@ -227,9 +239,15 @@ export default function Services() {
         ))}
       </section>
 
+      {/* Empty State */}
+      {services.length === 0 && (
+        <section className="text-center py-40 opacity-40">
+           <p className="text-2xl font-bold italic">No services listed at the moment.</p>
+        </section>
+      )}
+
       {/* Premium Brand Coverage Banner */}
       <section className="mt-40 py-24 relative overflow-hidden">
-        {/* Background with gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
         <div className="absolute inset-0 border-y border-white/5" />
 

@@ -142,6 +142,7 @@ model Service {
   nameEn        String
   descriptionFr String
   descriptionEn String
+  category      String?  // Grouping: e.g. "keys", "diagnostics"
   icon          String?
   priceFrom     Float?
   priceTo       Float?

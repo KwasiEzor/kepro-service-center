@@ -42,4 +42,8 @@ router.post(
   (req, res, next) => publicController.submitContact(req, res, next)
 );
 
+// New public read-only endpoints
+router.get('/services', (req, res, next) => publicController.getServices(req, res, next));
+router.get('/faqs', (req, res, next) => publicController.getFAQs(req, res, next));
+
 export default router;

@@ -5,7 +5,7 @@ import prisma from '../server/src/config/database.js';
 async function main() {
   console.log('🌱 Seeding database...');
 
-  // Create admin user
+  // 1. Create admin user
   const adminPassword = await bcrypt.hash('Admin123!', 12);
   const admin = await prisma.user.upsert({
     where: { email: 'admin@keypro.service' },
@@ -21,7 +21,7 @@ async function main() {
   });
   console.log('✅ Admin user created:', admin.email);
 
-  // Create demo user
+  // 2. Create demo user
   const userPassword = await bcrypt.hash('User123!', 12);
   const user = await prisma.user.upsert({
     where: { email: 'user@example.com' },
@@ -38,94 +38,81 @@ async function main() {
   });
   console.log('✅ Demo user created:', user.email);
 
-  // Create sample services
+  // 3. Clear existing content to avoid duplicates on re-run
+  await prisma.service.deleteMany({});
+  await prisma.fAQ.deleteMany({});
+
+  // 4. Create sample services
   const services = [
     {
-      nameFr: 'Programmation de clés',
-      nameEn: 'Key Programming',
-      descriptionFr: 'Programmation complète de clés pour tous types de véhicules',
-      descriptionEn: 'Complete key programming for all vehicle types',
-      icon: 'key',
+      nameFr: 'Double de clé',
+      nameEn: 'Spare Key Creation',
+      descriptionFr: 'Création d\'un double de clé fonctionnel avec programmation.',
+      descriptionEn: 'Creation of a fully functional spare key with programming.',
+      category: 'keys',
       priceFrom: 150,
-      priceTo: 500,
-      duration: '30-60 min',
       order: 1,
     },
     {
-      nameFr: 'Diagnostic ECU',
-      nameEn: 'ECU Diagnostics',
-      descriptionFr: 'Diagnostic complet du calculateur électronique',
-      descriptionEn: 'Complete electronic control unit diagnostics',
-      icon: 'cpu',
-      priceFrom: 100,
-      priceTo: 300,
-      duration: '45-90 min',
+      nameFr: 'Perte totale de clés',
+      nameEn: 'All Keys Lost',
+      descriptionFr: 'Intervention mobile en cas de perte totale de vos clés.',
+      descriptionEn: 'Mobile intervention if you have lost all your keys.',
+      category: 'keys',
+      priceFrom: 350,
       order: 2,
     },
     {
-      nameFr: 'Reprogrammation immobilisateur',
-      nameEn: 'Immobilizer Reprogramming',
-      descriptionFr: 'Réinitialisation et programmation immobilisateur',
-      descriptionEn: 'Immobilizer reset and reprogramming',
-      icon: 'shield',
-      priceFrom: 200,
-      priceTo: 600,
-      duration: '60-120 min',
+      nameFr: 'Scan complet OBD',
+      nameEn: 'Full OBD Scan',
+      descriptionFr: 'Diagnostic électronique complet via la prise OBD2.',
+      descriptionEn: 'Complete electronic diagnostics via OBD2 port.',
+      category: 'diagnostics',
+      priceFrom: 80,
       order: 3,
+    },
+    {
+      nameFr: 'Codage de modules',
+      nameEn: 'Module Coding',
+      descriptionFr: 'Configuration et adaptation de nouveaux modules électroniques.',
+      descriptionEn: 'Configuration and adaptation of new electronic modules.',
+      category: 'programming',
+      priceFrom: 200,
+      order: 4,
     },
   ];
 
   for (const service of services) {
-    await prisma.service.upsert({
-      where: { id: service.nameFr }, // Use name as unique identifier for upsert
-      update: {},
-      create: service,
-    });
+    await prisma.service.create({ data: service });
   }
   console.log('✅ Sample services created');
 
-  // Create sample FAQs
+  // 5. Create sample FAQs
   const faqs = [
     {
       questionFr: 'Combien de temps prend la programmation d\'une clé ?',
       questionEn: 'How long does key programming take?',
-      answerFr: 'La programmation d\'une clé prend généralement entre 30 et 60 minutes selon le modèle de véhicule.',
-      answerEn: 'Key programming typically takes between 30 and 60 minutes depending on the vehicle model.',
+      answerFr: 'La programmation d\'une clé prend généralement entre 30 et 60 minutes.',
+      answerEn: 'Key programming typically takes between 30 and 60 minutes.',
       category: 'general',
       order: 1,
     },
     {
       questionFr: 'Intervenez-vous 24/7 ?',
       questionEn: 'Do you operate 24/7?',
-      answerFr: 'Oui, notre service d\'intervention mobile est disponible 24h/24 et 7j/7 pour les urgences.',
-      answerEn: 'Yes, our mobile intervention service is available 24/7 for emergencies.',
+      answerFr: 'Oui, notre service d\'intervention mobile est disponible 24h/24 et 7j/7.',
+      answerEn: 'Yes, our mobile intervention service is available 24/7.',
       category: 'services',
       order: 2,
-    },
-    {
-      questionFr: 'Quelles marques supportez-vous ?',
-      questionEn: 'Which brands do you support?',
-      answerFr: 'Nous supportons toutes les marques premium : BMW, Mercedes, Audi, Porsche, et bien d\'autres.',
-      answerEn: 'We support all premium brands: BMW, Mercedes, Audi, Porsche, and many more.',
-      category: 'brands',
-      order: 3,
     },
   ];
 
   for (const faq of faqs) {
-    await prisma.fAQ.create({
-      data: faq,
-    });
+    await prisma.fAQ.create({ data: faq });
   }
   console.log('✅ Sample FAQs created');
 
   console.log('🎉 Seeding completed!');
-  console.log('\n📧 Admin credentials:');
-  console.log('   Email: admin@keypro.service');
-  console.log('   Password: Admin123!');
-  console.log('\n📧 Demo user credentials:');
-  console.log('   Email: user@example.com');
-  console.log('   Password: User123!');
 }
 
 main()

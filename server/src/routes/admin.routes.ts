@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import adminController from '../controllers/admin.controller';
 import { authenticate, requireAdmin } from '../middleware/auth';
-import { validateQuery, validateParams, validateBody } from '../middleware/validate';
+import { validateParams, validateBody } from '../middleware/validate';
+import { uploadSingle } from '../middleware/upload';
 import { z } from 'zod';
 
 const router = Router();
@@ -28,5 +29,22 @@ router.patch('/contacts/:id/status',
   validateBody(z.object({ status: z.string(), adminReply: z.string().optional() })),
   (req, res, next) => adminController.updateContactStatus(req, res, next)
 );
+
+// Gallery Management
+router.get('/images', authenticate, requireAdmin, (req, res, next) => adminController.getImages(req, res, next));
+router.post('/images/upload', authenticate, requireAdmin, uploadSingle, (req, res, next) => adminController.uploadImage(req, res, next));
+router.delete('/images/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteImage(req, res, next));
+
+// Services Management
+router.get('/services', authenticate, requireAdmin, (req, res, next) => adminController.getServices(req, res, next));
+router.post('/services', authenticate, requireAdmin, (req, res, next) => adminController.createService(req, res, next));
+router.patch('/services/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.updateService(req, res, next));
+router.delete('/services/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteService(req, res, next));
+
+// FAQ Management
+router.get('/faqs', authenticate, requireAdmin, (req, res, next) => adminController.getFAQs(req, res, next));
+router.post('/faqs', authenticate, requireAdmin, (req, res, next) => adminController.createFAQ(req, res, next));
+router.patch('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.updateFAQ(req, res, next));
+router.delete('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteFAQ(req, res, next));
 
 export default router;

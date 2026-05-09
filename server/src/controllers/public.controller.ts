@@ -3,6 +3,7 @@ import { sendSuccess } from '../utils/response';
 import { QuoteService } from '../services/quote.service';
 import { ContactService } from '../services/contact.service';
 import { AuthRequest } from '../types';
+import prisma from '../config/database';
 
 export class PublicController {
   private quoteService = new QuoteService();
@@ -43,6 +44,36 @@ export class PublicController {
       });
 
       return sendSuccess(res, result, 'Message sent successfully', 201);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Get active services
+   */
+  async getServices(req: Request, res: Response, next: NextFunction) {
+    try {
+      const services = await prisma.service.findMany({
+        where: { active: true },
+        orderBy: { order: 'asc' }
+      });
+      return sendSuccess(res, services);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Get active FAQs
+   */
+  async getFAQs(req: Request, res: Response, next: NextFunction) {
+    try {
+      const faqs = await prisma.fAQ.findMany({
+        where: { active: true },
+        orderBy: { order: 'asc' }
+      });
+      return sendSuccess(res, faqs);
     } catch (error) {
       next(error);
     }

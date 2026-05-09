@@ -1,45 +1,51 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Plus, Minus, Search, HelpCircle } from 'lucide-react';
+import { Plus, Minus, Search, HelpCircle, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { api } from '../lib/api';
+import { FAQ as FAQType, ApiResponse } from '../types';
 
 export default function FAQ() {
-  const { t } = useTranslation();
-  const [searchTerm, setSearchTerm] = React.useState('');
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  const { t, i18n } = useTranslation();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [faqs, setFaqs] = useState<FAQType[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const faqs = [
-    {
-      question: t('faq.questions.q1.question'),
-      answer: t('faq.questions.q1.answer')
-    },
-    {
-      question: t('faq.questions.q2.question'),
-      answer: t('faq.questions.q2.answer')
-    },
-    {
-      question: t('faq.questions.q3.question'),
-      answer: t('faq.questions.q3.answer')
-    },
-    {
-      question: t('faq.questions.q4.question'),
-      answer: t('faq.questions.q4.answer')
-    },
-    {
-      question: t('faq.questions.q5.question'),
-      answer: t('faq.questions.q5.answer')
-    },
-    {
-      question: t('faq.questions.q6.question'),
-      answer: t('faq.questions.q6.answer')
-    }
-  ];
+  useEffect(() => {
+    const fetchFaqs = async () => {
+      try {
+        const response = await api.get<ApiResponse<FAQType[]>>('/api/public/faqs');
+        setFaqs(response.data.data || []);
+      } catch (error) {
+        console.error('Failed to fetch FAQs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFaqs();
+  }, []);
 
-  const filteredFaqs = faqs.filter(faq =>
+  const lang = i18n.language.startsWith('fr') ? 'Fr' : 'En';
+
+  const localizedFaqs = faqs.map(f => ({
+    question: (f as any)[`question${lang}`],
+    answer: (f as any)[`answer${lang}`]
+  }));
+
+  const filteredFaqs = localizedFaqs.filter(faq =>
     faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
     faq.answer.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center gradient-bg">
+        <Loader2 className="w-12 h-12 text-brand-red animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="pt-32 pb-20">
@@ -129,7 +135,10 @@ export default function FAQ() {
         >
           <h3 className="text-2xl font-bold mb-4">{t('faq.cta.title')}</h3>
           <p className="text-white/40 mb-8 max-w-md mx-auto">{t('faq.cta.description')}</p>
-          <button className="bg-white text-brand-blue px-8 py-3 clip-angular-sm font-bold hover:scale-105 transition-transform">
+          <button 
+            onClick={() => window.location.href = '/contact'}
+            className="bg-white text-brand-blue px-8 py-3 clip-angular-sm font-bold hover:scale-105 transition-transform"
+          >
             {t('faq.cta.button')}
           </button>
         </motion.div>
