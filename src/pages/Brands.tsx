@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { LazyImage } from '../components/LazyImage';
 import { ShieldCheck, Zap, Cpu, Key, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
@@ -7,10 +8,18 @@ import { cn } from '../lib/utils';
 export default function Brands() {
   const { t } = useTranslation();
 
+  // Premium car images for brand categories
+  const categoryImages = {
+    german: "https://images.pexels.com/photos/170811/pexels-photo-170811.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    british: "https://images.pexels.com/photos/116675/pexels-photo-116675.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    french: "https://images.pexels.com/photos/244206/pexels-photo-244206.jpeg?auto=compress&cs=tinysrgb&w=1200"
+  };
+
   const brandCategories = [
     {
       title: t('brands.categories.german.title'),
       description: t('brands.categories.german.description'),
+      image: categoryImages.german,
       brands: [
         { name: t('brands.categories.german.bmw.name'), series: t('brands.categories.german.bmw.series'), features: t('brands.categories.german.bmw.features', { returnObjects: true }) as string[] },
         { name: t('brands.categories.german.mercedes.name'), series: t('brands.categories.german.mercedes.series'), features: t('brands.categories.german.mercedes.features', { returnObjects: true }) as string[] },
@@ -21,6 +30,7 @@ export default function Brands() {
     {
       title: t('brands.categories.british.title'),
       description: t('brands.categories.british.description'),
+      image: categoryImages.british,
       brands: [
         { name: t('brands.categories.british.landRover.name'), series: t('brands.categories.british.landRover.series'), features: t('brands.categories.british.landRover.features', { returnObjects: true }) as string[] },
         { name: t('brands.categories.british.jaguar.name'), series: t('brands.categories.british.jaguar.series'), features: t('brands.categories.british.jaguar.features', { returnObjects: true }) as string[] }
@@ -29,6 +39,7 @@ export default function Brands() {
     {
       title: t('brands.categories.french.title'),
       description: t('brands.categories.french.description'),
+      image: categoryImages.french,
       brands: [
         { name: t('brands.categories.french.renault.name'), series: t('brands.categories.french.renault.series'), features: t('brands.categories.french.renault.features', { returnObjects: true }) as string[] },
         { name: t('brands.categories.french.peugeot.name'), series: t('brands.categories.french.peugeot.series'), features: t('brands.categories.french.peugeot.features', { returnObjects: true }) as string[] }
@@ -69,6 +80,17 @@ export default function Brands() {
                 <div className="flex items-center gap-2 text-brand-red font-bold uppercase tracking-widest text-xs">
                   <ShieldCheck className="w-5 h-5" /> {t('brands.certification')}
                 </div>
+              </div>
+
+              {/* Hero car image */}
+              <div className="relative clip-angular-xl overflow-hidden aspect-[21/9] border border-white/10">
+                <LazyImage
+                  src={cat.image}
+                  alt={cat.title}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
