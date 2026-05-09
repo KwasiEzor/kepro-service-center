@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { LazyImage } from '../components/LazyImage';
 import {
   Key,
   Settings,
@@ -205,11 +206,10 @@ export default function Services() {
               {/* Main Image Card with Gradient Border */}
               <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/20 to-white/5">
                 <div className="relative clip-angular-lg overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
-                  <img
+                  <LazyImage
                     src={cat.image}
                     alt={cat.title}
                     className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
                   />
                   {/* Gradient Overlays */}
                   <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/30 via-blue-500/20 to-purple-600/30 mix-blend-overlay" />
