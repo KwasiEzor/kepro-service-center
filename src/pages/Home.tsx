@@ -25,14 +25,14 @@ export default function Home() {
 
   const services = [
     {
-      title: t('home.services.carKey.title'),
-      description: t('home.services.carKey.description'),
+      title: t('home.services.carKeys.title'),
+      description: t('home.services.carKeys.description'),
       icon: Key,
       gradient: "from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]",
       features: [
-        t('home.services.carKey.features.0'),
-        t('home.services.carKey.features.1'),
-        t('home.services.carKey.features.2')
+        t('home.services.carKeys.features.allKeyLost'),
+        t('home.services.carKeys.features.smartKey'),
+        t('home.services.carKeys.features.remoteDiag')
       ]
     },
     {
@@ -41,9 +41,9 @@ export default function Home() {
       icon: Cpu,
       gradient: "from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-light)]",
       features: [
-        t('home.services.diagnostics.features.0'),
-        t('home.services.diagnostics.features.1'),
-        t('home.services.diagnostics.features.2')
+        t('home.services.diagnostics.features.ecuAnalysis'),
+        t('home.services.diagnostics.features.networkScan'),
+        t('home.services.diagnostics.features.perfTuning')
       ]
     },
     {
@@ -52,9 +52,9 @@ export default function Home() {
       icon: Settings,
       gradient: "from-[var(--color-brand-orange-secondary)] to-[var(--color-brand-orange-primary)]",
       features: [
-        t('home.services.immobilizer.features.0'),
-        t('home.services.immobilizer.features.1'),
-        t('home.services.immobilizer.features.2')
+        t('home.services.immobilizer.features.moduleCoding'),
+        t('home.services.immobilizer.features.immoSync'),
+        t('home.services.immobilizer.features.softwareUpdates')
       ]
     }
   ];
