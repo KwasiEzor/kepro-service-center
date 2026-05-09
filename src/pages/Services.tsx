@@ -16,9 +16,9 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
 const serviceImages = {
-  keys: "https://images.unsplash.com/photo-1619641782822-233bc69f5601?auto=format&fit=crop&q=80&w=800",
-  diagnostics: "https://images.unsplash.com/photo-1593583845845-7d67ede93328?auto=format&fit=crop&q=80&w=800",
-  programming: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800"
+  keys: "https://images.pexels.com/photos/97075/pexels-photo-97075.jpeg?auto=compress&cs=tinysrgb&w=800",
+  diagnostics: "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=800",
+  programming: "https://images.pexels.com/photos/2881232/pexels-photo-2881232.jpeg?auto=compress&cs=tinysrgb&w=800"
 };
 
 export default function Services() {
