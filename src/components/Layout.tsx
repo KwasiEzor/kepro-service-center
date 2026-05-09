@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Navbar from './Navbar';
 import ChatBot from './ChatBot';
+import { Logo } from './Logo';
 
 export default function Layout() {
   const { t } = useTranslation();
@@ -23,12 +24,7 @@ export default function Layout() {
       <footer className="py-20 px-6 sm:px-12 border-t border-white/5 bg-black/50">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="space-y-6">
-            <div className="flex items-center gap-2 group">
-              <div className="w-8 h-8 bg-brand-red rounded-lg flex items-center justify-center p-1.5">
-                <div className="w-full h-full bg-white/20 rounded-sm" />
-              </div>
-              <span className="font-display font-bold text-xl tracking-tight">KEYPRO</span>
-            </div>
+            <Logo size="md" showSubtitle={false} />
             <p className="text-white/40 text-sm leading-relaxed max-w-xs">
               {t('footer.tagline')}
             </p>
