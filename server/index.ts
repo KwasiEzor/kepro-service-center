@@ -9,6 +9,7 @@ import chatRouter from './api';
 import authRoutes from './src/routes/auth.routes';
 import publicRoutes from './src/routes/public.routes';
 import adminRoutes from './src/routes/admin.routes';
+import userRoutes from './src/routes/user.routes';
 import { errorHandler } from './src/middleware/errorHandler';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,6 +46,8 @@ app.use('/uploads', express.static(path.join(__dirname, '..', uploadDir)));
 app.use('/api/chat', chatRouter); // Existing Gemini chatbot route
 app.use('/api/auth', authRoutes); // New auth routes
 app.use('/api/public', publicRoutes); // New public routes (quotes, contact)
+app.use('/api/admin', adminRoutes); // New admin routes
+app.use('/api/user', userRoutes); // New user specific routes
 
 // Health check
 app.get('/health', (req, res) => {

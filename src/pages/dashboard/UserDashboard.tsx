@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, User, FileText, MessageSquare } from 'lucide-react';
+import { 
+  LogOut, 
+  FileText, 
+  Settings, 
+  Loader2,
+  LayoutDashboard,
+  ChevronLeft,
+  ChevronRight,
+  User as UserIcon
+} from 'lucide-react';
 import { Logo } from '../../components/Logo';
+import { api } from '../../lib/api';
+import { ApiResponse } from '../../types';
+import UserQuotes from './UserQuotes';
+import UserProfile from './UserProfile';
+
+type UserView = 'overview' | 'quotes' | 'profile';
 
 export default function UserDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [activeView, setActiveView] = useState<UserView>('overview');
 
   const handleLogout = async () => {
     await logout();
@@ -18,12 +34,20 @@ export default function UserDashboard() {
       {/* Header */}
       <header className="border-b border-white/10 bg-black/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Logo size="md" showSubtitle={false} />
+          <button 
+            onClick={() => setActiveView('overview')}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
+            <Logo size="md" showSubtitle={false} />
+            <span className="px-2 py-1 bg-white/10 text-white text-[10px] font-black tracking-widest rounded uppercase">
+              Member
+            </span>
+          </button>
 
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-sm font-medium">{user?.firstName || user?.email}</p>
-              <p className="text-xs text-white/60">User Dashboard</p>
+              <p className="text-xs text-white/40 capitalize">{user?.role.toLowerCase()}</p>
             </div>
             <button
               onClick={handleLogout}
@@ -38,74 +62,77 @@ export default function UserDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">
-            Welcome back, {user?.firstName || 'User'}!
-          </h1>
-          <p className="text-white/60">Manage your services and requests</p>
-        </div>
+        {activeView !== 'overview' && (
+          <button
+            onClick={() => setActiveView('overview')}
+            className="flex items-center gap-2 text-white/40 hover:text-white transition-colors mb-8 group"
+          >
+            <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+            Back to Dashboard
+          </button>
+        )}
 
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <div className="card-dark p-6">
-            <div className="flex items-center justify-between mb-4">
-              <FileText className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">0</span>
+        {activeView === 'overview' && (
+          <>
+            <div className="mb-12">
+              <h1 className="text-4xl md:text-5xl font-display font-black mb-4">
+                Welcome back, <span className="text-brand-red">{user?.firstName || 'Valued Customer'}</span>
+              </h1>
+              <p className="text-white/40 text-lg">Track your service requests and manage your account.</p>
             </div>
-            <h3 className="text-white/60 text-sm">Active Quotes</h3>
-          </div>
 
-          <div className="card-dark p-6">
-            <div className="flex items-center justify-between mb-4">
-              <MessageSquare className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">0</span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div 
+                onClick={() => setActiveView('quotes')}
+                className="card-dark p-10 cursor-pointer group hover:border-brand-red/50 transition-all"
+              >
+                <div className="w-16 h-16 bg-brand-red/20 text-brand-red clip-angular-sm flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                  <FileText className="w-8 h-8" />
+                </div>
+                <h2 className="text-3xl font-bold mb-4 text-white">Quote History</h2>
+                <p className="text-white/40 mb-8 leading-relaxed">
+                  View your previous service requests, track their status, and see price estimations from our technicians.
+                </p>
+                <span className="inline-flex items-center gap-2 font-black text-xs uppercase tracking-widest text-brand-red">
+                  View History <ChevronRight className="w-4 h-4" />
+                </span>
+              </div>
+
+              <div 
+                onClick={() => setActiveView('profile')}
+                className="card-dark p-10 cursor-pointer group hover:border-brand-red/50 transition-all"
+              >
+                <div className="w-16 h-16 bg-white/10 text-white clip-angular-sm flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                  <UserIcon className="w-8 h-8" />
+                </div>
+                <h2 className="text-3xl font-bold mb-4 text-white">Profile Settings</h2>
+                <p className="text-white/40 mb-8 leading-relaxed">
+                  Update your contact information, phone number, and preferences to help us serve you better.
+                </p>
+                <span className="inline-flex items-center gap-2 font-black text-xs uppercase tracking-widest text-white/60">
+                  Manage Account <ChevronRight className="w-4 h-4" />
+                </span>
+              </div>
             </div>
-            <h3 className="text-white/60 text-sm">Messages</h3>
-          </div>
 
-          <div className="card-dark p-6">
-            <div className="flex items-center justify-between mb-4">
-              <User className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">Active</span>
+            {/* Quick Actions */}
+            <div className="mt-12 p-8 bg-gradient-to-r from-brand-red to-orange-600 clip-angular-lg flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="text-center md:text-left">
+                 <h3 className="text-2xl font-black text-white mb-2 uppercase tracking-tighter">Need a new service?</h3>
+                 <p className="text-white/80 font-bold">Get a precise technical quote in under 30 minutes.</p>
+              </div>
+              <button 
+                onClick={() => navigate('/quote')}
+                className="px-10 py-4 bg-white text-brand-red font-black text-lg clip-angular-sm hover:scale-105 transition-transform"
+              >
+                REQUEST QUOTE
+              </button>
             </div>
-            <h3 className="text-white/60 text-sm">Account Status</h3>
-          </div>
-        </div>
+          </>
+        )}
 
-        {/* Quick Actions */}
-        <div className="card-dark p-8">
-          <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
-              onClick={() => navigate('/quote')}
-              className="p-6 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-left transition-colors group"
-            >
-              <FileText className="w-8 h-8 text-brand-red mb-3" />
-              <h3 className="font-semibold mb-1 group-hover:text-brand-red transition-colors">
-                Request Quote
-              </h3>
-              <p className="text-sm text-white/60">Get a quote for your vehicle service</p>
-            </button>
-
-            <button
-              onClick={() => navigate('/contact')}
-              className="p-6 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-left transition-colors group"
-            >
-              <MessageSquare className="w-8 h-8 text-brand-red mb-3" />
-              <h3 className="font-semibold mb-1 group-hover:text-brand-red transition-colors">
-                Contact Support
-              </h3>
-              <p className="text-sm text-white/60">Get help from our team</p>
-            </button>
-          </div>
-        </div>
-
-        {/* Coming Soon Notice */}
-        <div className="mt-8 p-6 bg-brand-red/10 border border-brand-red/20 rounded-lg">
-          <p className="text-center text-white/80">
-            <strong>🚧 Dashboard under construction</strong> - Full features coming soon: quote history, service tracking, and more!
-          </p>
-        </div>
+        {activeView === 'quotes' && <UserQuotes />}
+        {activeView === 'profile' && <UserProfile />}
       </main>
     </div>
   );
