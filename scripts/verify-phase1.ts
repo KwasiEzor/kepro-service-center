@@ -1,4 +1,5 @@
 import { api } from '../src/lib/api';
+import { ApiResponse } from '../src/types';
 
 async function testPublicEndpoints() {
   console.log('🧪 Testing Public API Endpoints...');
@@ -18,9 +19,9 @@ async function testPublicEndpoints() {
       urgency: 'normal'
     };
     
-    const quoteRes = await api.post('/api/public/quote', quoteData);
+    const quoteRes = await api.post<ApiResponse>('/api/public/quote', quoteData);
     if (quoteRes.data.success) {
-      console.log('✅ Quote Submission Successful. ID:', quoteRes.data.data.id);
+      console.log('✅ Quote Submission Successful. ID:', quoteRes.data.data?.id);
     } else {
       throw new Error('Quote submission failed: ' + JSON.stringify(quoteRes.data));
     }
@@ -34,9 +35,9 @@ async function testPublicEndpoints() {
       topic: 'General Inquiry'
     };
     
-    const contactRes = await api.post('/api/public/contact', contactData);
+    const contactRes = await api.post<ApiResponse>('/api/public/contact', contactData);
     if (contactRes.data.success) {
-      console.log('✅ Contact Submission Successful. ID:', contactRes.data.data.id);
+      console.log('✅ Contact Submission Successful. ID:', contactRes.data.data?.id);
     } else {
       throw new Error('Contact submission failed: ' + JSON.stringify(contactRes.data));
     }

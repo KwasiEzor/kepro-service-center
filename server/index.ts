@@ -8,6 +8,7 @@ import { validateEnv } from './env';
 import chatRouter from './api';
 import authRoutes from './src/routes/auth.routes';
 import publicRoutes from './src/routes/public.routes';
+import adminRoutes from './src/routes/admin.routes';
 import { errorHandler } from './src/middleware/errorHandler';
 
 const __filename = fileURLToPath(import.meta.url);

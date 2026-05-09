@@ -1,17 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
-import { LogOut, FileText, MessageSquare, Image, Users, Settings } from 'lucide-react';
+import { LogOut, FileText, MessageSquare, Image, Users, Settings, Loader2 } from 'lucide-react';
 import { Logo } from '../../components/Logo';
+import { api } from '../../lib/api';
+import { ApiResponse } from '../../types';
+
+interface Stats {
+  quotesCount: number;
+  contactsCount: number;
+  usersCount: number;
+  imagesCount: number;
+}
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [stats, setStats] = useState<Stats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await api.get<ApiResponse<Stats>>('/api/admin/stats');
+        if (response.data.data) {
+          setStats(response.data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center gradient-bg">
+        <Loader2 className="w-12 h-12 text-brand-red animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen gradient-bg">
@@ -53,7 +89,7 @@ export default function AdminDashboard() {
           <div className="card-dark p-6">
             <div className="flex items-center justify-between mb-4">
               <FileText className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">0</span>
+              <span className="text-3xl font-bold">{stats?.quotesCount || 0}</span>
             </div>
             <h3 className="text-white/60 text-sm">Total Quotes</h3>
           </div>
@@ -61,7 +97,7 @@ export default function AdminDashboard() {
           <div className="card-dark p-6">
             <div className="flex items-center justify-between mb-4">
               <MessageSquare className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">0</span>
+              <span className="text-3xl font-bold">{stats?.contactsCount || 0}</span>
             </div>
             <h3 className="text-white/60 text-sm">Contacts</h3>
           </div>
@@ -69,7 +105,7 @@ export default function AdminDashboard() {
           <div className="card-dark p-6">
             <div className="flex items-center justify-between mb-4">
               <Image className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">0</span>
+              <span className="text-3xl font-bold">{stats?.imagesCount || 0}</span>
             </div>
             <h3 className="text-white/60 text-sm">Images</h3>
           </div>
@@ -77,7 +113,7 @@ export default function AdminDashboard() {
           <div className="card-dark p-6">
             <div className="flex items-center justify-between mb-4">
               <Users className="w-8 h-8 text-brand-red" />
-              <span className="text-3xl font-bold">2</span>
+              <span className="text-3xl font-bold">{stats?.usersCount || 0}</span>
             </div>
             <h3 className="text-white/60 text-sm">Users</h3>
           </div>

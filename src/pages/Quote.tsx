@@ -21,8 +21,8 @@ import {
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
-
 import { api } from '../lib/api';
+import { ApiResponse } from '../types';
 
 type Step = 'service' | 'vehicle' | 'details' | 'success';
 
@@ -59,9 +59,11 @@ export default function Quote() {
   const onSubmit = async (data: QuoteFormData) => {
     setSubmitError(null);
     try {
-      const response = await api.post('/api/public/quote', data);
-      setRefId(response.data.data.id.toUpperCase().slice(-6));
-      setStep('success');
+      const response = await api.post<ApiResponse>('/api/public/quote', data);
+      if (response.data.data) {
+        setRefId(response.data.data.id.toUpperCase().slice(-6));
+        setStep('success');
+      }
     } catch (error: any) {
       console.error('Quote error:', error);
       setSubmitError(error.response?.data?.error || 'Failed to submit. Please call us directly.');
@@ -545,9 +547,9 @@ export default function Quote() {
                   </motion.div>
                 </motion.div>
               )}
-          </AnimatePresence>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
 
         {/* Premium Trust Badges */}
         <motion.div
