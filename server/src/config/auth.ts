@@ -1,9 +1,11 @@
+import { env } from '../../env';
+
 export const authConfig = {
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-secret-key-change-this',
-    refreshSecret: process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-change-this',
-    expiresIn: process.env.JWT_EXPIRES_IN || '15m',
-    refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+    secret: env.JWT_SECRET,
+    refreshSecret: env.JWT_REFRESH_SECRET,
+    expiresIn: env.JWT_EXPIRES_IN,
+    refreshExpiresIn: env.JWT_REFRESH_EXPIRES_IN,
   },
   bcrypt: {
     saltRounds: 12,

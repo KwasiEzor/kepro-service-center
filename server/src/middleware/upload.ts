@@ -2,15 +2,16 @@ import multer from 'multer';
 import path from 'path';
 import { Request } from 'express';
 import { ValidationError } from '../utils/errors';
+import { env } from '../../env';
 
 // Allowed file types
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE || '5242880'); // 5MB default
+const MAX_FILE_SIZE = parseInt(env.MAX_FILE_SIZE);
 
 // Configure storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = process.env.UPLOAD_DIR || './uploads';
+    const uploadDir = env.UPLOAD_DIR;
     const category = (req.query.category as string) || 'temp';
     const dest = path.join(uploadDir, category);
     cb(null, dest);

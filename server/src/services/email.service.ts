@@ -1,19 +1,20 @@
 import nodemailer from 'nodemailer';
 import { CreateQuoteDTO, CreateContactDTO } from '../types';
+import { env } from '../../env';
 
 export class EmailService {
   private transporter: nodemailer.Transporter | null = null;
 
   constructor() {
     // Only initialize if config is present
-    if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+    if (env.SMTP_HOST && env.SMTP_USER) {
       this.transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: parseInt(process.env.SMTP_PORT || '587'),
-        secure: process.env.SMTP_PORT === '465',
+        host: env.SMTP_HOST,
+        port: parseInt(env.SMTP_PORT),
+        secure: env.SMTP_PORT === '465',
         auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
+          user: env.SMTP_USER,
+          pass: env.SMTP_PASS || '',
         },
       });
     } else {
@@ -39,11 +40,11 @@ export class EmailService {
         <p><strong>Description:</strong></p>
         <div style="background: #f9f9f9; padding: 10px; border-radius: 5px;">${quote.description || quote.message || 'No description provided'}</div>
         <br/>
-        <a href="${process.env.FRONTEND_URL}/admin" style="background: #FF6B2C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View in Dashboard</a>
+        <a href="${env.FRONTEND_URL}/admin" style="background: #FF6B2C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View in Dashboard</a>
       </div>
     `;
 
-    return this.sendEmail(process.env.ADMIN_EMAIL || '', subject, html);
+    return this.sendEmail(env.ADMIN_EMAIL || '', subject, html);
   }
 
   /**
@@ -61,11 +62,11 @@ export class EmailService {
         <p><strong>Message:</strong></p>
         <div style="background: #f9f9f9; padding: 10px; border-radius: 5px;">${contact.message}</div>
         <br/>
-        <a href="${process.env.FRONTEND_URL}/admin" style="background: #FF6B2C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View in Dashboard</a>
+        <a href="${env.FRONTEND_URL}/admin" style="background: #FF6B2C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View in Dashboard</a>
       </div>
     `;
 
-    return this.sendEmail(process.env.ADMIN_EMAIL || '', subject, html);
+    return this.sendEmail(env.ADMIN_EMAIL || '', subject, html);
   }
 
   /**
@@ -82,7 +83,7 @@ export class EmailService {
 
     try {
       await this.transporter.sendMail({
-        from: process.env.SMTP_FROM || '"KeyPro Service" <noreply@keypro.service>',
+        from: env.SMTP_FROM,
         to,
         subject,
         html,

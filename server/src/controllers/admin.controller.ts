@@ -5,6 +5,7 @@ import { QuoteStatus, ContactStatus } from '@prisma/client';
 import { AuthRequest } from '../types';
 import fs from 'fs/promises';
 import path from 'path';
+import { env } from '../../env';
 
 export class AdminController {
   /**
@@ -171,7 +172,7 @@ export class AdminController {
       }
 
       // Delete from filesystem
-      const uploadDir = process.env.UPLOAD_DIR || './uploads';
+      const uploadDir = env.UPLOAD_DIR;
       const filePath = path.join(process.cwd(), uploadDir, image.category || 'temp', image.filename);
       
       try {

@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { validateEnv } from './env';
+import { env } from './env';
 import chatRouter from './api';
 import authRoutes from './src/routes/auth.routes';
 import publicRoutes from './src/routes/public.routes';
@@ -16,10 +16,10 @@ import logger from './src/utils/logger';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-validateEnv();
+// Environment validation happens automatically on import
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = parseInt(env.PORT);
 
 // Security middleware
 app.use(helmet());
@@ -27,7 +27,7 @@ app.use(helmet());
 // CORS configuration
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: env.FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -40,7 +40,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // Serve static uploads
-const uploadDir = process.env.UPLOAD_DIR || 'uploads';
+const uploadDir = env.UPLOAD_DIR;
 const uploadsPath = path.isAbsolute(uploadDir) 
   ? uploadDir 
   : path.join(process.cwd(), uploadDir);

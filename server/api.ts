@@ -6,7 +6,9 @@ import fs from 'fs/promises';
 const router = express.Router();
 
 // Initialize the SDK
-const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+import { env } from './env';
+
+const genAI = new GoogleGenAI({ apiKey: env.GEMINI_API_KEY });
 
 interface ChatMessage {
   role: 'user' | 'bot';

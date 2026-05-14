@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/errors';
 import logger from '../utils/logger';
+import { env } from '../../env';
 
 /**
  * Global error handling middleware
@@ -48,7 +49,7 @@ export const errorHandler = (
   // Default error
   return res.status(500).json({
     success: false,
-    error: process.env.NODE_ENV === 'production'
+    error: env.NODE_ENV === 'production'
       ? 'Internal server error'
       : error.message,
   });
