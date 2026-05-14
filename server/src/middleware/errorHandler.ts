@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../utils/errors';
+import logger from '../utils/logger';
 
 /**
  * Global error handling middleware
@@ -10,7 +11,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error('Error:', error);
+  logger.error(error);
 
   if (error instanceof AppError) {
     return res.status(error.statusCode).json({

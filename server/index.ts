@@ -11,6 +11,7 @@ import publicRoutes from './src/routes/public.routes';
 import adminRoutes from './src/routes/admin.routes';
 import userRoutes from './src/routes/user.routes';
 import { errorHandler } from './src/middleware/errorHandler';
+import logger from './src/utils/logger';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -70,8 +71,8 @@ app.use((req, res) => {
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`✅ API server on http://localhost:${PORT}`);
-  console.log(`📁 Uploads directory: ${uploadDir}`);
-  console.log(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);
-  console.log(`💬 Chat endpoint: http://localhost:${PORT}/api/chat`);
+  logger.info(`✅ API server on http://localhost:${PORT}`);
+  logger.info(`📁 Uploads directory: ${uploadDir}`);
+  logger.info(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);
+  logger.info(`💬 Chat endpoint: http://localhost:${PORT}/api/chat`);
 });
