@@ -8,12 +8,30 @@ import { env } from '../../env';
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 const MAX_FILE_SIZE = parseInt(env.MAX_FILE_SIZE);
 
+// Allowed upload categories (whitelist)
+const ALLOWED_CATEGORIES = ['gallery', 'temp', 'documents'] as const;
+
 // Configure storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = env.UPLOAD_DIR;
     const category = (req.query.category as string) || 'temp';
+
+    // Validate category whitelist
+    if (!ALLOWED_CATEGORIES.includes(category as any)) {
+      return cb(new ValidationError(`Invalid category. Allowed: ${ALLOWED_CATEGORIES.join(', ')}`), '');
+    }
+
     const dest = path.join(uploadDir, category);
+
+    // Prevent path traversal
+    const resolvedDest = path.resolve(dest);
+    const resolvedUploadDir = path.resolve(uploadDir);
+
+    if (!resolvedDest.startsWith(resolvedUploadDir)) {
+      return cb(new ValidationError('Invalid upload path'), '');
+    }
+
     cb(null, dest);
   },
   filename: (req, file, cb) => {
