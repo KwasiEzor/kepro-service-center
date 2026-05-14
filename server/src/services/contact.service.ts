@@ -1,9 +1,11 @@
 import prisma from '../config/database';
 import { ContactStatus } from '@prisma/client';
+import { CreateContactDTO } from '../types';
+import emailService from './email.service';
 
 export class ContactService {
-  async createContact(data: any) {
-    return prisma.contact.create({
+  async createContact(data: CreateContactDTO) {
+    const contact = await prisma.contact.create({
       data: {
         userId: data.userId,
         name: data.name,
@@ -14,6 +16,11 @@ export class ContactService {
         status: ContactStatus.NEW,
       },
     });
+
+    // Send async notification
+    emailService.sendAdminContactNotification(data);
+
+    return contact;
   }
 
   async getContactsByUser(userId: string) {

@@ -127,7 +127,8 @@ export class AdminController {
     try {
       const authReq = req as AuthRequest;
       const file = req.file;
-      const { category, alt } = req.body;
+      const { alt } = req.body;
+      const category = req.query.category as string;
 
       if (!file) {
         return sendError(res, 'No file uploaded', 400);
@@ -265,6 +266,82 @@ export class AdminController {
       const { id } = req.params;
       await prisma.fAQ.delete({ where: { id } });
       return sendSuccess(res, null, 'FAQ deleted');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // --- Users Management ---
+
+  async getUsers(req: Request, res: Response, next: NextFunction) {
+    try {
+      const users = await prisma.user.findMany({
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          phone: true,
+          role: true,
+          emailVerified: true,
+          createdAt: true,
+          updatedAt: true,
+          _count: {
+            select: {
+              quotes: true,
+              contacts: true
+            }
+          }
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      return sendSuccess(res, users);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async updateUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { role, firstName, lastName, phone } = req.body;
+
+      const user = await prisma.user.update({
+        where: { id },
+        data: {
+          role,
+          firstName,
+          lastName,
+          phone
+        },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          lastName: true,
+          phone: true,
+          role: true
+        }
+      });
+
+      return sendSuccess(res, user, 'User updated successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      
+      // Prevent deleting self
+      const authReq = req as AuthRequest;
+      if (authReq.user?.id === id) {
+        return sendError(res, 'You cannot delete your own account', 400);
+      }
+
+      await prisma.user.delete({ where: { id } });
+      return sendSuccess(res, null, 'User deleted successfully');
     } catch (error) {
       next(error);
     }

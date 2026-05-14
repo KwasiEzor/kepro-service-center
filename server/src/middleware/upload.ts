@@ -11,7 +11,7 @@ const MAX_FILE_SIZE = parseInt(process.env.MAX_FILE_SIZE || '5242880'); // 5MB d
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const uploadDir = process.env.UPLOAD_DIR || './uploads';
-    const category = (req.body.category as string) || 'temp';
+    const category = (req.query.category as string) || 'temp';
     const dest = path.join(uploadDir, category);
     cb(null, dest);
   },

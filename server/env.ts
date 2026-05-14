@@ -1,5 +1,10 @@
 export function validateEnv() {
-  const required = ['GEMINI_API_KEY'];
+  const required = [
+    'DATABASE_URL',
+    'JWT_SECRET',
+    'FRONTEND_URL',
+    'GEMINI_API_KEY'
+  ];
   const missing = required.filter((key) => !process.env[key]);
 
   if (missing.length > 0) {

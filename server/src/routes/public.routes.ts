@@ -11,6 +11,7 @@ const quoteSchema = z.object({
   brand: z.string().min(2),
   model: z.string().min(1),
   year: z.string(),
+  location: z.string().optional(),
   name: z.string().min(2),
   email: z.string().email(),
   phone: z.string().min(10),
@@ -45,5 +46,6 @@ router.post(
 // New public read-only endpoints
 router.get('/services', (req, res, next) => publicController.getServices(req, res, next));
 router.get('/faqs', (req, res, next) => publicController.getFAQs(req, res, next));
+router.get('/gallery', (req, res, next) => publicController.getGallery(req, res, next));
 
 export default router;

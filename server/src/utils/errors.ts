@@ -5,7 +5,8 @@ export class AppError extends Error {
     public isOperational = true
   ) {
     super(message);
-    Object.setPrototypeOf(this, AppError.prototype);
+    this.name = this.constructor.name;
+    Object.setPrototypeOf(this, new.target.prototype);
     Error.captureStackTrace(this, this.constructor);
   }
 }

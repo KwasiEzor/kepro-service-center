@@ -21,6 +21,7 @@ import ContactsTable from './ContactsTable';
 import GalleryManagement from './GalleryManagement';
 import ServicesManagement from './ServicesManagement';
 import FaqManagement from './FaqManagement';
+import UsersManagement from './UsersManagement';
 
 interface Stats {
   quotesCount: number;
@@ -160,7 +161,7 @@ export default function AdminDashboard() {
 
               <button 
                 onClick={() => setActiveView('users')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group opacity-50"
+                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
               >
                 <div className="flex items-center justify-between mb-4">
                   <Users className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
@@ -242,15 +243,18 @@ export default function AdminDashboard() {
                 <span className="text-sm text-brand-red">Manage FAQ →</span>
               </div>
 
-              <div className="card-dark p-6 hover:bg-white/5 transition-colors cursor-pointer group opacity-50">
+              <div 
+                onClick={() => setActiveView('users')}
+                className="card-dark p-6 hover:bg-white/5 transition-colors cursor-pointer group"
+              >
                 <Users className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
                   User Management
                 </h3>
                 <p className="text-white/60 text-sm mb-4">
                   Manage users and permissions
                 </p>
-                <span className="text-sm text-brand-red">Coming Soon</span>
+                <span className="text-sm text-brand-red">Manage Users →</span>
               </div>
             </div>
           </>
@@ -261,8 +265,9 @@ export default function AdminDashboard() {
         {activeView === 'gallery' && <GalleryManagement />}
         {activeView === 'services' && <ServicesManagement />}
         {activeView === 'faq' && <FaqManagement />}
+        {activeView === 'users' && <UsersManagement />}
         
-        {['users'].includes(activeView) && (
+        {[''].includes(activeView) && (
           <div className="text-center py-40">
             <h2 className="text-4xl font-bold mb-4 capitalize">{activeView} Management</h2>
             <p className="text-white/40 text-lg">This section is currently under construction.</p>

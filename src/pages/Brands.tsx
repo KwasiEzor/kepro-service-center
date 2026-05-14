@@ -4,9 +4,14 @@ import { LazyImage } from '../components/LazyImage';
 import { ShieldCheck, Zap, Cpu, Key, CheckCircle2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Brands() {
   const { t } = useTranslation();
+  useSEO({
+    title: t('nav.brands'),
+    description: t('brands.subtitle')
+  });
 
   // Premium car images for brand categories
   const categoryImages = {

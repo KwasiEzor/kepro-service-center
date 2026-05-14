@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { MessageSquare, X, Send, User, Bot, Loader2 } from 'lucide-react';
+import { MessageSquare, X, Send, User, Bot, Loader2, Camera, Paperclip } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 
@@ -13,6 +13,7 @@ export default function ChatBot() {
   ]);
   const [isLoading, setIsLoading] = React.useState(false);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+  const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     if (scrollRef.current) {
@@ -29,7 +30,8 @@ export default function ChatBot() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:3001/api/chat', {
+      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${baseUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -55,6 +57,36 @@ export default function ChatBot() {
       ]);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsLoading(true);
+    setMessages(prev => [...prev, { role: 'user', content: `[Image Upload: ${file.name}]` }]);
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${baseUrl}/api/chat/vision`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) throw new Error('Vision analysis failed');
+
+      const data = await response.json();
+      setMessages(prev => [...prev, { role: 'bot', content: data.response }]);
+    } catch (error) {
+      console.error('Vision error:', error);
+      setMessages(prev => [...prev, { role: 'bot', content: "I'm sorry, I couldn't analyze that image. Please try again or explain the issue." }]);
+    } finally {
+      setIsLoading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     }
   };
 
@@ -109,42 +141,59 @@ export default function ChatBot() {
                     "p-4 rounded-[20px]",
                     msg.role === 'user' 
                       ? "bg-brand-red text-white rounded-tr-none" 
-                      : "glass text-white/90 rounded-tl-none"
+                      : "glass text-white/90 rounded-tl-none shadow-lg border border-white/5"
                   )}>
-                    <p className="text-sm leading-relaxed">{msg.content}</p>
+                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
                   </div>
                   <span className="text-[10px] text-white/30 mt-1 px-2 font-medium">
-                    {msg.role === 'user' ? 'You' : 'KeyPro AI'}
+                    {msg.role === 'user' ? 'You' : 'KeyPro AI Assistant'}
                   </span>
                 </motion.div>
               ))}
               {isLoading && (
                 <div className="flex gap-2 items-center text-white/40 ml-2">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-[10px] font-medium tracking-wider">AI IS THINKING...</span>
+                  <span className="text-[10px] font-medium tracking-wider">AI IS ANALYZING...</span>
                 </div>
               )}
             </div>
 
             {/* Input */}
             <div className="p-4 glass border-t border-white/10">
-              <div className="relative">
+              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full py-1 px-2 pr-1 focus-within:border-brand-red focus-within:bg-white/10 transition-all group">
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                  accept="image/*"
+                  className="hidden"
+                />
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="p-2 hover:bg-white/10 rounded-full text-white/40 hover:text-white transition-colors"
+                  title="Upload dashboard photo for AI diagnostic"
+                >
+                  <Camera className="w-5 h-5" />
+                </button>
                 <input
                   type="text"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder={t('chatbot.placeholder')}
-                  className="w-full bg-white/5 border border-white/10 rounded-full py-3 px-5 pr-12 focus:outline-none focus:border-brand-red focus:bg-white/10 transition-all text-sm"
+                  className="flex-1 bg-transparent border-none py-2 px-2 focus:outline-none text-sm"
                 />
                 <button
                   onClick={handleSend}
                   disabled={!message.trim() || isLoading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-brand-red rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+                  className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-50 shadow-lg"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
+              <p className="text-[9px] text-white/30 mt-2 px-4 text-center">
+                Tip: Upload a photo of your dashboard for an instant AI diagnostic.
+              </p>
             </div>
           </motion.div>
         )}

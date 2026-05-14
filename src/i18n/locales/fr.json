@@ -2,6 +2,7 @@
   "nav": {
     "home": "Accueil",
     "services": "Services",
+    "gallery": "Galerie",
     "about": "À Propos",
     "brands": "Marques",
     "contact": "Contact",
@@ -10,11 +11,20 @@
   "home": {
     "hero": {
       "badge": "Service Mobile Premium",
-      "title": "Technicien Auto Mobile",
+      "titlePart1": "Technicien",
+      "titlePart2": "Auto Mobile",
       "subtitle": "Clés, Diagnostic, Programmation",
       "description": "Solution technique haut de gamme directement chez vous.",
       "requestService": "Demander un Service",
       "exploreServices": "Explorer les Services",
+      "floating": {
+        "verified": "Vérifié",
+        "responseTitle": "Réponse Éclair",
+        "responseDesc": "Codage de clé sur place sous 45 minutes.",
+        "supportTitle": "Support Premium",
+        "supportQuote": "A sauvé mes vacances quand j'ai perdu mes clés de Porsche. Service professionnel !",
+        "supportAuthor": "Jean-Marc, Paris"
+      },
       "premiumBrands": {
         "bmw": "BMW",
         "audi": "Audi",
@@ -24,15 +34,15 @@
       }
     },
     "stats": {
-      "successfulServices": "Services Réussis",
-      "expertTechnicians": "Techniciens Experts",
-      "responseTime": "Temps de Réponse",
-      "clientRating": "Note Client"
+      "services": "Services Réussis",
+      "technicians": "Techniciens Experts",
+      "response": "Temps de Réponse",
+      "rating": "Note Client"
     },
     "services": {
       "badge": "Notre Expertise",
-      "title": "Solutions Premium",
-      "subtitle": "Pour Votre Véhicule",
+      "titlePart1": "Solutions Premium",
+      "titlePart2": "Pour Votre Véhicule",
       "description": "Nous utilisons les derniers outils de diagnostic européens et des composants authentiques pour garantir que l'électronique de votre voiture reste aux normes d'usine.",
       "seeAll": "Voir Tous les Services",
       "carKeys": {
@@ -66,7 +76,8 @@
     },
     "cta": {
       "badge": "Service d'Urgence 24/7",
-      "title": "Verrouillé ou besoin d'aide urgente ?",
+      "titlePart1": "Verrouillé ou besoin",
+      "titlePart2": "d'aide urgente ?",
       "description": "Nos unités mobiles prioritaires interviennent 24/7. Le temps de réponse moyen dans les zones centrales est inférieur à 30 minutes.",
       "callNow": "APPELER MAINTENANT",
       "contactSupport": "Contacter le Support"
@@ -75,7 +86,8 @@
   "services": {
     "header": {
       "badge": "Technologies Automobiles Spécialisées",
-      "title": "Expertise Technique",
+      "titlePart1": "Expertise",
+      "titlePart2": "Technique",
       "description": "Nous comblons le fossé entre le matériel mécanique et le logiciel numérique. Nos techniciens sont formés aux dernières technologies d'antidémarrage et protocoles de diagnostic."
     },
     "categories": {
@@ -161,8 +173,11 @@
     }
   },
   "about": {
-    "title": "Redéfinir le Support Auto",
-    "description": "Fondé en 2018, KeyPro est né d'une frustration face aux délais des concessionnaires traditionnels et aux horaires d'atelier rigides. Nous avons imaginé un monde où des compétences techniques d'élite pourraient être déployées à la demande.",
+    "hero": {
+      "title1": "Redéfinir le",
+      "title2": "Support Auto",
+      "description": "Fondé en 2018, KeyPro est né d'une frustration face aux délais des concessionnaires traditionnels et aux horaires d'atelier rigides. Nous avons imaginé un monde où des compétences techniques d'élite pourraient être déployées à la demande."
+    },
     "values": {
       "excellence": {
         "title": "Excellence Technique",
@@ -262,7 +277,8 @@
   "quote": {
     "header": {
       "badge": "Devis Instantané",
-      "title": "Obtenez Votre Estimation.",
+      "titlePart1": "Obtenez Votre",
+      "titlePart2": "Estimation",
       "description": "Répondez à quelques questions sur votre véhicule et votre problème. Notre système IA analyse votre cas et fournit une estimation de prix instantanée avec les prochaines étapes recommandées."
     },
     "services": {
@@ -363,7 +379,7 @@
       },
       "q5": {
         "question": "Pouvez-vous réparer les problèmes d'antidémarrage que le concessionnaire dit nécessiter un remplacement complet de l'ECU ?",
-        "answer": "Souvent, oui. De nombreux défauts d'antidémarrage sont des erreurs de synchronisation logicielles. Alors que les concessionnaires préfèrent remplacer des modules entiers, nous avons les outils binaires pour réparer les données à l'intérieur des modules, ce qui peut vous faire économiser des milliers d'euros."
+        "answer": "Souvent, oui. De nombreux défauts d'antidémarrage sont des erreurs de synchronisation logicielles. Alors que les concessionnaires préfèrent remplacer des modules entiers, nous avons les outils pour réparer les données à l'intérieur des modules, ce qui peut vous faire économiser des milliers d'euros."
       },
       "q6": {
         "question": "Quelles informations dois-je fournir pour un devis ?",
@@ -441,6 +457,23 @@
       "button": "Renseignez-vous sur votre modèle"
     }
   },
+  "gallery": {
+    "header": {
+      "badge": "Notre Portfolio",
+      "titlePart1": "Vitrine",
+      "titlePart2": "Visuelle",
+      "description": "Explorez nos récentes interventions techniques. De la programmation de clés de luxe aux diagnostics électroniques complexes, nous documentons notre engagement envers l'excellence automobile."
+    },
+    "filters": {
+      "all": "Tout",
+      "cars": "Voitures",
+      "keys": "Clés",
+      "diagnostics": "Diagnostics",
+      "services": "Services"
+    },
+    "empty": "Aucun élément trouvé dans cette catégorie.",
+    "viewImage": "Voir l'image"
+  },
   "chatbot": {
     "title": "KeyPro IA",
     "status": "Support en Ligne",
@@ -489,6 +522,12 @@
     "readMore": "Lire Plus",
     "learnMore": "En Savoir Plus",
     "getStarted": "Commencer",
-    "contactUs": "Nous Contacter"
+    "contactUs": "Nous Contacter",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "logout": "Déconnexion",
+    "dashboard": "Tableau de Bord",
+    "admin": "Admin",
+    "account": "Compte"
   }
 }

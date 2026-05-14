@@ -39,8 +39,12 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // Serve static uploads
-const uploadDir = process.env.UPLOAD_DIR || './uploads';
-app.use('/uploads', express.static(path.join(__dirname, '..', uploadDir)));
+const uploadDir = process.env.UPLOAD_DIR || 'uploads';
+const uploadsPath = path.isAbsolute(uploadDir) 
+  ? uploadDir 
+  : path.join(process.cwd(), uploadDir);
+
+app.use('/uploads', express.static(uploadsPath));
 
 // API routes
 app.use('/api/chat', chatRouter); // Existing Gemini chatbot route

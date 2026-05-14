@@ -2,7 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { PenTool as Tool, Phone, Info, HelpCircle, MessageSquare, Car, Menu, X, ChevronRight, User, LogOut, LayoutDashboard, Shield } from 'lucide-react';
+import { PenTool as Tool, Phone, Info, HelpCircle, MessageSquare, Car, Menu, X, ChevronRight, User, LogOut, LayoutDashboard, Shield, Camera } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -12,6 +12,7 @@ import { UserRole } from '../types';
 
 const navItems = [
   { name: 'services', href: '/services', icon: Tool },
+  { name: 'gallery', href: '/gallery', icon: Camera },
   { name: 'brands', href: '/brands', icon: Car },
   { name: 'about', href: '/about', icon: Info },
   { name: 'contact', href: '/contact', icon: Phone },
@@ -40,13 +41,13 @@ export default function Navbar() {
       animate={{ y: 0 }}
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 px-4 sm:px-6 md:px-12',
-        isScrolled ? 'py-3' : 'py-6'
+        (isScrolled || isMobileMenuOpen) ? 'py-3' : 'py-6'
       )}
     >
       {/* Industrial Navbar - Angular Design */}
       <nav className={cn(
-        'max-w-7xl mx-auto flex items-center justify-between px-6 py-4 transition-all duration-500 relative overflow-visible',
-        isScrolled ? 'glass-dark shadow-2xl' : 'glass'
+        'max-w-7xl mx-auto flex items-center justify-between px-6 py-4 transition-all duration-500 relative overflow-visible z-50',
+        (isScrolled || isMobileMenuOpen) ? 'glass-dark shadow-2xl' : 'glass'
       )}
       style={{
         clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)'
@@ -57,7 +58,7 @@ export default function Navbar() {
         <div className="absolute bottom-0 right-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
 
         {/* Logo */}
-        <Logo className="z-50" size="md" />
+        <Logo className="relative z-50" size="md" />
 
         {/* Desktop Nav - Industrial Style */}
         <div className="hidden md:flex items-center gap-1">
@@ -104,7 +105,7 @@ export default function Navbar() {
           {/* Mobile Menu Toggle - Square */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden z-50 p-2 glass border border-white/10"
+            className="md:hidden relative z-50 p-2 glass border border-white/10"
             style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -176,6 +177,7 @@ export default function Navbar() {
 
 // Auth buttons component
 function AuthButtons() {
+  const { t } = useTranslation();
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserMenu, setShowUserMenu] = React.useState(false);
@@ -194,14 +196,14 @@ function AuthButtons() {
           to="/login"
           className="hidden sm:block px-4 py-2 text-xs font-bold uppercase tracking-wider text-white/80 hover:text-white transition-colors"
         >
-          Login
+          {t('common.login')}
         </Link>
         <Link
           to="/register"
           className="hidden sm:block px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider transition-all"
           style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
         >
-          Register
+          {t('common.register')}
         </Link>
       </>
     );
@@ -218,10 +220,10 @@ function AuthButtons() {
         >
           <User className="w-4 h-4" />
           <span className="text-xs font-bold uppercase tracking-wider">
-            {user?.firstName || 'Account'}
+            {user?.firstName || t('common.account')}
           </span>
           {user?.role === UserRole.ADMIN && (
-            <Shield className="w-3 h-3 text-brand-red" />
+            <Shield className="w-3 h-3 text-[var(--color-brand-orange-primary)] shadow-[0_0_10px_var(--color-brand-orange-primary)]" />
           )}
         </button>
       </div>
@@ -243,8 +245,8 @@ function AuthButtons() {
               <p className="text-sm font-semibold">{user?.firstName} {user?.lastName}</p>
               <p className="text-xs text-white/60">{user?.email}</p>
               {user?.role === UserRole.ADMIN && (
-                <span className="inline-block mt-2 px-2 py-1 bg-brand-red/20 text-brand-red text-xs font-bold uppercase tracking-wider">
-                  Admin
+                <span className="inline-block mt-2 px-2 py-1 bg-[var(--color-brand-orange-primary)]/20 text-[var(--color-brand-orange-primary)] text-xs font-bold uppercase tracking-wider">
+                  {t('common.admin')}
                 </span>
               )}
             </div>
@@ -256,15 +258,15 @@ function AuthButtons() {
                 className="flex items-center gap-3 px-3 py-2 hover:bg-white/10 rounded text-sm transition-colors"
               >
                 <LayoutDashboard className="w-4 h-4" />
-                Dashboard
+                {t('common.dashboard')}
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/10 rounded text-sm transition-colors text-red-400"
+                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/10 rounded text-sm transition-colors text-orange-400"
               >
                 <LogOut className="w-4 h-4" />
-                Logout
+                {t('common.logout')}
               </button>
             </div>
           </motion.div>,

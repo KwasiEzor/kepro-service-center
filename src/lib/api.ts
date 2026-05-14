@@ -34,9 +34,9 @@ class ApiClient {
     try {
       const response = await fetch(url.toString(), config);
       
-      if (response.status === 401) {
+      if (response.status === 401 && !(options as any)._retry) {
         // Handle token refresh
-        return this.handleUnauthorized<T>(endpoint, options);
+        return this.handleUnauthorized<T>(endpoint, { ...options, _retry: true } as any);
       }
 
       if (!response.ok) {

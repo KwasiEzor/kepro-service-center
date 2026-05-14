@@ -13,6 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { api } from '../lib/api';
+import { useSEO } from '../hooks/useSEO';
 import { Service, ApiResponse } from '../types';
 
 const serviceImages = {
@@ -31,6 +32,10 @@ const categoryIcons: Record<string, any> = {
 
 export default function Services() {
   const { t, i18n } = useTranslation();
+  useSEO({
+    title: t('nav.services'),
+    description: t('services.header.description')
+  });
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -114,9 +119,9 @@ export default function Services() {
           transition={{ delay: 0.1, duration: 0.8 }}
           className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-[1.05]"
         >
-          <span className="block text-white">{t('services.header.title').split(' ')[0]}</span>
+          <span className="block text-white">{t('services.header.titlePart1')}</span>
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
-            {t('services.header.title').split(' ')[1]}
+            {t('services.header.titlePart2')}
           </span>
         </motion.h1>
 

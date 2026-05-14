@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { useSEO } from '../hooks/useSEO';
 import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
 import { api } from '../lib/api';
 import { ApiResponse } from '../types';
@@ -28,6 +29,10 @@ type Step = 'service' | 'vehicle' | 'details' | 'success';
 
 export default function Quote() {
   const { t } = useTranslation();
+  useSEO({
+    title: t('nav.quote'),
+    description: t('quote.header.description')
+  });
   const [step, setStep] = React.useState<Step>('service');
   const [serviceType, setServiceType] = React.useState('');
   const [refId, setRefId] = React.useState('');
@@ -45,15 +50,20 @@ export default function Quote() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
+    trigger,
   } = useForm<QuoteFormData>({
     resolver: zodResolver(quoteFormSchema),
   });
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (step === 'service') {
+      if (!serviceType) return;
       setValue('serviceType', serviceType as any);
       setStep('vehicle');
-    } else if (step === 'vehicle') setStep('details');
+    } else if (step === 'vehicle') {
+      const isValid = await trigger(['brand', 'model', 'year', 'location']);
+      if (isValid) setStep('details');
+    }
   };
 
   const onSubmit = async (data: QuoteFormData) => {
@@ -99,9 +109,9 @@ export default function Quote() {
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl font-display font-black mb-4 leading-[1.1]"
           >
-            <span className="block text-white">{t('quote.header.title').split('.')[0]}</span>
+            <span className="block text-white">{t('quote.header.titlePart1')}</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
-              {t('quote.header.title').split('.')[1]?.split(' ')[1] || 'Service'}
+              {t('quote.header.titlePart2')}
             </span>
           </motion.h1>
         </div>

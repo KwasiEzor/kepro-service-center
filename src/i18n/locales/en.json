@@ -2,6 +2,7 @@
   "nav": {
     "home": "Home",
     "services": "Services",
+    "gallery": "Gallery",
     "about": "About",
     "brands": "Brands",
     "contact": "Contact",
@@ -10,11 +11,20 @@
   "home": {
     "hero": {
       "badge": "Premium Mobile Service",
-      "title": "Mobile Auto Technician",
+      "titlePart1": "Mobile",
+      "titlePart2": "Auto Technician",
       "subtitle": "Keys, Diagnostics, Programming",
       "description": "Premium technical solution directly at your location.",
       "requestService": "Request Service",
       "exploreServices": "Explore Services",
+      "floating": {
+        "verified": "Verified",
+        "responseTitle": "Lightning Response",
+        "responseDesc": "On-site key coding within 45 minutes.",
+        "supportTitle": "Premium Support",
+        "supportQuote": "Saved my holiday when I lost my Porsche keys. Professional service!",
+        "supportAuthor": "Jean-Marc, Paris"
+      },
       "premiumBrands": {
         "bmw": "BMW",
         "audi": "Audi",
@@ -24,15 +34,15 @@
       }
     },
     "stats": {
-      "successfulServices": "Successful Services",
-      "expertTechnicians": "Expert Technicians",
-      "responseTime": "Response Time",
-      "clientRating": "Client Rating"
+      "services": "Successful Services",
+      "technicians": "Expert Technicians",
+      "response": "Response Time",
+      "rating": "Client Rating"
     },
     "services": {
       "badge": "Our Expertise",
-      "title": "Premium Solutions",
-      "subtitle": "For Your Vehicle",
+      "titlePart1": "Premium Solutions",
+      "titlePart2": "For Your Vehicle",
       "description": "We use the latest European diagnostic tools and authentic components to ensure your car's electronics remain factory-standard.",
       "seeAll": "See All Services",
       "carKeys": {
@@ -66,7 +76,8 @@
     },
     "cta": {
       "badge": "24/7 Emergency Service",
-      "title": "Locked out or need urgent assistance?",
+      "titlePart1": "Locked out or need",
+      "titlePart2": "urgent assistance?",
       "description": "Our priority mobile units are dispatching 24/7. Average response time in central areas is under 30 minutes.",
       "callNow": "CALL NOW",
       "contactSupport": "Contact Support"
@@ -75,7 +86,8 @@
   "services": {
     "header": {
       "badge": "Specialist Automotive Tech",
-      "title": "Technical Expertise",
+      "titlePart1": "Technical",
+      "titlePart2": "Expertise",
       "description": "We bridge the gap between mechanical hardware and digital software. Our technicians are trained in the latest immobilizer technologies and diagnostic protocols."
     },
     "categories": {
@@ -161,8 +173,11 @@
     }
   },
   "about": {
-    "title": "Redefining Auto Support",
-    "description": "Founded in 2018, KeyPro was born out of frustration with traditional dealer lead times and rigid workshop schedules. We envisioned a world where elite technical skill could be dispatched on-demand.",
+    "hero": {
+      "title1": "Redefining",
+      "title2": "Auto Support",
+      "description": "Founded in 2018, KeyPro was born out of frustration with traditional dealer lead times and rigid workshop schedules. We envisioned a world where elite technical skill could be dispatched on-demand."
+    },
     "values": {
       "excellence": {
         "title": "Technical Excellence",
@@ -262,7 +277,8 @@
   "quote": {
     "header": {
       "badge": "Instant Quote",
-      "title": "Get Your Estimate.",
+      "titlePart1": "Get Your",
+      "titlePart2": "Estimate",
       "description": "Answer a few questions about your vehicle and issue. Our AI system analyzes your case and provides instant pricing estimation with recommended next steps."
     },
     "services": {
@@ -363,7 +379,7 @@
       },
       "q5": {
         "question": "Can you fix immobilizer issues that the dealer says require a full ECU replacement?",
-        "answer": "Often, yes. Many immobilizer faults are software-based synchronization errors. While dealers prefer to replace entire modules, we have the binary tools to repair the data inside the modules, potentially saving you thousands."
+        "answer": "Often, yes. Many immobilizer faults are software-based synchronization errors. While dealers prefer to replace entire modules, we have the tools to repair the data inside the modules, potentially saving you thousands."
       },
       "q6": {
         "question": "What information do I need to provide for a quote?",
@@ -391,13 +407,13 @@
         },
         "mercedes": {
           "name": "Mercedes",
-          "series": "FBS 3 & 4 Systems",
+          "series": "Systèmes FBS 3 & 4",
           "features": ["EIS Repair", "ELV Repair", "AMG Coding"]
         },
         "audiVw": {
           "name": "Audi / VW",
           "series": "MQB & MLB Platform",
-          "features": ["Immo 4th/5th Gen", "Component Protection", "Virtual Cockpit Sync"]
+          "features": ["Immo 4th/5th Gen", "Protection Composants", "Synch Cockpit Virtuel"]
         },
         "porsche": {
           "name": "Porsche",
@@ -440,6 +456,23 @@
       "description": "Our technical toolchain expands monthly. Even if your manufacturer isn't listed above, we likely have the protocols to support its basic diagnostic and key coding requirements.",
       "button": "Inquire about your model"
     }
+  },
+  "gallery": {
+    "header": {
+      "badge": "Our Portfolio",
+      "titlePart1": "Visual",
+      "titlePart2": "Showcase",
+      "description": "Explore our recent technical interventions. From luxury car key programming to complex electronic diagnostics, we document our commitment to automotive excellence."
+    },
+    "filters": {
+      "all": "All",
+      "cars": "Cars",
+      "keys": "Keys",
+      "diagnostics": "Diagnostics",
+      "services": "Services"
+    },
+    "empty": "No items found in this category.",
+    "viewImage": "View Image"
   },
   "chatbot": {
     "title": "KeyPro AI",
@@ -489,6 +522,12 @@
     "readMore": "Read More",
     "learnMore": "Learn More",
     "getStarted": "Get Started",
-    "contactUs": "Contact Us"
+    "contactUs": "Contact Us",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "dashboard": "Dashboard",
+    "admin": "Admin",
+    "account": "Account"
   }
 }

@@ -1,16 +1,23 @@
 import express from 'express';
 import { GoogleGenAI } from '@google/genai';
-import { z } from 'zod';
+import { uploadSingle } from './src/middleware/upload';
+import fs from 'fs/promises';
 
 const router = express.Router();
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+
+// Initialize the SDK
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 interface ChatMessage {
   role: 'user' | 'bot';
   content: string;
 }
 
-router.post('/chat', async (req, res) => {
+/**
+ * AI Chatbot Endpoint
+ * POST /api/chat
+ */
+router.post('/', async (req, res) => {
   try {
     const { message, history } = req.body as {
       message: string;
@@ -21,92 +28,90 @@ router.post('/chat', async (req, res) => {
       return res.status(400).json({ error: 'Invalid message' });
     }
 
-    if (message.length > 1000) {
+    if (message.length > 2000) {
       return res.status(400).json({ error: 'Message too long' });
     }
 
-    const systemPrompt = 'You are the AI assistant for KeyPro Service Center, a premium automotive service center specializing in car keys, diagnostics, and mobile technical assistance. Be professional, technical, helpful, and concise. Offer to provide quotes or book services. If asked about prices, explain they depend on the vehicle model and service type.';
+    const systemPrompt = 'You are the AI assistant for KeyPro Service Center, a premium automotive service center specializing in car keys, diagnostics, and mobile technical assistance. Be professional, technical, helpful, and concise. Offer to provide quotes or book services. If asked about prices, explain they depend on the vehicle model and service type. Use emojis sparingly to keep a premium feel.';
 
-    const result = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-exp',
+    // Construct the contents for the API
+    const contents = [
+      { role: 'user', parts: [{ text: systemPrompt }] },
+      { role: 'model', parts: [{ text: 'Understood. I am the KeyPro AI Assistant.' }] },
+      ...(history || [])
+        .filter(msg => msg.content)
+        .map(msg => ({
+          role: msg.role === 'user' ? 'user' : 'model',
+          parts: [{ text: msg.content }]
+        })),
+      { role: 'user', parts: [{ text: message }] }
+    ];
+
+    const result = await genAI.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents
+    });
+
+    const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I am unable to generate a response at the moment.';
+
+    res.json({ response: text });
+  } catch (error: any) {
+    console.error('Chat API error:', error);
+    res.status(500).json({ error: 'I am having trouble processing your request right now.' });
+  }
+});
+
+/**
+ * AI Vision Diagnostic Endpoint
+ * POST /api/chat/vision
+ */
+router.post('/vision', uploadSingle, async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) {
+      return res.status(400).json({ error: 'No image provided' });
+    }
+
+    const imageBuffer = await fs.readFile(file.path);
+    const imageBase64 = imageBuffer.toString('base64');
+
+    const prompt = `
+      You are a Master Automotive Diagnostic AI for KeyPro Service Center.
+      Analyze this image of a car dashboard or vehicle part.
+      1. Identify any visible warning lights or obvious mechanical issues.
+      2. Explain what they mean and how urgent they are (Normal, Urgent, Emergency).
+      3. Suggest which KeyPro service is most relevant (Diagnostic, Key Programming, ECU Repair, etc.).
+      4. Be technical but easy to understand.
+      Limit your response to 3-4 concise bullet points.
+    `;
+
+    const result = await genAI.models.generateContent({
+      model: 'gemini-2.0-flash',
       contents: [
         {
-          role: 'user' as const,
-          parts: [{ text: systemPrompt }],
-        },
-        {
-          role: 'model' as const,
-          parts: [{ text: 'Understood. I am ready to assist KeyPro Service Center customers.' }],
-        },
-        ...(history || []).map((msg) => ({
-          role: msg.role === 'user' ? 'user' as const : 'model' as const,
-          parts: [{ text: msg.content }],
-        })),
-        {
-          role: 'user' as const,
-          parts: [{ text: message }],
+          role: 'user',
+          parts: [
+            { text: prompt },
+            {
+              inlineData: {
+                data: imageBase64,
+                mimeType: file.mimetype,
+              },
+            },
+          ],
         },
       ],
     });
 
-    const text = result.text;
+    const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I could not analyze the image.';
+
+    // Clean up uploaded file
+    await fs.unlink(file.path).catch(err => console.error('Failed to delete temp file:', err));
 
     res.json({ response: text });
-  } catch (error) {
-    console.error('Chat API error:', error);
-    res.status(500).json({
-      error: 'Failed to process message',
-    });
-  }
-});
-
-const contactSchema = z.object({
-  name: z.string().min(2).max(100),
-  email: z.string().email(),
-  topic: z.enum(['General Inquiry', 'Key Support', 'B2B Partnerships', 'Careers']),
-  message: z.string().min(10).max(1000),
-});
-
-router.post('/contact', async (req, res) => {
-  try {
-    const data = contactSchema.parse(req.body);
-    console.log('📧 Contact form:', data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    res.json({ success: true });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: 'Invalid data', details: error.issues });
-    }
-    console.error('Contact error:', error);
-    res.status(500).json({ error: 'Failed to process' });
-  }
-});
-
-const quoteSchema = z.object({
-  serviceType: z.enum(['keys', 'diagnostic', 'immobilizer', 'other']),
-  brand: z.string().min(2).max(50),
-  model: z.string().min(1).max(50),
-  year: z.string().regex(/^\d{4}$/),
-  location: z.string().min(2).max(100),
-  name: z.string().min(2).max(100),
-  email: z.string().email(),
-  phone: z.string().min(10),
-  message: z.string().max(1000).optional(),
-});
-
-router.post('/quote', async (req, res) => {
-  try {
-    const data = quoteSchema.parse(req.body);
-    const refId = `KP-${Date.now().toString(36).toUpperCase().slice(-6)}`;
-    console.log('🚗 Quote request:', { refId, ...data });
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    res.json({ success: true, refId });
-  } catch (error) {
-    if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: 'Invalid data', details: error.issues });
-    }
-    console.error('Quote error:', error);
-    res.status(500).json({ error: 'Failed to process' });
+  } catch (error: any) {
+    console.error('Vision API error:', error);
+    res.status(500).json({ error: 'Failed to analyze image' });
   }
 });
 

@@ -91,6 +91,7 @@ model Quote {
 
   // Service info
   serviceType String      // "key_programming", "diagnostic", "ecu"
+  location    String?
   description String
   urgency     String?     // "normal", "urgent", "emergency"
 

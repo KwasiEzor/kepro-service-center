@@ -4,10 +4,15 @@ import { Plus, Minus, Search, HelpCircle, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { api } from '../lib/api';
+import { useSEO } from '../hooks/useSEO';
 import { FAQ as FAQType, ApiResponse } from '../types';
 
 export default function FAQ() {
   const { t, i18n } = useTranslation();
+  useSEO({
+    title: t('faq.title'),
+    description: t('faq.subtitle')
+  });
   const [searchTerm, setSearchTerm] = useState('');
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const [faqs, setFaqs] = useState<FAQType[]>([]);

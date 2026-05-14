@@ -19,9 +19,13 @@ import {
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { useSEO } from '../hooks/useSEO';
 
 export default function Home() {
   const { t } = useTranslation();
+  useSEO({
+    description: t('home.hero.description')
+  });
 
   const services = [
     {
@@ -119,7 +123,7 @@ export default function Home() {
             >
               <Sparkles className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
               <span className="text-[var(--color-brand-orange-primary)]">
-                Premium Mobile Service
+                {t('home.hero.badge')}
               </span>
             </motion.div>
 
@@ -130,9 +134,9 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="font-display text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-[1.05]"
             >
-              <span className="block text-white">Technicien</span>
+              <span className="block text-white">{t('home.hero.titlePart1')}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong">
-                Auto Mobile
+                {t('home.hero.titlePart2')}
               </span>
             </motion.h1>
 
@@ -143,7 +147,7 @@ export default function Home() {
               transition={{ delay: 0.3 }}
               className="text-lg md:text-xl text-white/70 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
             >
-              Clés, Diagnostic, Programmation. Solution technique <span className="text-[var(--color-brand-orange-primary)] font-bold">haut de gamme</span> directement chez vous.
+              {t('home.hero.subtitle')}. {t('home.hero.description')}
             </motion.p>
 
             {/* Automotive CTAs */}
@@ -232,10 +236,10 @@ export default function Home() {
                 <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-green-500/20 clip-angular-sm flex items-center justify-center">
                   <CheckCircle2 className="text-emerald-400 w-6 h-6" />
                 </div>
-                <span className="text-xs font-bold tracking-wider text-emerald-400 uppercase">Verified</span>
+                <span className="text-xs font-bold tracking-wider text-emerald-400 uppercase">{t('home.hero.floating.verified')}</span>
               </div>
-              <p className="text-sm font-bold mb-1">Lightning Response</p>
-              <p className="text-xs text-white/60">On-site key coding within 45 minutes.</p>
+              <p className="text-sm font-bold mb-1">{t('home.hero.floating.responseTitle')}</p>
+              <p className="text-xs text-white/60">{t('home.hero.floating.responseDesc')}</p>
             </motion.div>
 
             <motion.div
@@ -250,9 +254,9 @@ export default function Home() {
                   <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                 ))}
               </div>
-              <p className="text-sm font-bold mb-2">Premium Support</p>
-              <p className="text-xs text-white/60 italic">"Saved my holiday when I lost my Porsche keys. Professional service!"</p>
-              <p className="text-[10px] text-white/40 mt-2 font-bold">— Jean-Marc, Paris</p>
+              <p className="text-sm font-bold mb-2">{t('home.hero.floating.supportTitle')}</p>
+              <p className="text-xs text-white/60 italic">"{t('home.hero.floating.supportQuote')}"</p>
+              <p className="text-[10px] text-white/40 mt-2 font-bold">— {t('home.hero.floating.supportAuthor')}</p>
             </motion.div>
 
             {/* Glowing Orbs */}
@@ -330,18 +334,18 @@ export default function Home() {
               >
                 <Zap className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
                 <span className="text-[var(--color-brand-orange-primary)]">
-                  Our Expertise
+                  {t('home.services.badge')}
                 </span>
               </motion.div>
 
               <h2 className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]">
-                <span className="block text-white">Premium Solutions</span>
+                <span className="block text-white">{t('home.services.titlePart1')}</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong">
-                  For Your Vehicle
+                  {t('home.services.titlePart2')}
                 </span>
               </h2>
               <p className="text-white/70 text-lg leading-relaxed">
-                We use the latest European diagnostic tools and authentic components to ensure your car's electronics remain <span className="text-white font-bold">factory-standard</span>.
+                {t('home.services.description')}
               </p>
             </motion.div>
 
@@ -354,7 +358,7 @@ export default function Home() {
                 to="/services"
                 className="group inline-flex items-center gap-3 px-8 py-4 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all font-bold"
               >
-                <span className="text-white">See All Services</span>
+                <span className="text-white">{t('home.services.seeAll')}</span>
                 <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
@@ -483,7 +487,7 @@ export default function Home() {
                 >
                   <PhoneCall className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
                   <span className="text-[var(--color-brand-orange-primary)]">
-                    24/7 Emergency Service
+                    {t('home.cta.badge')}
                   </span>
                 </motion.div>
 
@@ -494,9 +498,9 @@ export default function Home() {
                   transition={{ delay: 0.1 }}
                   className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]"
                 >
-                  <span className="block text-white">Locked out or need</span>
+                  <span className="block text-white">{t('home.cta.titlePart1')}</span>
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong">
-                    urgent assistance?
+                    {t('home.cta.titlePart2')}
                   </span>
                 </motion.h2>
 
@@ -507,7 +511,7 @@ export default function Home() {
                   transition={{ delay: 0.2 }}
                   className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed"
                 >
-                  Our priority mobile units are dispatching <span className="text-[var(--color-brand-orange-primary)] font-bold">24/7</span>. Average response time in central areas is under <span className="text-white font-bold">30 minutes</span>.
+                  {t('home.cta.description')}
                 </motion.p>
 
                 {/* Premium CTAs */}
@@ -528,7 +532,7 @@ export default function Home() {
                     <div className="absolute inset-0 bg-glow-orange opacity-50 group-hover:opacity-100 transition-opacity clip-angular-sm" />
                     <div className="relative px-10 py-5 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white clip-angular-sm font-black text-xl flex items-center justify-center gap-3 shadow-2xl">
                       <PhoneCall className="w-6 h-6" />
-                      <span>CALL NOW</span>
+                      <span>{t('home.cta.callNow')}</span>
                     </div>
                   </motion.a>
 
@@ -537,7 +541,7 @@ export default function Home() {
                     to="/contact"
                     className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-[var(--color-brand-orange-primary)]/30 text-white clip-angular-sm font-bold text-xl hover:bg-white/10 hover:border-[var(--color-brand-orange-primary)]/50 transition-all flex items-center justify-center gap-3"
                   >
-                    Contact Support
+                    {t('home.cta.contactSupport')}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </motion.div>

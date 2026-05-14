@@ -13,6 +13,10 @@ export interface User {
   emailVerified: boolean;
   createdAt: string;
   updatedAt: string;
+  _count?: {
+    quotes: number;
+    contacts: number;
+  };
 }
 
 export interface AuthResponse {

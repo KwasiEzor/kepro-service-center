@@ -3,9 +3,14 @@ import { motion } from 'motion/react';
 import { Shield, Target, Users, Zap, Award, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { useSEO } from '../hooks/useSEO';
 
 export default function About() {
   const { t } = useTranslation();
+  useSEO({
+    title: t('nav.about'),
+    description: t('about.hero.description')
+  });
 
   const values = [
     {
@@ -26,10 +31,10 @@ export default function About() {
   ];
 
   const timeline = [
-    { year: "2018", title: t('about.timeline.launch.title'), desc: t('about.timeline.launch.desc') },
-    { year: "2020", title: t('about.timeline.tech.title'), desc: t('about.timeline.tech.desc') },
-    { year: "2022", title: t('about.timeline.regional.title'), desc: t('about.timeline.regional.desc') },
-    { year: "2024", title: t('about.timeline.ai.title'), desc: t('about.timeline.ai.desc') }
+    { year: "2018", title: t('about.journey.timeline.launch.title'), desc: t('about.journey.timeline.launch.desc') },
+    { year: "2020", title: t('about.journey.timeline.tech.title'), desc: t('about.journey.timeline.tech.desc') },
+    { year: "2022", title: t('about.journey.timeline.regional.title'), desc: t('about.journey.timeline.regional.desc') },
+    { year: "2024", title: t('about.journey.timeline.ai.title'), desc: t('about.journey.timeline.ai.desc') }
   ];
   return (
     <div className="pt-32 pb-20">
@@ -40,9 +45,11 @@ export default function About() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-5xl md:text-7xl font-display font-bold mb-8">
-              {t('about.hero.title1')} <br />
-              <span className="text-brand-red">{t('about.hero.title2')}</span>
+            <h1 className="text-5xl md:text-7xl font-display font-black mb-8 tracking-tight leading-[1.05]">
+              <span className="block text-white">{t('about.hero.title1')}</span>
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong animate-gradient">
+                {t('about.hero.title2')}
+              </span>
             </h1>
             <p className="text-xl text-white/60 leading-relaxed max-w-xl">
               {t('about.hero.description')}
@@ -63,7 +70,7 @@ export default function About() {
               />
             </div>
             {/* Visual accent */}
-            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-red/20 blur-3xl -z-10" />
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-[var(--color-brand-orange-primary)]/20 blur-3xl -z-10" />
           </motion.div>
         </div>
 
@@ -76,10 +83,13 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.2 }}
               viewport={{ once: true }}
-              className="glass p-10 rounded-[35px] border-white/5 hover:bg-white/10 transition-all group"
+              className="glass p-10 rounded-[35px] border-white/5 hover:bg-white/10 transition-all group relative overflow-hidden"
             >
-              <div className="w-14 h-14 bg-brand-blue clip-angular-sm flex items-center justify-center p-3 mb-8 group-hover:scale-110 transition-transform">
-                <v.icon className="w-full h-full text-brand-red" />
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <v.icon className="w-20 h-20 text-white" />
+              </div>
+              <div className="w-14 h-14 bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm flex items-center justify-center p-3 mb-8 group-hover:scale-110 transition-transform shadow-lg shadow-[var(--color-brand-orange-primary)]/20">
+                <v.icon className="w-full h-full text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-4">{v.title}</h3>
               <p className="text-sm text-white/50 leading-relaxed">
@@ -112,33 +122,31 @@ export default function About() {
                 idx % 2 === 0 ? "md:flex-row-reverse" : ""
               )}
             >
-              <div className="flex-1 text-center md:text-right">
-                <div className={cn(
-                  "hidden md:block",
-                  idx % 2 === 0 ? "md:text-left" : "md:text-right"
-                )}>
-                  <h3 className="text-3xl font-display font-bold text-white mb-2">{item.title}</h3>
-                  <p className="text-white/40 leading-relaxed">{item.desc}</p>
+              {/* Content Box - Desktop Alternating */}
+              <div className="flex-1 hidden md:block">
+                <div className={idx % 2 === 0 ? "text-left" : "text-right"}>
+                  <h3 className="text-3xl font-display font-black text-white mb-2 uppercase tracking-tighter">
+                    {item.title}
+                  </h3>
+                  <p className="text-white/40 leading-relaxed text-sm">
+                    {item.desc}
+                  </p>
                 </div>
               </div>
-              <div className="w-16 h-16 bg-brand-red clip-angular-sm flex items-center justify-center font-black text-white relative z-10 border-4 border-[var(--color-brand-dark)] bg-glow-red">
+
+              {/* Year Bubble */}
+              <div className="w-16 h-16 bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm flex items-center justify-center font-black text-white relative z-10 border-4 border-[var(--color-brand-dark)] bg-glow-orange shrink-0">
                 {item.year.slice(2)}
               </div>
+
+              {/* Content Box - Mobile & Desktop Placeholder */}
               <div className="flex-1">
-                <div className={cn(
-                  "block md:hidden text-center",
-                  "md:block",
-                  idx % 2 === 0 ? "md:text-right" : "md:text-left"
-                )}>
-                   <div className="md:hidden">
-                    <h3 className="text-2xl font-bold mb-2">{item.title}</h3>
-                    <p className="text-white/40 text-sm">{item.desc}</p>
-                  </div>
-                  <div className="hidden md:block">
-                    <h3 className="text-3xl font-display font-bold text-white mb-2">{item.title}</h3>
-                    <p className="text-white/40 leading-relaxed">{item.desc}</p>
-                  </div>
+                <div className="md:hidden text-center">
+                  <h3 className="text-2xl font-bold mb-2 uppercase tracking-tight">{item.title}</h3>
+                  <p className="text-white/40 text-sm">{item.desc}</p>
                 </div>
+                {/* Empty div for desktop alternating layout */}
+                <div className="hidden md:block" />
               </div>
             </motion.div>
           ))}

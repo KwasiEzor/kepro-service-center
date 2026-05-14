@@ -13,7 +13,7 @@ const pool = globalForPrisma.pool ?? new pg.Pool({
   connectionString: process.env.DATABASE_URL,
 });
 
-// Create Prisma adapter
+// Create Prisma adapter (Required for Prisma 7+ with default engine)
 const adapter = new PrismaPg(pool);
 
 // Create Prisma client

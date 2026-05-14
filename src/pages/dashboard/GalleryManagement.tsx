@@ -12,7 +12,7 @@ import {
   CheckCircle2,
   AlertCircle
 } from 'lucide-react';
-import { cn } from '../../lib/utils';
+import { cn, formatImageUrl } from '../../lib/utils';
 
 const CATEGORIES = [
   { id: 'all', label: 'All Images' },
@@ -169,7 +169,7 @@ export default function GalleryManagement() {
           {images.map((img) => (
             <div key={img.id} className="group relative aspect-square card-dark overflow-hidden group">
               <img
-                src={`${(import.meta as any).env?.VITE_API_URL || 'http://localhost:3001'}${img.url}`}
+                src={formatImageUrl(img.url)}
                 alt={img.alt || ''}
                 className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />

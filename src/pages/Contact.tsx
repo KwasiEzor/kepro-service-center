@@ -16,12 +16,17 @@ import {
   Linkedin
 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useSEO } from '../hooks/useSEO';
 import { contactFormSchema, type ContactFormData } from '../lib/validation';
 
 import { api } from '../lib/api';
 
 export default function Contact() {
   const { t } = useTranslation();
+  useSEO({
+    title: t('nav.contact'),
+    description: t('contact.header.description')
+  });
   const [formState, setFormState] = React.useState<'idle' | 'submitting' | 'success'>('idle');
   const [submitError, setSubmitError] = React.useState<string | null>(null);
 

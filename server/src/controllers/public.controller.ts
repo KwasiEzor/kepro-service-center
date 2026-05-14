@@ -78,6 +78,47 @@ export class PublicController {
       next(error);
     }
   }
+
+  /**
+   * Get gallery images
+   */
+  async getGallery(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { category, page = 1, limit = 9 } = req.query;
+      const skip = (Number(page) - 1) * Number(limit);
+      const take = Number(limit);
+
+      const where = {
+        OR: [
+          { category: 'gallery' },
+          { category: 'services' },
+          category ? { category: category as string } : {}
+        ]
+      };
+
+      const [images, total] = await Promise.all([
+        prisma.image.findMany({
+          where,
+          orderBy: { createdAt: 'desc' },
+          skip,
+          take
+        }),
+        prisma.image.count({ where })
+      ]);
+
+      return sendSuccess(res, {
+        images,
+        pagination: {
+          total,
+          page: Number(page),
+          limit: Number(limit),
+          totalPages: Math.ceil(total / Number(limit))
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new PublicController();

@@ -16,7 +16,7 @@ router.patch('/quotes/:id/status',
   authenticate, 
   requireAdmin, 
   validateParams(z.object({ id: z.string() })),
-  validateBody(z.object({ status: z.string(), adminNotes: z.string().optional(), estimatedPrice: z.number().optional() })),
+  validateBody(z.object({ status: z.string(), adminNotes: z.string().optional(), estimatedPrice: z.coerce.number().optional() })),
   (req, res, next) => adminController.updateQuoteStatus(req, res, next)
 );
 
@@ -46,5 +46,26 @@ router.get('/faqs', authenticate, requireAdmin, (req, res, next) => adminControl
 router.post('/faqs', authenticate, requireAdmin, (req, res, next) => adminController.createFAQ(req, res, next));
 router.patch('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.updateFAQ(req, res, next));
 router.delete('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteFAQ(req, res, next));
+
+// User Management
+router.get('/users', authenticate, requireAdmin, (req, res, next) => adminController.getUsers(req, res, next));
+router.patch('/users/:id', 
+  authenticate, 
+  requireAdmin, 
+  validateParams(z.object({ id: z.string() })),
+  validateBody(z.object({ 
+    role: z.enum(['USER', 'ADMIN']).optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    phone: z.string().optional()
+  })),
+  (req, res, next) => adminController.updateUser(req, res, next)
+);
+router.delete('/users/:id', 
+  authenticate, 
+  requireAdmin, 
+  validateParams(z.object({ id: z.string() })), 
+  (req, res, next) => adminController.deleteUser(req, res, next)
+);
 
 export default router;

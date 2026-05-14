@@ -14,12 +14,12 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen gradient-bg selection:bg-brand-red selection:text-white">
+    <div className="min-h-screen gradient-bg selection:bg-[var(--color-brand-orange-primary)]/30 selection:text-white">
       <Navbar />
       <main>
         <Outlet />
       </main>
-      
+
       {/* Footer */}
       <footer className="py-20 px-6 sm:px-12 border-t border-white/5 bg-black/50">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -33,20 +33,20 @@ export default function Layout() {
           <div>
             <h4 className="font-bold text-sm uppercase tracking-widest mb-6">{t('footer.services.title')}</h4>
             <ul className="space-y-4 text-white/40 text-sm">
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.services.keyProgramming')}</a></li>
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.services.diagnostics')}</a></li>
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.services.ecuRemap')}</a></li>
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.services.lockout')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.keyProgramming')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.diagnostics')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.ecuRemap')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.lockout')}</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-sm uppercase tracking-widest mb-6">{t('footer.company.title')}</h4>
             <ul className="space-y-4 text-white/40 text-sm">
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.company.about')}</a></li>
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.company.serviceArea')}</a></li>
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.company.privacy')}</a></li>
-              <li><a href="#" className="hover:text-brand-red transition-colors">{t('footer.company.terms')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.about')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.serviceArea')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.privacy')}</a></li>
+              <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.terms')}</a></li>
             </ul>
           </div>
 
@@ -54,15 +54,14 @@ export default function Layout() {
             <h4 className="font-bold text-sm uppercase tracking-widest mb-6">{t('footer.support.title')}</h4>
             <ul className="space-y-4 text-white/40 text-sm">
               <li className="flex items-center gap-3">
-                <span className="w-1.5 h-1.5 bg-brand-red rounded-full" />
+                <span className="w-1.5 h-1.5 bg-[var(--color-brand-orange-primary)] rounded-full shadow-[0_0_10px_var(--color-brand-orange-primary)]" />
                 {t('footer.support.emergency')}
               </li>
               <li>{t('contact.contactInfo.support.value')}</li>
               <li>{t('footer.support.schedule')}</li>
             </ul>
           </div>
-        </div>
-        
+        </div>        
         <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-white/20">
           <p>{t('footer.copyright')}</p>
           <div className="flex gap-8">
