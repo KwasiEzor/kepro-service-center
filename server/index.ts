@@ -11,6 +11,7 @@ import publicRoutes from './src/routes/public.routes';
 import adminRoutes from './src/routes/admin.routes';
 import userRoutes from './src/routes/user.routes';
 import { errorHandler } from './src/middleware/errorHandler';
+import { apiLimiter, authLimiter } from './src/middleware/rateLimiter';
 import logger from './src/utils/logger';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -47,9 +48,12 @@ const uploadsPath = path.isAbsolute(uploadDir)
 
 app.use('/uploads', express.static(uploadsPath));
 
+// Rate limiting
+app.use('/api/', apiLimiter); // Global API rate limiting
+
 // API routes
 app.use('/api/chat', chatRouter); // Existing Gemini chatbot route
-app.use('/api/auth', authRoutes); // New auth routes
+app.use('/api/auth', authLimiter, authRoutes); // Auth routes with strict rate limiting
 app.use('/api/public', publicRoutes); // New public routes (quotes, contact)
 app.use('/api/admin', adminRoutes); // New admin routes
 app.use('/api/user', userRoutes); // New user specific routes

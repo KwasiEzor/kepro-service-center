@@ -31,20 +31,22 @@ router.post(
 /**
  * @route   POST /api/auth/refresh
  * @desc    Refresh access token
- * @access  Public
+ * @access  Public (requires valid refresh token)
  */
 router.post(
   '/refresh',
+  validateBody(refreshTokenSchema),
   authController.refresh.bind(authController)
 );
 
 /**
  * @route   POST /api/auth/logout
  * @desc    Logout user
- * @access  Public
+ * @access  Public (optional refresh token)
  */
 router.post(
   '/logout',
+  authenticate,
   authController.logout.bind(authController)
 );
 

@@ -4,6 +4,7 @@ import { QuoteService } from '../services/quote.service';
 import { ContactService } from '../services/contact.service';
 import { AuthRequest } from '../types';
 import prisma from '../config/database';
+import { getPaginationParams, paginateResponse } from '../utils/pagination';
 
 export class PublicController {
   private quoteService = new QuoteService();
@@ -54,11 +55,17 @@ export class PublicController {
    */
   async getServices(req: Request, res: Response, next: NextFunction) {
     try {
-      const services = await prisma.service.findMany({
-        where: { active: true },
-        orderBy: { order: 'asc' }
-      });
-      return sendSuccess(res, services);
+      const pagination = getPaginationParams(req, 100);
+      const [services, total] = await Promise.all([
+        prisma.service.findMany({
+          where: { active: true },
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { order: 'asc' }
+        }),
+        prisma.service.count({ where: { active: true } })
+      ]);
+      return sendSuccess(res, paginateResponse(services, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -69,11 +76,17 @@ export class PublicController {
    */
   async getFAQs(req: Request, res: Response, next: NextFunction) {
     try {
-      const faqs = await prisma.fAQ.findMany({
-        where: { active: true },
-        orderBy: { order: 'asc' }
-      });
-      return sendSuccess(res, faqs);
+      const pagination = getPaginationParams(req, 100);
+      const [faqs, total] = await Promise.all([
+        prisma.fAQ.findMany({
+          where: { active: true },
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { order: 'asc' }
+        }),
+        prisma.fAQ.count({ where: { active: true } })
+      ]);
+      return sendSuccess(res, paginateResponse(faqs, pagination, total));
     } catch (error) {
       next(error);
     }

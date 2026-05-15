@@ -3,6 +3,7 @@ import { sendSuccess, sendError } from '../utils/response';
 import prisma from '../config/database';
 import { AuthRequest } from '../types';
 import bcrypt from 'bcryptjs';
+import { getPaginationParams, paginateResponse } from '../utils/pagination';
 
 export class UserController {
   /**
@@ -67,11 +68,18 @@ export class UserController {
   async getMyQuotes(req: Request, res: Response, next: NextFunction) {
     try {
       const authReq = req as AuthRequest;
-      const quotes = await prisma.quote.findMany({
-        where: { userId: authReq.user!.id },
-        orderBy: { createdAt: 'desc' }
-      });
-      return sendSuccess(res, quotes);
+      const pagination = getPaginationParams(req);
+      const where = { userId: authReq.user!.id };
+      const [quotes, total] = await Promise.all([
+        prisma.quote.findMany({
+          where,
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { createdAt: 'desc' }
+        }),
+        prisma.quote.count({ where })
+      ]);
+      return sendSuccess(res, paginateResponse(quotes, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -83,11 +91,18 @@ export class UserController {
   async getMyContacts(req: Request, res: Response, next: NextFunction) {
     try {
       const authReq = req as AuthRequest;
-      const contacts = await prisma.contact.findMany({
-        where: { userId: authReq.user!.id },
-        orderBy: { createdAt: 'desc' }
-      });
-      return sendSuccess(res, contacts);
+      const pagination = getPaginationParams(req);
+      const where = { userId: authReq.user!.id };
+      const [contacts, total] = await Promise.all([
+        prisma.contact.findMany({
+          where,
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { createdAt: 'desc' }
+        }),
+        prisma.contact.count({ where })
+      ]);
+      return sendSuccess(res, paginateResponse(contacts, pagination, total));
     } catch (error) {
       next(error);
     }

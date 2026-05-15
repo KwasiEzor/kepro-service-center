@@ -6,6 +6,7 @@ import { AuthRequest } from '../types';
 import fs from 'fs/promises';
 import path from 'path';
 import { env } from '../../env';
+import { getPaginationParams, paginateResponse } from '../utils/pagination';
 
 export class AdminController {
   /**
@@ -36,11 +37,17 @@ export class AdminController {
    */
   async getQuotes(req: Request, res: Response, next: NextFunction) {
     try {
-      const quotes = await prisma.quote.findMany({
-        orderBy: { createdAt: 'desc' },
-        include: { user: { select: { email: true, firstName: true } } }
-      });
-      return sendSuccess(res, quotes);
+      const pagination = getPaginationParams(req);
+      const [quotes, total] = await Promise.all([
+        prisma.quote.findMany({
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { createdAt: 'desc' },
+          include: { user: { select: { email: true, firstName: true } } }
+        }),
+        prisma.quote.count()
+      ]);
+      return sendSuccess(res, paginateResponse(quotes, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -74,10 +81,16 @@ export class AdminController {
    */
   async getContacts(req: Request, res: Response, next: NextFunction) {
     try {
-      const contacts = await prisma.contact.findMany({
-        orderBy: { createdAt: 'desc' }
-      });
-      return sendSuccess(res, contacts);
+      const pagination = getPaginationParams(req);
+      const [contacts, total] = await Promise.all([
+        prisma.contact.findMany({
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { createdAt: 'desc' }
+        }),
+        prisma.contact.count()
+      ]);
+      return sendSuccess(res, paginateResponse(contacts, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -111,11 +124,18 @@ export class AdminController {
   async getImages(req: Request, res: Response, next: NextFunction) {
     try {
       const { category } = req.query;
-      const images = await prisma.image.findMany({
-        where: category ? { category: category as string } : undefined,
-        orderBy: { createdAt: 'desc' },
-      });
-      return sendSuccess(res, images);
+      const pagination = getPaginationParams(req);
+      const where = category ? { category: category as string } : undefined;
+      const [images, total] = await Promise.all([
+        prisma.image.findMany({
+          where,
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { createdAt: 'desc' },
+        }),
+        prisma.image.count({ where })
+      ]);
+      return sendSuccess(res, paginateResponse(images, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -196,8 +216,16 @@ export class AdminController {
 
   async getServices(req: Request, res: Response, next: NextFunction) {
     try {
-      const services = await prisma.service.findMany({ orderBy: { order: 'asc' } });
-      return sendSuccess(res, services);
+      const pagination = getPaginationParams(req, 100); // Services list usually small
+      const [services, total] = await Promise.all([
+        prisma.service.findMany({
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { order: 'asc' }
+        }),
+        prisma.service.count()
+      ]);
+      return sendSuccess(res, paginateResponse(services, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -236,8 +264,16 @@ export class AdminController {
 
   async getFAQs(req: Request, res: Response, next: NextFunction) {
     try {
-      const faqs = await prisma.fAQ.findMany({ orderBy: { order: 'asc' } });
-      return sendSuccess(res, faqs);
+      const pagination = getPaginationParams(req, 100); // FAQs list usually small
+      const [faqs, total] = await Promise.all([
+        prisma.fAQ.findMany({
+          skip: pagination.skip,
+          take: pagination.take,
+          orderBy: { order: 'asc' }
+        }),
+        prisma.fAQ.count()
+      ]);
+      return sendSuccess(res, paginateResponse(faqs, pagination, total));
     } catch (error) {
       next(error);
     }
@@ -276,15 +312,19 @@ export class AdminController {
 
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await prisma.user.findMany({
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          phone: true,
-          role: true,
-          emailVerified: true,
+      const pagination = getPaginationParams(req);
+      const [users, total] = await Promise.all([
+        prisma.user.findMany({
+          skip: pagination.skip,
+          take: pagination.take,
+          select: {
+            id: true,
+            email: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            role: true,
+            emailVerified: true,
           createdAt: true,
           updatedAt: true,
           _count: {
@@ -295,8 +335,10 @@ export class AdminController {
           }
         },
         orderBy: { createdAt: 'desc' }
-      });
-      return sendSuccess(res, users);
+      }),
+      prisma.user.count()
+    ]);
+      return sendSuccess(res, paginateResponse(users, pagination, total));
     } catch (error) {
       next(error);
     }
