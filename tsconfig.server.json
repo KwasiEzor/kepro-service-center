@@ -2,11 +2,15 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist/server",
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "target": "ESNext",
     "rootDir": ".",
-    "noEmit": false
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["server/**/*", "prisma/seed.ts"],
   "exclude": ["node_modules", "src", "dist"]
