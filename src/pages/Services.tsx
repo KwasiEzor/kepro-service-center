@@ -42,8 +42,8 @@ export default function Services() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await api.get<ApiResponse<Service[]>>('/api/public/services');
-        setServices(response.data.data || []);
+        const response = await api.get<ApiResponse<{ data: Service[], pagination: any }>>('/api/public/services');
+        setServices(response.data.data?.data || []);
       } catch (error) {
         console.error('Failed to fetch services:', error);
       } finally {

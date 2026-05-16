@@ -40,8 +40,8 @@ export default function GalleryManagement() {
     try {
       setLoading(true);
       const categoryParam = activeCategory === 'all' ? '' : `?category=${activeCategory}`;
-      const response = await api.get<ApiResponse<ImageType[]>>(`/api/admin/images${categoryParam}`);
-      setImages(response.data.data || []);
+      const response = await api.get<ApiResponse<{ data: ImageType[], pagination: any }>>(`/api/admin/images${categoryParam}`);
+      setImages(response.data.data?.data || []);
     } catch (error) {
       console.error('Failed to fetch images:', error);
     } finally {

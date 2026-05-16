@@ -23,8 +23,8 @@ export default function FaqManagement() {
   const fetchFaqs = async () => {
     try {
       setLoading(true);
-      const response = await api.get<ApiResponse<FAQ[]>>('/api/admin/faqs');
-      setFaqs(response.data.data || []);
+      const response = await api.get<ApiResponse<{ data: FAQ[], pagination: any }>>('/api/admin/faqs');
+      setFaqs(response.data.data?.data || []);
     } catch (error) {
       console.error('Failed to fetch FAQs:', error);
     } finally {

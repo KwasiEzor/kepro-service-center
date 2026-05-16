@@ -20,8 +20,8 @@ export default function UserQuotes() {
   useEffect(() => {
     const fetchQuotes = async () => {
       try {
-        const response = await api.get<ApiResponse<Quote[]>>('/api/user/quotes');
-        setQuotes(response.data.data || []);
+        const response = await api.get<ApiResponse<{ data: Quote[], pagination: any }>>('/api/user/quotes');
+        setQuotes(response.data.data?.data || []);
       } catch (error) {
         console.error('Failed to fetch quotes:', error);
       } finally {

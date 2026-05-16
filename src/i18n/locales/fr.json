@@ -529,5 +529,26 @@
     "dashboard": "Tableau de Bord",
     "admin": "Admin",
     "account": "Compte"
+  },
+  "auth": {
+    "login": {
+      "title": "Bon Retour",
+      "subtitle": "Connectez-vous à votre compte",
+      "email": "Email",
+      "password": "Mot de passe",
+      "showPassword": "Afficher le mot de passe",
+      "hidePassword": "Masquer le mot de passe",
+      "signingIn": "Connexion en cours...",
+      "signIn": "Se Connecter",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "createAccount": "Créer un compte",
+      "backToHome": "Retour à l'Accueil",
+      "demoCredentials": "Identifiants de Démonstration :",
+      "demoAdmin": "Admin :",
+      "demoUser": "Utilisateur :",
+      "loginFailed": "Échec de la connexion. Veuillez réessayer.",
+      "invalidEmail": "Adresse email invalide",
+      "passwordRequired": "Le mot de passe est requis"
+    }
   }
 }

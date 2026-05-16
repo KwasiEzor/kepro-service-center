@@ -19,8 +19,8 @@ export default function ContactsTable() {
 
   const fetchContacts = async () => {
     try {
-      const response = await api.get<ApiResponse<Contact[]>>('/api/admin/contacts');
-      setContacts(response.data.data || []);
+      const response = await api.get<ApiResponse<{ data: Contact[], pagination: any }>>('/api/admin/contacts');
+      setContacts(response.data.data?.data || []);
     } catch (error) {
       console.error('Failed to fetch contacts:', error);
     } finally {

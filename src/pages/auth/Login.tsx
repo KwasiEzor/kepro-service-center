@@ -8,16 +8,20 @@ import { z } from 'zod';
 import { useAuth } from '../../hooks/useAuth';
 import { useTranslation } from 'react-i18next';
 import { LogIn, Mail, Lock, AlertCircle } from 'lucide-react';
+import { LanguageSwitcher } from '../../components/LanguageSwitcher';
 
-const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
+type LoginForm = {
+  email: string;
+  password: string;
+};
 
 export default function Login() {
   const { t } = useTranslation();
+
+  const loginSchema = z.object({
+    email: z.string().email(t('auth.login.invalidEmail')),
+    password: z.string().min(1, t('auth.login.passwordRequired')),
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useAuth();
@@ -43,7 +47,7 @@ export default function Login() {
       await login(data);
       navigate(from, { replace: true });
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed. Please try again.');
+      setError(err.response?.data?.error || t('auth.login.loginFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -51,6 +55,11 @@ export default function Login() {
 
   return (
     <div className="min-h-screen gradient-bg flex items-center justify-center px-6 py-12">
+      {/* Language Switcher - Fixed top-right */}
+      <div className="fixed top-6 right-6 z-50">
+        <LanguageSwitcher />
+      </div>
+
       <div className="w-full max-w-md">
         {/* Logo */}
         <Logo className="justify-center mb-8" size="lg" />
@@ -58,8 +67,8 @@ export default function Login() {
         {/* Login Card */}
         <div className="card-dark p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
-            <p className="text-white/60">Sign in to your account</p>
+            <h1 className="text-3xl font-bold mb-2">{t('auth.login.title')}</h1>
+            <p className="text-white/60">{t('auth.login.subtitle')}</p>
           </div>
 
           {error && (
@@ -74,7 +83,7 @@ export default function Login() {
             <div>
               <label className="block text-sm font-medium mb-2">
                 <Mail className="w-4 h-4 inline mr-2" />
-                Email
+                {t('auth.login.email')}
               </label>
               <input
                 type="email"
@@ -91,7 +100,7 @@ export default function Login() {
             <div>
               <label className="block text-sm font-medium mb-2">
                 <Lock className="w-4 h-4 inline mr-2" />
-                Password
+                {t('auth.login.password')}
               </label>
               <div className="relative">
                 <input
@@ -104,7 +113,7 @@ export default function Login() {
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  aria-label={showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -123,12 +132,12 @@ export default function Login() {
               {isLoading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Signing in...
+                  {t('auth.login.signingIn')}
                 </>
               ) : (
                 <>
                   <LogIn className="w-5 h-5" />
-                  Sign In
+                  {t('auth.login.signIn')}
                 </>
               )}
             </button>
@@ -136,28 +145,28 @@ export default function Login() {
 
           {/* Register Link */}
           <div className="mt-6 text-center text-sm">
-            <span className="text-white/60">Don't have an account? </span>
+            <span className="text-white/60">{t('auth.login.noAccount')} </span>
             <Link to="/register" className="text-brand-red hover:underline font-medium">
-              Create one
+              {t('auth.login.createAccount')}
             </Link>
           </div>
 
           {/* Back to Home */}
           <div className="mt-6 text-center">
             <Link to="/" className="text-sm text-white/60 hover:text-white transition-colors">
-              ← Back to Home
+              ← {t('auth.login.backToHome')}
             </Link>
           </div>
         </div>
 
         {/* Demo Credentials */}
         <div className="mt-6 p-4 bg-white/5 border border-white/10 rounded-lg">
-          <p className="text-xs text-white/60 mb-2">Demo Credentials:</p>
+          <p className="text-xs text-white/60 mb-2">{t('auth.login.demoCredentials')}</p>
           <p className="text-xs text-white/80">
-            <strong>Admin:</strong> admin@keypro.service / Admin123!
+            <strong>{t('auth.login.demoAdmin')}</strong> admin@keypro.service / Admin123!
           </p>
           <p className="text-xs text-white/80">
-            <strong>User:</strong> user@example.com / User123!
+            <strong>{t('auth.login.demoUser')}</strong> user@example.com / User123!
           </p>
         </div>
       </div>

@@ -529,5 +529,26 @@
     "dashboard": "Dashboard",
     "admin": "Admin",
     "account": "Account"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome Back",
+      "subtitle": "Sign in to your account",
+      "email": "Email",
+      "password": "Password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "signingIn": "Signing in...",
+      "signIn": "Sign In",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create one",
+      "backToHome": "Back to Home",
+      "demoCredentials": "Demo Credentials:",
+      "demoAdmin": "Admin:",
+      "demoUser": "User:",
+      "loginFailed": "Login failed. Please try again.",
+      "invalidEmail": "Invalid email address",
+      "passwordRequired": "Password is required"
+    }
   }
 }

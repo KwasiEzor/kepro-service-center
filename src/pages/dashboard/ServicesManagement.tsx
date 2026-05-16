@@ -25,8 +25,8 @@ export default function ServicesManagement() {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      const response = await api.get<ApiResponse<Service[]>>('/api/admin/services');
-      setServices(response.data.data || []);
+      const response = await api.get<ApiResponse<{ data: Service[], pagination: any }>>('/api/admin/services');
+      setServices(response.data.data?.data || []);
     } catch (error) {
       console.error('Failed to fetch services:', error);
     } finally {

@@ -21,8 +21,8 @@ export default function FAQ() {
   useEffect(() => {
     const fetchFaqs = async () => {
       try {
-        const response = await api.get<ApiResponse<FAQType[]>>('/api/public/faqs');
-        setFaqs(response.data.data || []);
+        const response = await api.get<ApiResponse<{ data: FAQType[], pagination: any }>>('/api/public/faqs');
+        setFaqs(response.data.data?.data || []);
       } catch (error) {
         console.error('Failed to fetch FAQs:', error);
       } finally {

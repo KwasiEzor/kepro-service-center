@@ -215,16 +215,15 @@ const currentLang = i18n.language; // 'fr' or 'en'
 ### Already Implemented:
 - ✅ Navbar (desktop & mobile)
 - ✅ LanguageSwitcher component
-
-### To Implement:
-- ⏳ Home page
-- ⏳ Services page
-- ⏳ About page
-- ⏳ Contact page
-- ⏳ Quote page
-- ⏳ FAQ page
-- ⏳ ChatBot
-- ⏳ Footer
+- ✅ Home page
+- ✅ Services page
+- ✅ About page
+- ✅ Contact page
+- ✅ Quote page
+- ✅ FAQ page
+- ✅ ChatBot
+- ✅ Footer
+- ✅ Authentication pages (Login/Register)
 
 ## Example: Updating a Page
 
