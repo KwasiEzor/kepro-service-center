@@ -23,6 +23,6 @@ test.describe('Home Page', () => {
 test.describe('Auth Flow', () => {
   test('should show login page', async ({ page }) => {
     await page.goto('/login');
-    await expect(page.getByRole('heading', { name: /login|connexion/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /welcome back|connexion/i })).toBeVisible();
   });
 });
