@@ -1,14 +1,13 @@
 import React from 'react';
-import { createPortal } from 'react-dom';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
-import { PenTool as Tool, Phone, Info, HelpCircle, MessageSquare, Car, Menu, X, ChevronRight, User, LogOut, LayoutDashboard, Shield, Camera } from 'lucide-react';
+import { PenTool as Tool, Phone, Info, Car, Menu, X, Camera } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Logo } from './Logo';
-import { useAuth } from '../hooks/useAuth';
-import { UserRole } from '../types';
+import { AuthButtons } from './navbar/AuthButtons';
+import { MobileMenu } from './navbar/MobileMenu';
 
 const navItems = [
   { name: 'services', href: '/services', icon: Tool },
@@ -24,6 +23,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
+  // Handle scroll state
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
@@ -36,244 +36,89 @@ export default function Navbar() {
   }, [location.pathname]);
 
   return (
-    <motion.header
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={cn(
-        'fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 px-4 sm:px-6 md:px-12',
-        (isScrolled || isMobileMenuOpen) ? 'py-3' : 'py-6'
-      )}
-    >
-      {/* Industrial Navbar - Angular Design */}
-      <nav className={cn(
-        'max-w-7xl mx-auto flex items-center justify-between px-6 py-4 transition-all duration-500 relative overflow-visible z-50',
-        (isScrolled || isMobileMenuOpen) ? 'glass-dark shadow-2xl' : 'glass'
-      )}
-      style={{
-        clipPath: 'polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)'
-      }}
-      >
-        {/* Beveled corner overlays */}
-        <div className="absolute top-0 left-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
-        <div className="absolute bottom-0 right-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
-
-        {/* Logo */}
-        <Logo className="relative z-50" size="md" />
-
-        {/* Desktop Nav - Industrial Style */}
-        <div className="hidden md:flex items-center gap-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={cn(
-                'relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
-                location.pathname === item.href
-                  ? 'text-[var(--color-brand-orange-primary)]'
-                  : 'text-white/70 hover:text-white'
-              )}
-            >
-              <span className="relative z-10">{t(`nav.${item.name}`)}</span>
-              <AnimatePresence>
-                {location.pathname === item.href && (
-                  <motion.div
-                    layoutId="nav-bg"
-                    className="absolute inset-0 bg-[var(--color-brand-orange-primary)]/10 border border-[var(--color-brand-orange-primary)]/30"
-                    style={{ clipPath: 'polygon(5px 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%, 0 5px)' }}
-                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                  />
-                )}
-              </AnimatePresence>
-            </Link>
-          ))}
-        </div>
-
-        {/* CTA Button - Angular Design */}
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          <AuthButtons />
-
-          <Link
-            to="/quote"
-            className="hidden sm:block relative px-6 py-3 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white text-xs font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 bg-glow-orange overflow-hidden group"
-            style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
-          >
-            <span className="relative z-10">{t('nav.quote')}</span>
-            <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-          </Link>
-
-          {/* Mobile Menu Toggle - Square */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-50 p-2 glass border border-white/10"
-            style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu - Industrial Overlay */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-40 glass-dark flex flex-col items-center justify-center p-8 pt-24"
-          >
-            <div className="flex flex-col items-center gap-6 w-full max-w-sm">
-              {navItems.map((item, idx) => (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  key={item.href}
-                  className="w-full"
-                >
-                  <Link
-                    to={item.href}
-                    className={cn(
-                      "relative flex items-center justify-between p-5 glass border text-xl font-display font-black uppercase tracking-tight",
-                      location.pathname === item.href
-                        ? "bg-[var(--color-brand-orange-primary)]/10 border-[var(--color-brand-orange-primary)]/30 text-[var(--color-brand-orange-primary)]"
-                        : "border-white/10 text-white"
-                    )}
-                    style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
-                  >
-                    <div className="flex items-center gap-4">
-                      <item.icon className="w-5 h-5" />
-                      {t(`nav.${item.name}`)}
-                    </div>
-                    <ChevronRight className="w-5 h-5 opacity-40" />
-                  </Link>
-                </motion.div>
-              ))}
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="w-full mt-4 space-y-4"
-              >
-                <Link
-                  to="/quote"
-                  className="block w-full py-5 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white text-center font-black text-xl uppercase tracking-wider bg-glow-orange"
-                  style={{ clipPath: 'polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px)' }}
-                >
-                  {t('nav.quote')}
-                </Link>
-                <div className="flex justify-center">
-                  <LanguageSwitcher />
-                </div>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
-  );
-}
-
-// Auth buttons component
-function AuthButtons() {
-  const { t } = useTranslation();
-  const { user, isAuthenticated, logout } = useAuth();
-  const navigate = useNavigate();
-  const [showUserMenu, setShowUserMenu] = React.useState(false);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/');
-    setShowUserMenu(false);
-  };
-
-  if (!isAuthenticated) {
-    return (
-      <>
-        <Link
-          to="/login"
-          className="hidden sm:block px-4 py-2 text-xs font-bold uppercase tracking-wider text-white/80 hover:text-white transition-colors"
-        >
-          {t('common.login')}
-        </Link>
-        <Link
-          to="/register"
-          className="hidden sm:block px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider transition-all"
-          style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
-        >
-          {t('common.register')}
-        </Link>
-      </>
-    );
-  }
-
-  return (
     <>
-      <div className="relative hidden sm:block">
-        <button
-          ref={buttonRef}
-          onClick={() => navigate(user?.role === UserRole.ADMIN ? '/admin' : '/dashboard')}
-          className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all"
-          style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
-        >
-          <User className="w-4 h-4" />
-          <span className="text-xs font-bold uppercase tracking-wider">
-            {user?.firstName || t('common.account')}
-          </span>
-          {user?.role === UserRole.ADMIN && (
-            <Shield className="w-3 h-3 text-[var(--color-brand-orange-primary)] shadow-[0_0_10px_var(--color-brand-orange-primary)]" />
-          )}
-        </button>
-      </div>
-
-      <AnimatePresence>
-        {showUserMenu && buttonRef.current && createPortal(
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="fixed w-56 bg-[#0D0D0D] border border-white/20 shadow-2xl z-[100]"
-            style={{
-              clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)',
-              top: `${buttonRef.current.getBoundingClientRect().bottom + 8}px`,
-              right: `${window.innerWidth - buttonRef.current.getBoundingClientRect().right}px`,
-            }}
-          >
-            <div className="p-4 border-b border-white/10">
-              <p className="text-sm font-semibold">{user?.firstName} {user?.lastName}</p>
-              <p className="text-xs text-white/60">{user?.email}</p>
-              {user?.role === UserRole.ADMIN && (
-                <span className="inline-block mt-2 px-2 py-1 bg-[var(--color-brand-orange-primary)]/20 text-[var(--color-brand-orange-primary)] text-xs font-bold uppercase tracking-wider">
-                  {t('common.admin')}
-                </span>
-              )}
-            </div>
-
-            <div className="p-2">
-              <Link
-                to={user?.role === UserRole.ADMIN ? '/admin' : '/dashboard'}
-                onClick={() => setShowUserMenu(false)}
-                className="flex items-center gap-3 px-3 py-2 hover:bg-white/10 rounded text-sm transition-colors"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                {t('common.dashboard')}
-              </Link>
-
-              <button
-                onClick={handleLogout}
-                className="w-full flex items-center gap-3 px-3 py-2 hover:bg-white/10 rounded text-sm transition-colors text-orange-400"
-              >
-                <LogOut className="w-4 h-4" />
-                {t('common.logout')}
-              </button>
-            </div>
-          </motion.div>,
-          document.body
+      <motion.header
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        className={cn(
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-500 py-4 px-4 sm:px-6 md:px-12 overflow-visible',
+          (isScrolled || isMobileMenuOpen) ? 'py-3' : 'py-6'
         )}
-      </AnimatePresence>
+      >
+        {/* Main Navigation Container */}
+        <nav
+          className={cn(
+            'max-w-7xl mx-auto flex items-center justify-between px-6 py-4 transition-all duration-500 relative overflow-visible z-50 clip-angular-lg',
+            (isScrolled || isMobileMenuOpen) ? 'glass-dark shadow-2xl' : 'glass'
+          )}
+        >
+          {/* Decorative beveled corner overlays */}
+          <div className="absolute top-0 left-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
+          <div className="absolute bottom-0 right-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
+
+          {/* Logo */}
+          <Logo className="relative z-50" size="md" />
+
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center gap-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={cn(
+                  'relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
+                  location.pathname === item.href
+                    ? 'text-[var(--color-brand-orange-primary)]'
+                    : 'text-white/70 hover:text-white'
+                )}
+              >
+                <span className="relative z-10">{t(`nav.${item.name}`)}</span>
+                <AnimatePresence>
+                  {location.pathname === item.href && (
+                    <motion.div
+                      layoutId="nav-active-bg"
+                      className="absolute inset-0 bg-[var(--color-brand-orange-primary)]/10 border border-[var(--color-brand-orange-primary)]/30 clip-angular-xs"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                </AnimatePresence>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Side Actions */}
+          <div className="flex items-center gap-3">
+            <LanguageSwitcher />
+            <AuthButtons />
+
+            {/* Quote CTA Button - Desktop */}
+            <Link
+              to="/quote"
+              className="hidden sm:block relative px-6 py-3 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white text-xs font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 bg-glow-orange overflow-hidden group clip-angular-sm"
+            >
+              <span className="relative z-10">{t('nav.quote')}</span>
+              <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+            </Link>
+
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="md:hidden relative z-50 p-2 glass border border-white/20 clip-angular-2xs transition-all hover:bg-white/10 active:scale-95"
+              aria-label={isMobileMenuOpen ? t('common.close') : t('common.open')}
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </nav>
+      </motion.header>
+
+      {/* Mobile Menu Component */}
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+        navItems={navItems}
+      />
     </>
   );
 }
-
