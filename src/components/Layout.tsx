@@ -14,14 +14,24 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen gradient-bg selection:bg-[var(--color-brand-orange-primary)]/30 selection:text-white">
+    <div className="min-h-screen gradient-bg selection:bg-[var(--color-brand-orange-primary)]/30 selection:text-white relative overflow-x-hidden">
+      {/* Global Automotive Background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        {/* Main Background Glows */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--color-brand-orange-primary)]/5 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[var(--color-brand-orange-secondary)]/5 blur-[150px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
+        
+        {/* Automotive Grid Overlay */}
+        <div className="absolute inset-0 automotive-grid opacity-20" />
+      </div>
+
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Outlet />
       </main>
 
       {/* Footer */}
-      <footer className="py-20 px-6 sm:px-12 border-t border-white/5 bg-black/50">
+      <footer className="relative z-10 py-20 px-6 sm:px-12 border-t border-white/5 bg-black/50 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="space-y-6">
             <Logo size="md" showSubtitle={false} />

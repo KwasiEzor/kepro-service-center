@@ -103,179 +103,168 @@ export default function Gallery() {
   }, [selectedImage]);
 
   return (
-    <div className="pt-20 pb-40 min-h-screen relative overflow-hidden">
-      {/* Unified Automotive Background */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-        {/* Main Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-brand-dark)] via-[var(--color-brand-gray)] to-[var(--color-brand-dark)]" />
-        
-        {/* Glowing Orbs */}
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-[var(--color-brand-orange-primary)]/5 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[var(--color-brand-orange-secondary)]/5 blur-[150px] rounded-full animate-pulse" style={{ animationDelay: '2s' }} />
-        
-        {/* Automotive Grid Overlay */}
-        <div className="absolute inset-0 automotive-grid opacity-30" />
-      </div>
-
+    <div className="relative pt-20 pb-20">
       {/* Hero Header */}
       <section className="relative py-24 px-6 border-b border-white/5 overflow-hidden">
-        <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="flex flex-col items-center text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange-primary/10 border border-brand-orange-primary/20 rounded-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-              <Camera className="w-4 h-4 text-brand-orange-primary" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange-primary">
-                {t('gallery.header.badge')}
-              </span>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter leading-none animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
-              {t('gallery.header.titlePart1')}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange-primary to-orange-400">
-                {t('gallery.header.titlePart2')}
-              </span>
-            </h1>
-            
-            <p className="max-w-2xl text-lg text-white/60 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-              {t('gallery.header.description')}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="relative py-20 px-6">
-        <div className="container mx-auto max-w-7xl">
-          {/* Filters */}
-          <div className="flex flex-wrap justify-center gap-4 mb-16 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
-                className={cn(
-                  "px-8 py-3 text-sm font-black italic uppercase tracking-widest transition-all duration-300 border-2",
-                  activeCategory === cat.id
-                    ? "bg-brand-orange-primary border-brand-orange-primary text-black scale-105 shadow-lg shadow-brand-orange-primary/20"
-                    : "bg-white/5 border-white/10 text-white/40 hover:border-white/20 hover:text-white"
-                )}
-              >
-                {t(`gallery.filters.${cat.key}`)}
-              </button>
-            ))}
-          </div>
-
-          {/* Grid */}
-          {loading ? (
-            <div className="flex flex-col items-center justify-center py-40 gap-6">
-              <Loader2 className="w-16 h-16 text-brand-orange-primary animate-spin" />
-              <p className="text-white/40 font-bold uppercase tracking-widest animate-pulse">
-                {t('common.loading')}
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredImages.map((img, index) => (
-                <div 
-                  key={img.id}
-                  onClick={() => setSelectedImage(index)}
-                  className="group relative aspect-[4/3] bg-white/5 border border-white/10 overflow-hidden cursor-pointer animate-in fade-in zoom-in duration-500"
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <img
-                    src={formatImageUrl(img.url)}
-                    alt={img.alt || ''}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0"
-                  />
-                  
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                  
-                  {/* Content */}
-                  <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="px-3 py-1 bg-brand-orange-primary text-black text-[10px] font-black italic uppercase tracking-widest">
-                        {img.alt?.toLowerCase().includes('key') ? 'KEY' : 
-                         img.alt?.toLowerCase().includes('diag') ? 'DIAG' : 
-                         img.alt?.toLowerCase().includes('car') ? 'CAR' : img.category}
-                      </span>
-                      <span className="flex items-center gap-1.5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
-                        <Calendar className="w-3 h-3" />
-                        {new Date(img.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-black italic text-white uppercase tracking-tight line-clamp-1">
-                      {img.alt || 'Technical Intervention'}
-                    </h3>
-                    
-                    <div className="mt-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-                      <span className="text-brand-orange-primary font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-                        {t('gallery.viewImage')}
-                        <Maximize2 className="w-4 h-4" />
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Corner Accent */}
-                  <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-brand-orange-primary/0 group-hover:border-brand-orange-primary transition-all duration-500" />
-                  <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-brand-orange-primary/0 group-hover:border-brand-orange-primary transition-all duration-500" />
+            <div className="container mx-auto max-w-7xl relative z-10">
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange-primary/10 border border-brand-orange-primary/20 rounded-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  <Camera className="w-4 h-4 text-brand-orange-primary" />
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange-primary">
+                    {t('gallery.header.badge')}
+                  </span>
                 </div>
-              ))}
+                
+                <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter leading-none animate-in fade-in slide-in-from-bottom-6 duration-700 delay-100">
+                  {t('gallery.header.titlePart1')}{' '}
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange-primary to-orange-400">
+                    {t('gallery.header.titlePart2')}
+                  </span>
+                </h1>
+                
+                <p className="max-w-2xl text-lg text-white/60 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+                  {t('gallery.header.description')}
+                </p>
+              </div>
             </div>
-          )}
+          </section>
 
-          {/* Pagination Controls */}
-          {!loading && pagination.totalPages > 1 && (
-            <div className="mt-20 flex justify-center items-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700">
-              <button
-                onClick={() => handlePageChange(pagination.page - 1)}
-                disabled={pagination.page === 1}
-                className="p-3 glass border border-white/10 text-white disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
-                style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              
-              <div className="flex items-center gap-2">
-                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((p) => (
+          {/* Main Content */}
+          <section className="relative py-20 px-6">
+            <div className="container mx-auto max-w-7xl">
+              {/* Filters */}
+              <div className="flex flex-wrap justify-center gap-4 mb-16 animate-in fade-in slide-in-from-bottom-10 duration-700 delay-300">
+                {CATEGORIES.map((cat) => (
                   <button
-                    key={p}
-                    onClick={() => handlePageChange(p)}
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
                     className={cn(
-                      "w-12 h-12 flex items-center justify-center font-black italic transition-all",
-                      pagination.page === p
-                        ? "bg-brand-orange-primary text-black scale-110 shadow-lg shadow-brand-orange-primary/20"
-                        : "glass border border-white/10 text-white/40 hover:text-white"
+                      "px-8 py-3 text-sm font-black italic uppercase tracking-widest transition-all duration-300 border-2",
+                      activeCategory === cat.id
+                        ? "bg-brand-orange-primary border-brand-orange-primary text-black scale-105 shadow-lg shadow-brand-orange-primary/20"
+                        : "bg-white/5 border-white/10 text-white/40 hover:border-white/20 hover:text-white"
                     )}
-                    style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
                   >
-                    {p}
+                    {t(`gallery.filters.${cat.key}`)}
                   </button>
                 ))}
               </div>
 
-              <button
-                onClick={() => handlePageChange(pagination.page + 1)}
-                disabled={pagination.page === pagination.totalPages}
-                className="p-3 glass border border-white/10 text-white disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
-                style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </div>
-          )}
+              {/* Grid */}
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-40 gap-6">
+                  <Loader2 className="w-16 h-16 text-brand-orange-primary animate-spin" />
+                  <p className="text-white/40 font-bold uppercase tracking-widest animate-pulse">
+                    {t('common.loading')}
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredImages.map((img, index) => (
+                    <div 
+                      key={img.id}
+                      onClick={() => setSelectedImage(index)}
+                      className="group relative aspect-[4/3] bg-white/5 border border-white/10 overflow-hidden cursor-pointer animate-in fade-in zoom-in duration-500"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <img
+                        src={formatImageUrl(img.url)}
+                        alt={img.alt || ''}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale-[50%] group-hover:grayscale-0"
+                      />
+                      
+                      {/* Overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+                      
+                      {/* Content */}
+                      <div className="absolute inset-0 p-8 flex flex-col justify-end translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className="px-3 py-1 bg-brand-orange-primary text-black text-[10px] font-black italic uppercase tracking-widest">
+                            {img.alt?.toLowerCase().includes('key') ? 'KEY' : 
+                            img.alt?.toLowerCase().includes('diag') ? 'DIAG' : 
+                            img.alt?.toLowerCase().includes('car') ? 'CAR' : img.category}
+                          </span>
+                          <span className="flex items-center gap-1.5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                            <Calendar className="w-3 h-3" />
+                            {new Date(img.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <h3 className="text-xl font-black italic text-white uppercase tracking-tight line-clamp-1">
+                          {img.alt || 'Technical Intervention'}
+                        </h3>
+                        
+                        <div className="mt-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                          <span className="text-brand-orange-primary font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+                            {t('gallery.viewImage')}
+                            <Maximize2 className="w-4 h-4" />
+                          </span>
+                        </div>
+                      </div>
 
-          {/* Empty State */}
-          {!loading && filteredImages.length === 0 && (
-            <div className="py-40 text-center space-y-6">
-              <div className="inline-block p-6 bg-white/5 rounded-full mb-4">
-                <Camera className="w-12 h-12 text-white/20" />
-              </div>
-              <p className="text-2xl font-black italic text-white/40 uppercase tracking-widest">
-                {t('gallery.empty')}
-              </p>
+                      {/* Corner Accent */}
+                      <div className="absolute top-0 right-0 w-12 h-12 border-t-2 border-r-2 border-brand-orange-primary/0 group-hover:border-brand-orange-primary transition-all duration-500" />
+                      <div className="absolute bottom-0 left-0 w-12 h-12 border-b-2 border-l-2 border-brand-orange-primary/0 group-hover:border-brand-orange-primary transition-all duration-500" />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Pagination Controls */}
+              {!loading && pagination.totalPages > 1 && (
+                <div className="mt-20 flex justify-center items-center gap-4 animate-in fade-in slide-in-from-bottom-6 duration-700">
+                  <button
+                    onClick={() => handlePageChange(pagination.page - 1)}
+                    disabled={pagination.page === 1}
+                    className="p-3 glass border border-white/10 text-white disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
+                    style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((p) => (
+                      <button
+                        key={p}
+                        onClick={() => handlePageChange(p)}
+                        className={cn(
+                          "w-12 h-12 flex items-center justify-center font-black italic transition-all",
+                          pagination.page === p
+                            ? "bg-brand-orange-primary text-black scale-110 shadow-lg shadow-brand-orange-primary/20"
+                            : "glass border border-white/10 text-white/40 hover:text-white"
+                        )}
+                        style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => handlePageChange(pagination.page + 1)}
+                    disabled={pagination.page === pagination.totalPages}
+                    className="p-3 glass border border-white/10 text-white disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
+                    style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+                </div>
+              )}
+
+              {/* Empty State */}
+              {!loading && filteredImages.length === 0 && (
+                <div className="py-40 text-center space-y-6">
+                  <div className="inline-block p-6 bg-white/5 rounded-full mb-4">
+                    <Camera className="w-12 h-12 text-white/20" />
+                  </div>
+                  <p className="text-2xl font-black italic text-white/40 uppercase tracking-widest">
+                    {t('gallery.empty')}
+                  </p>
+                </div>
+              )}
             </div>
-          )}
+          </section>
         </div>
-      </section>
+      </div>
 
       {/* Lightbox */}
       {selectedImage !== null && (

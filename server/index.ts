@@ -75,7 +75,8 @@ app.use((req, res) => {
 // Global error handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const host = '0.0.0.0';
+app.listen(PORT, host, () => {
   logger.info(`✅ API server on http://localhost:${PORT}`);
   logger.info(`📁 Uploads directory: ${uploadDir}`);
   logger.info(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);
