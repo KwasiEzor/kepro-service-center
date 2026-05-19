@@ -23,7 +23,7 @@ import { cn } from '../lib/utils';
 import { useSEO } from '../hooks/useSEO';
 import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
 import { api } from '../lib/api';
-import { ApiResponse } from '../types';
+import { ApiResponse, ServiceType } from '../types';
 
 type Step = 'service' | 'vehicle' | 'details' | 'success';
 
@@ -58,7 +58,7 @@ export default function Quote() {
   const handleNext = async () => {
     if (step === 'service') {
       if (!serviceType) return;
-      setValue('serviceType', serviceType as any);
+      setValue('serviceType', serviceType as ServiceType);
       setStep('vehicle');
     } else if (step === 'vehicle') {
       const isValid = await trigger(['brand', 'model', 'year', 'location']);

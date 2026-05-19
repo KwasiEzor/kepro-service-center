@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
     const category = (req.query.category as string) || 'temp';
 
     // Validate category whitelist
-    if (!ALLOWED_CATEGORIES.includes(category as any)) {
+    if (!ALLOWED_CATEGORIES.includes(category as typeof ALLOWED_CATEGORIES[number])) {
       return cb(new ValidationError(`Invalid category. Allowed: ${ALLOWED_CATEGORIES.join(', ')}`), '');
     }
 

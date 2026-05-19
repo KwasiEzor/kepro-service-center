@@ -214,10 +214,9 @@ export default function Home() {
             >
               <div className="clip-angular-lg overflow-hidden relative group">
                 <img
-                  src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&q=80&w=1200"
+                  src="/images/hero/car-key-premium.jpg"
                   alt="Premium Car Key Service"
                   className="w-full h-auto transform group-hover:scale-105 transition-transform duration-700"
-                  referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-purple-600/20 mix-blend-overlay" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-brand-dark)] via-transparent to-transparent" />

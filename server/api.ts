@@ -2,6 +2,9 @@ import express from 'express';
 import { GoogleGenAI } from '@google/genai';
 import { uploadSingle } from './src/middleware/upload';
 import fs from 'fs/promises';
+import prisma from './src/config/database';
+import { authenticateOptional } from './src/middleware/auth';
+import { AuthRequest } from './src/types';
 
 const router = express.Router();
 
@@ -34,6 +37,16 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Message too long' });
     }
 
+    // Validate and slice history (Defensive Programming)
+    const MAX_HISTORY = 20;
+    if (history && !Array.isArray(history)) {
+      return res.status(400).json({ error: 'Invalid history format' });
+    }
+    
+    if (history && history.length > 100) {
+      return res.status(400).json({ error: 'Chat history too long' });
+    }
+
     const systemPrompt = 'You are the AI assistant for KeyPro Service Center, a premium automotive service center specializing in car keys, diagnostics, and mobile technical assistance. Be professional, technical, helpful, and concise. Offer to provide quotes or book services. If asked about prices, explain they depend on the vehicle model and service type. Use emojis sparingly to keep a premium feel.';
 
     // Construct the contents for the API
@@ -41,10 +54,11 @@ router.post('/', async (req, res) => {
       { role: 'user', parts: [{ text: systemPrompt }] },
       { role: 'model', parts: [{ text: 'Understood. I am the KeyPro AI Assistant.' }] },
       ...(history || [])
-        .filter(msg => msg.content)
+        .slice(-MAX_HISTORY) // Only take the last N messages
+        .filter(msg => msg.content && typeof msg.content === 'string')
         .map(msg => ({
           role: msg.role === 'user' ? 'user' : 'model',
-          parts: [{ text: msg.content }]
+          parts: [{ text: msg.content.substring(0, 2000) }] // Also cap individual history message length
         })),
       { role: 'user', parts: [{ text: message }] }
     ];
@@ -67,8 +81,9 @@ router.post('/', async (req, res) => {
  * AI Vision Diagnostic Endpoint
  * POST /api/chat/vision
  */
-router.post('/vision', uploadSingle, async (req, res) => {
+router.post('/vision', authenticateOptional, uploadSingle, async (req, res) => {
   try {
+    const authReq = req as AuthRequest;
     const file = req.file;
     if (!file) {
       return res.status(400).json({ error: 'No image provided' });
@@ -106,6 +121,20 @@ router.post('/vision', uploadSingle, async (req, res) => {
     });
 
     const text = result.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I could not analyze the image.';
+
+    // Record the diagnostic in the database (Audit Trail)
+    const imageUrl = `/uploads/temp/${file.filename}`;
+    await prisma.image.create({
+      data: {
+        url: imageUrl,
+        filename: file.filename,
+        alt: `AI Diagnostic: ${text.substring(0, 100)}...`,
+        category: 'temp',
+        size: file.size,
+        mimeType: file.mimetype,
+        uploadedBy: authReq.user?.id || 'system', // Use logged user or system
+      },
+    }).catch(err => console.error('Failed to log AI diagnostic to DB:', err));
 
     // Clean up uploaded file
     await fs.unlink(file.path).catch(err => console.error('Failed to delete temp file:', err));

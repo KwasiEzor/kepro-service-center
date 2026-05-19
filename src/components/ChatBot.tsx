@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { MessageSquare, X, Send, User, Bot, Loader2, Camera, Paperclip } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
+import { config } from '../lib/config';
 
 export default function ChatBot() {
   const { t } = useTranslation();
@@ -30,7 +31,7 @@ export default function ChatBot() {
     setIsLoading(true);
 
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+      const baseUrl = config.apiUrl;
       const response = await fetch(`${baseUrl}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -71,7 +72,7 @@ export default function ChatBot() {
     formData.append('file', file);
 
     try {
-      const baseUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+      const baseUrl = config.apiUrl;
       const response = await fetch(`${baseUrl}/api/chat/vision`, {
         method: 'POST',
         body: formData,

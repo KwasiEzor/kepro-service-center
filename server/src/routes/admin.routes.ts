@@ -4,6 +4,7 @@ import { authenticate, requireAdmin } from '../middleware/auth';
 import { validateParams, validateBody } from '../middleware/validate';
 import { uploadSingle } from '../middleware/upload';
 import { z } from 'zod';
+import { serviceSchema, faqSchema } from '../utils/validators';
 
 const router = Router();
 
@@ -37,14 +38,14 @@ router.delete('/images/:id', authenticate, requireAdmin, validateParams(z.object
 
 // Services Management
 router.get('/services', authenticate, requireAdmin, (req, res, next) => adminController.getServices(req, res, next));
-router.post('/services', authenticate, requireAdmin, (req, res, next) => adminController.createService(req, res, next));
-router.patch('/services/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.updateService(req, res, next));
+router.post('/services', authenticate, requireAdmin, validateBody(serviceSchema), (req, res, next) => adminController.createService(req, res, next));
+router.patch('/services/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), validateBody(serviceSchema.partial()), (req, res, next) => adminController.updateService(req, res, next));
 router.delete('/services/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteService(req, res, next));
 
 // FAQ Management
 router.get('/faqs', authenticate, requireAdmin, (req, res, next) => adminController.getFAQs(req, res, next));
-router.post('/faqs', authenticate, requireAdmin, (req, res, next) => adminController.createFAQ(req, res, next));
-router.patch('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.updateFAQ(req, res, next));
+router.post('/faqs', authenticate, requireAdmin, validateBody(faqSchema), (req, res, next) => adminController.createFAQ(req, res, next));
+router.patch('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), validateBody(faqSchema.partial()), (req, res, next) => adminController.updateFAQ(req, res, next));
 router.delete('/faqs/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteFAQ(req, res, next));
 
 // User Management

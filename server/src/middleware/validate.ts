@@ -47,7 +47,7 @@ export const validateQuery = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const validated = schema.parse(req.query);
-      req.query = validated as any; // Replace with validated data
+      req.query = validated as Record<string, any>; // Replace with validated data
       next();
     } catch (error) {
       if (error instanceof ZodError) {

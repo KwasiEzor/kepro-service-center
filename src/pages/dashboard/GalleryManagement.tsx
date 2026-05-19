@@ -13,6 +13,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { cn, formatImageUrl } from '../../lib/utils';
+import { config } from '../../lib/config';
 
 const CATEGORIES = [
   { id: 'all', label: 'All Images' },
@@ -77,7 +78,7 @@ export default function GalleryManagement() {
       // Fetch does this automatically if we don't set Content-Type manually.
       // We need to check if our ApiClient sets Content-Type.
       
-      const response = await fetch(`${(import.meta as any).env?.VITE_API_URL || 'http://localhost:3001'}/api/admin/images/upload`, {
+      const response = await fetch(`${config.apiUrl}/api/admin/images/upload`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('accessToken')}`

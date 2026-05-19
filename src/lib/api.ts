@@ -1,7 +1,10 @@
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+import { config } from './config';
+
+const API_URL = config.apiUrl;
 
 type RequestOptions = RequestInit & {
   params?: Record<string, string>;
+  _retry?: boolean;
 };
 
 class ApiClient {
@@ -24,7 +27,7 @@ class ApiClient {
       headers.set('Authorization', `Bearer ${token}`);
     }
 
-    const config: RequestInit = {
+    const fetchConfig: RequestInit = {
       ...options,
       headers,
       // Same as axios withCredentials: true
@@ -32,23 +35,24 @@ class ApiClient {
     };
 
     try {
-      const response = await fetch(url.toString(), config);
+      const response = await fetch(url.toString(), fetchConfig);
       
-      if (response.status === 401 && !(options as any)._retry) {
+      if (response.status === 401 && !options._retry) {
         // Handle token refresh
-        return this.handleUnauthorized<T>(endpoint, { ...options, _retry: true } as any);
+        return this.handleUnauthorized<T>(endpoint, { ...options, _retry: true });
       }
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const error = new Error(errorData.error || response.statusText);
-        (error as any).response = { data: errorData, status: response.status };
+        const errorMessage = errorData.error || response.statusText;
+        const error = new Error(errorMessage) as Error & { response: { data: any, status: number } };
+        error.response = { data: errorData, status: response.status };
         throw error;
       }
 
       const data = await response.json();
       return { data };
-    } catch (error: any) {
+    } catch (error) {
       throw error;
     }
   }

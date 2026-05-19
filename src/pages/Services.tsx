@@ -11,19 +11,19 @@ import {
   Loader2
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { cn } from '../lib/utils';
+import { cn, getLocalizedField } from '../lib/utils';
 import { api } from '../lib/api';
 import { useSEO } from '../hooks/useSEO';
 import { Service, ApiResponse } from '../types';
 
-const serviceImages = {
-  keys: "https://images.pexels.com/photos/97075/pexels-photo-97075.jpeg?auto=compress&cs=tinysrgb&w=800",
-  diagnostics: "https://images.pexels.com/photos/3806249/pexels-photo-3806249.jpeg?auto=compress&cs=tinysrgb&w=800",
-  programming: "https://images.pexels.com/photos/2881232/pexels-photo-2881232.jpeg?auto=compress&cs=tinysrgb&w=800",
-  other: "https://images.pexels.com/photos/190574/pexels-photo-190574.jpeg?auto=compress&cs=tinysrgb&w=800"
+const serviceImages: Record<string, string> = {
+  keys: "/images/services/car-keys.jpg",
+  diagnostics: "/images/services/diagnostics.jpg",
+  programming: "/images/services/programming.jpg",
+  other: "/images/services/other.jpg"
 };
 
-const categoryIcons: Record<string, any> = {
+const categoryIcons: Record<string, React.ElementType> = {
   keys: Key,
   diagnostics: Cpu,
   programming: Microchip,
@@ -63,12 +63,12 @@ export default function Services() {
     title: t(`services.categories.${cat}.title`, { defaultValue: cat.charAt(0).toUpperCase() + cat.slice(1) }),
     description: t(`services.categories.${cat}.description`, { defaultValue: '' }),
     services: services.filter(s => (s.category || 'other') === cat).map(s => ({
-      name: (s as any)[`name${lang}`],
-      detail: (s as any)[`description${lang}`],
+      name: getLocalizedField(s, 'name', lang),
+      detail: getLocalizedField(s, 'description', lang),
       price: s.priceFrom
     })),
     icon: categoryIcons[cat] || Settings,
-    image: (serviceImages as any)[cat] || serviceImages.other
+    image: serviceImages[cat] || serviceImages.other
   }));
 
   const brands = [

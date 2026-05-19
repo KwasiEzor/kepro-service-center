@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Plus, Minus, Search, HelpCircle, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { cn } from '../lib/utils';
+import { cn, getLocalizedField } from '../lib/utils';
 import { api } from '../lib/api';
 import { useSEO } from '../hooks/useSEO';
 import { FAQ as FAQType, ApiResponse } from '../types';
@@ -33,11 +33,11 @@ export default function FAQ() {
   }, []);
 
   const lang = i18n.language.startsWith('fr') ? 'Fr' : 'En';
-
-  const localizedFaqs = faqs.map(f => ({
-    question: (f as any)[`question${lang}`],
-    answer: (f as any)[`answer${lang}`]
-  }));
+const localizedFaqs = faqs.map(f => ({
+  id: f.id,
+  question: getLocalizedField(f, 'question', lang),
+  answer: getLocalizedField(f, 'answer', lang)
+}));
 
   const filteredFaqs = localizedFaqs.filter(faq =>
     faq.question.toLowerCase().includes(searchTerm.toLowerCase()) ||

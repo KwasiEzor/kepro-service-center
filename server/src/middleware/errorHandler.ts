@@ -31,14 +31,14 @@ export const errorHandler = (
 
   // Handle Multer errors
   if (error.constructor.name === 'MulterError') {
-    const multerError = error as any;
-    if (multerError.code === 'LIMIT_FILE_SIZE') {
+    const code = (error as any).code;
+    if (code === 'LIMIT_FILE_SIZE') {
       return res.status(400).json({
         success: false,
         error: 'File size too large. Maximum size is 5MB',
       });
     }
-    if (multerError.code === 'LIMIT_FILE_COUNT') {
+    if (code === 'LIMIT_FILE_COUNT') {
       return res.status(400).json({
         success: false,
         error: 'Too many files. Maximum is 10 files',
