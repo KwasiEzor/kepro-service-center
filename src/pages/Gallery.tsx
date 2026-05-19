@@ -103,7 +103,8 @@ export default function Gallery() {
   }, [selectedImage]);
 
   return (
-    <div className="relative pt-20 pb-20">
+    <>
+      <div className="relative pt-20 pb-20">
       {/* Hero Header */}
       <section className="relative py-24 px-6 border-b border-white/5 overflow-hidden">
             <div className="container mx-auto max-w-7xl relative z-10">
@@ -263,7 +264,6 @@ export default function Gallery() {
               )}
             </div>
           </section>
-        </div>
       </div>
 
       {/* Lightbox */}
@@ -328,6 +328,6 @@ export default function Gallery() {
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 }

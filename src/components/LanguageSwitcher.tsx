@@ -100,34 +100,37 @@ export function LanguageSwitcher() {
               right: `${coords.right}px`,
             }}
           >
-            {languages.map((lang) => (
-              <button
-                key={lang.code}
-                type="button"
-                onClick={() => handleLanguageChange(lang.code)}
-                className={cn(
-                  'w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:translate-x-1',
-                  i18n.language?.startsWith(lang.code)
-                    ? 'bg-[var(--color-brand-orange-primary)]/20 text-white border-l-2 border-[var(--color-brand-orange-primary)]'
-                    : 'text-white/70 hover:bg-white/5 hover:text-white'
-                )}
-              >
-                <span className="text-xl">{lang.flag}</span>
-                <div className="flex-1">
-                  <p className="text-sm font-bold">{lang.label}</p>
-                  <p className="text-[10px] uppercase tracking-widest text-white/40">
-                    {lang.code}
-                  </p>
-                </div>
-                {i18n.language?.startsWith(lang.code) && (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-2 h-2 clip-angular-sm bg-[var(--color-brand-orange-primary)]"
-                  />
-                )}
-              </button>
-            ))}
+            {languages.map((lang) => {
+              const isSelected = i18n.language?.startsWith(lang.code) || i18n.resolvedLanguage?.startsWith(lang.code);
+              return (
+                <button
+                  key={lang.code}
+                  type="button"
+                  onClick={() => handleLanguageChange(lang.code)}
+                  className={cn(
+                    'w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:translate-x-1',
+                    isSelected
+                      ? 'bg-[var(--color-brand-orange-primary)]/20 text-white border-l-2 border-[var(--color-brand-orange-primary)]'
+                      : 'text-white/70 hover:bg-white/5 hover:text-white'
+                  )}
+                >
+                  <span className="text-xl">{lang.flag}</span>
+                  <div className="flex-1">
+                    <p className="text-sm font-bold">{lang.label}</p>
+                    <p className="text-[10px] uppercase tracking-widest text-white/40">
+                      {lang.code}
+                    </p>
+                  </div>
+                  {isSelected && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="w-2 h-2 clip-angular-sm bg-[var(--color-brand-orange-primary)]"
+                    />
+                  )}
+                </button>
+              );
+            })}
           </motion.div>,
           document.body
         )}
