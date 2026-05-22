@@ -35,9 +35,8 @@ export class AuthService {
       role: user.role,
     };
 
-    // @ts-ignore - JWT library type mismatch
-    return jwt.sign(payload, authConfig.jwt.secret, {
-      expiresIn: authConfig.jwt.expiresIn,
+    return jwt.sign(payload, authConfig.jwt.secret as jwt.Secret, {
+      expiresIn: authConfig.jwt.expiresIn as jwt.SignOptions['expiresIn'],
     });
   }
 
@@ -51,9 +50,8 @@ export class AuthService {
       role: user.role,
     };
 
-    // @ts-ignore - JWT library type mismatch
-    return jwt.sign(payload, authConfig.jwt.refreshSecret, {
-      expiresIn: authConfig.jwt.refreshExpiresIn,
+    return jwt.sign(payload, authConfig.jwt.refreshSecret as jwt.Secret, {
+      expiresIn: authConfig.jwt.refreshExpiresIn as jwt.SignOptions['expiresIn'],
     });
   }
 

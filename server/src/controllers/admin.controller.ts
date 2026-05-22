@@ -9,6 +9,7 @@ import { env } from '../../env';
 import { getPaginationParams, paginateResponse } from '../utils/pagination';
 import emailService from '../services/email.service';
 import invoiceService from '../services/invoice.service';
+import logger from '../utils/logger';
 
 export class AdminController {
   /**
@@ -326,11 +327,11 @@ export class AdminController {
       // Delete from filesystem
       const uploadDir = env.UPLOAD_DIR;
       const filePath = path.join(process.cwd(), uploadDir, image.category || 'temp', image.filename);
-      
       try {
-        await fs.unlink(filePath);
+        await fs.unlink(fullPath);
       } catch (err) {
-        console.error('Failed to delete physical file:', err);
+        logger.error({ err, path: fullPath }, 'Failed to delete physical file');
+      }
         // Continue to delete from DB even if file is missing
       }
 

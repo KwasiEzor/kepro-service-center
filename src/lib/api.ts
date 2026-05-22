@@ -10,9 +10,29 @@ type RequestOptions = RequestInit & {
 class ApiClient {
   private isRefreshing = false;
   private refreshSubscribers: ((token: string) => void)[] = [];
+  private csrfToken: string | null = null;
+
+  private async fetchCsrfToken() {
+    try {
+      const response = await fetch(`${API_URL}/api/csrf-token`, { credentials: 'include' });
+      const { token } = await response.json();
+      this.csrfToken = token;
+      return token;
+    } catch (error) {
+      return null;
+    }
+  }
 
   private async request<T>(endpoint: string, options: RequestOptions = {}): Promise<{ data: T }> {
     const url = new URL(endpoint.startsWith('http') ? endpoint : `${API_URL}${endpoint}`);
+    
+    // Skip CSRF for the token endpoint itself
+    if (!endpoint.includes('/api/csrf-token')) {
+      const needsCsrf = options.method && !['GET', 'HEAD', 'OPTIONS'].includes(options.method);
+      if (needsCsrf && !this.csrfToken) {
+        await this.fetchCsrfToken();
+      }
+    }
     
     if (options.params) {
       Object.keys(options.params).forEach(key => 
@@ -25,6 +45,9 @@ class ApiClient {
     headers.set('Content-Type', 'application/json');
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
+    }
+    if (this.csrfToken) {
+      headers.set('X-CSRF-Token', this.csrfToken);
     }
 
     const fetchConfig: RequestInit = {

@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import { CreateQuoteDTO, CreateContactDTO } from '../types';
 import { env } from '../../env';
 import { templates } from './email-templates';
+import logger from '../utils/logger';
 
 export class EmailService {
   private transporter: nodemailer.Transporter | null = null;
@@ -28,7 +29,7 @@ export class EmailService {
 
       this.transporter = nodemailer.createTransport(config);
     } else {
-      console.warn('⚠️ Email service not configured. Emails will be logged to console instead.');
+      logger.warn('⚠️ Email service not configured. Emails will be logged to console instead.');
     }
   }
 
@@ -119,10 +120,7 @@ export class EmailService {
    */
   private async sendEmail(to: string, subject: string, html: string) {
     if (!this.transporter) {
-      console.log('--- EMAIL MOCK ---');
-      console.log(`To: ${to}`);
-      console.log(`Subject: ${subject}`);
-      console.log('------------------');
+      logger.info({ to, subject }, '--- EMAIL MOCK ---');
       return;
     }
 
@@ -133,9 +131,9 @@ export class EmailService {
         subject,
         html,
       });
-      console.log(`✅ Email sent to ${to}`);
+      logger.info({ to }, '✅ Email sent');
     } catch (error) {
-      console.error('❌ Failed to send email:', error);
+      logger.error({ err: error, to, subject }, '❌ Failed to send email');
       // We don't throw here to avoid crashing the main request
     }
   }

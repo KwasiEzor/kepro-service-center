@@ -14,6 +14,8 @@ import userRoutes from './src/routes/user.routes';
 import { errorHandler } from './src/middleware/errorHandler';
 import { apiLimiter, authLimiter } from './src/middleware/rateLimiter';
 import logger from './src/utils/logger';
+import { doubleCsrfProtection, generateToken } from './src/middleware/csrf';
+import { startCleanupJobs } from './src/jobs/cleanup';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -24,7 +26,23 @@ const app = express();
 const PORT = parseInt(env.PORT);
 
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"], // Needed for some libraries, consider nonce in production
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:", env.FRONTEND_URL],
+      connectSrc: ["'self'", env.FRONTEND_URL, "https://generativelanguage.googleapis.com"],
+      fontSrc: ["'self'", "data:"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+      upgradeInsecureRequests: [],
+    },
+  },
+  crossOriginEmbedderPolicy: false,
+}));
 
 // CORS configuration
 app.use(
@@ -40,6 +58,14 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
+
+// CSRF Protection
+app.use(doubleCsrfProtection);
+
+// CSRF Token route
+app.get('/api/csrf-token', (req, res) => {
+  res.json({ token: generateToken(req, res) });
+});
 
 // Serve static uploads
 const uploadDir = env.UPLOAD_DIR;
@@ -74,6 +100,9 @@ app.use((req, res) => {
 
 // Global error handler
 app.use(errorHandler);
+
+// Start background jobs
+startCleanupJobs();
 
 const host = '0.0.0.0';
 app.listen(PORT, host, () => {

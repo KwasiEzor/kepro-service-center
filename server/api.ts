@@ -5,6 +5,7 @@ import fs from 'fs/promises';
 import prisma from './src/config/database';
 import { authenticateOptional } from './src/middleware/auth';
 import { AuthRequest } from './src/types';
+import logger from './src/utils/logger';
 
 const router = express.Router();
 
@@ -72,7 +73,7 @@ router.post('/', async (req, res) => {
 
     res.json({ response: text });
   } catch (error: any) {
-    console.error('Chat API error:', error);
+    logger.error({ err: error }, 'Chat API error');
     res.status(500).json({ error: 'I am having trouble processing your request right now.' });
   }
 });
@@ -134,14 +135,14 @@ router.post('/vision', authenticateOptional, uploadSingle, async (req, res) => {
         mimeType: file.mimetype,
         uploadedBy: authReq.user?.id || 'system', // Use logged user or system
       },
-    }).catch(err => console.error('Failed to log AI diagnostic to DB:', err));
+    }).catch(err => logger.error({ err }, 'Failed to log AI diagnostic to DB'));
 
     // Clean up uploaded file
-    await fs.unlink(file.path).catch(err => console.error('Failed to delete temp file:', err));
+    await fs.unlink(file.path).catch(err => logger.error({ err, path: file.path }, 'Failed to delete temp file'));
 
     res.json({ response: text });
   } catch (error: any) {
-    console.error('Vision API error:', error);
+    logger.error({ err: error }, 'Vision API error');
     res.status(500).json({ error: 'Failed to analyze image' });
   }
 });
