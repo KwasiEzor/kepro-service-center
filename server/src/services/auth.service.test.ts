@@ -87,6 +87,15 @@ describe('AuthService', () => {
         password: 'wrong_password',
       })).rejects.toThrow(UnauthorizedError);
     });
+
+    it('should throw UnauthorizedError if user is not found', async () => {
+      (prisma.user.findUnique as any).mockResolvedValue(null);
+
+      await expect(authService.login({
+        email: 'nonexistent@example.com',
+        password: 'password123',
+      })).rejects.toThrow(UnauthorizedError);
+    });
   });
 
   describe('register', () => {
@@ -120,6 +129,116 @@ describe('AuthService', () => {
         email: 'existing@example.com',
         password: 'password',
       })).rejects.toThrow(ConflictError);
+    });
+  });
+
+  describe('refreshAccessToken', () => {
+    it('should refresh access token successfully', async () => {
+      const mockSession = {
+        id: 'session_123',
+        token: 'refresh_token',
+        expiresAt: new Date(Date.now() + 3600000), // 1 hour from now
+        user: { id: 'user_123', email: 'test@example.com', role: UserRole.USER },
+      };
+
+      (jwt.verify as any).mockReturnValue({ userId: 'user_123' });
+      (prisma.session.findUnique as any).mockResolvedValue(mockSession);
+      (jwt.sign as any).mockReturnValue('new_access_token');
+
+      const result = await authService.refreshAccessToken('refresh_token');
+
+      expect(result.accessToken).toBe('new_access_token');
+      expect(jwt.sign).toHaveBeenCalled();
+    });
+
+    it('should throw UnauthorizedError if session is not found', async () => {
+      (jwt.verify as any).mockReturnValue({ userId: 'user_123' });
+      (prisma.session.findUnique as any).mockResolvedValue(null);
+
+      await expect(authService.refreshAccessToken('invalid_token'))
+        .rejects.toThrow(UnauthorizedError);
+    });
+
+    it('should throw UnauthorizedError and delete session if expired', async () => {
+      const mockSession = {
+        id: 'session_123',
+        token: 'expired_token',
+        expiresAt: new Date(Date.now() - 3600000), // 1 hour ago
+      };
+
+      (jwt.verify as any).mockReturnValue({ userId: 'user_123' });
+      (prisma.session.findUnique as any).mockResolvedValue(mockSession);
+
+      await expect(authService.refreshAccessToken('expired_token'))
+        .rejects.toThrow(UnauthorizedError);
+      expect(prisma.session.delete).toHaveBeenCalledWith({ where: { id: 'session_123' } });
+    });
+  });
+
+  describe('logout', () => {
+    it('should delete sessions with the given refresh token', async () => {
+      await authService.logout('token_to_delete');
+      expect(prisma.session.deleteMany).toHaveBeenCalledWith({
+        where: { token: 'token_to_delete' },
+      });
+    });
+  });
+
+  describe('getUserById', () => {
+    it('should return user without password if found', async () => {
+      const mockUser = {
+        id: 'user_123',
+        email: 'test@example.com',
+        password: 'hashed_password',
+        firstName: 'Test',
+      };
+
+      (prisma.user.findUnique as any).mockResolvedValue(mockUser);
+
+      const result = await authService.getUserById('user_123');
+
+      expect(result).toEqual({
+        id: 'user_123',
+        email: 'test@example.com',
+        firstName: 'Test',
+      });
+      expect(result).not.toHaveProperty('password');
+    });
+
+    it('should return null if user is not found', async () => {
+      (prisma.user.findUnique as any).mockResolvedValue(null);
+      const result = await authService.getUserById('nonexistent');
+      expect(result).toBeNull();
+    });
+  });
+
+  describe('verifyAccessToken', () => {
+    it('should return payload for valid token', () => {
+      const mockPayload = { userId: '123', email: 'test@test.com', role: UserRole.USER };
+      (jwt.verify as any).mockReturnValue(mockPayload);
+
+      const result = authService.verifyAccessToken('valid_token');
+      expect(result).toEqual(mockPayload);
+    });
+
+    it('should throw UnauthorizedError for invalid token', () => {
+      (jwt.verify as any).mockImplementation(() => { throw new Error('Invalid'); });
+      expect(() => authService.verifyAccessToken('invalid_token')).toThrow(UnauthorizedError);
+    });
+  });
+
+  describe('verifyRefreshToken', () => {
+    it('should return payload for valid refresh token', () => {
+      const mockPayload = { userId: '123', email: 'test@test.com', role: UserRole.USER };
+      (jwt.verify as any).mockReturnValue(mockPayload);
+
+      const result = authService.verifyRefreshToken('valid_refresh_token');
+      expect(result).toEqual(mockPayload);
+    });
+
+    it('should throw UnauthorizedError for invalid refresh token', () => {
+      (jwt.verify as any).mockImplementation(() => { throw new Error('Invalid'); });
+      expect(() => authService.verifyRefreshToken('invalid_refresh_token')).toThrow(UnauthorizedError);
     });
   });
 });

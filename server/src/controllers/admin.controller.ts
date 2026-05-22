@@ -326,13 +326,11 @@ export class AdminController {
 
       // Delete from filesystem
       const uploadDir = env.UPLOAD_DIR;
-      const filePath = path.join(process.cwd(), uploadDir, image.category || 'temp', image.filename);
+      const fullPath = path.join(process.cwd(), uploadDir, image.category || 'temp', image.filename);
       try {
         await fs.unlink(fullPath);
       } catch (err) {
         logger.error({ err, path: fullPath }, 'Failed to delete physical file');
-      }
-        // Continue to delete from DB even if file is missing
       }
 
       await prisma.image.delete({

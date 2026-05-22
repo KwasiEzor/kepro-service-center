@@ -63,6 +63,49 @@ describe('QuoteService', () => {
       expect(emailService.sendUserQuoteConfirmation).toHaveBeenCalledWith(mockQuoteData);
       expect(result).toEqual(mockCreatedQuote);
     });
+
+    it('should use message as fallback for description if description is missing', async () => {
+      const mockQuoteData = {
+        brand: 'Honda',
+        model: 'Civic',
+        year: '2022',
+        serviceType: 'diagnostic',
+        message: 'Dashboard lights on',
+      } as any;
+
+      (prisma.quote.create as any).mockResolvedValue({ id: '1', ...mockQuoteData });
+
+      await quoteService.createQuote(mockQuoteData);
+
+      expect(prisma.quote.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          description: 'Dashboard lights on',
+        }),
+      });
+    });
+
+    it('should handle urgency and userId correctly', async () => {
+      const mockQuoteData = {
+        brand: 'Ford',
+        model: 'F-150',
+        year: '2019',
+        serviceType: 'ecu',
+        description: 'ECU issue',
+        urgency: 'urgent',
+        userId: 'user_123',
+      } as any;
+
+      (prisma.quote.create as any).mockResolvedValue({ id: '1', ...mockQuoteData });
+
+      await quoteService.createQuote(mockQuoteData);
+
+      expect(prisma.quote.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          urgency: 'urgent',
+          userId: 'user_123',
+        }),
+      });
+    });
   });
 
   describe('getQuotesByUser', () => {
