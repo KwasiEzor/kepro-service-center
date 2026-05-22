@@ -2,7 +2,7 @@ import { Router } from 'express';
 import authController from '../controllers/auth.controller';
 import { validateBody } from '../middleware/validate';
 import { authenticate } from '../middleware/auth';
-import { registerSchema, loginSchema, refreshTokenSchema } from '../utils/validators';
+import { registerSchema, loginSchema, refreshTokenSchema, forgotPasswordSchema, resetPasswordSchema } from '../utils/validators';
 
 const router = Router();
 
@@ -37,6 +37,28 @@ router.post(
   '/refresh',
   validateBody(refreshTokenSchema),
   authController.refresh.bind(authController)
+);
+
+/**
+ * @route   POST /api/auth/forgot-password
+ * @desc    Initiate password reset
+ * @access  Public
+ */
+router.post(
+  '/forgot-password',
+  validateBody(forgotPasswordSchema),
+  authController.forgotPassword.bind(authController)
+);
+
+/**
+ * @route   POST /api/auth/reset-password
+ * @desc    Reset password using token
+ * @access  Public
+ */
+router.post(
+  '/reset-password',
+  validateBody(resetPasswordSchema),
+  authController.resetPassword.bind(authController)
 );
 
 /**

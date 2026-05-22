@@ -116,6 +116,17 @@ export class EmailService {
   }
 
   /**
+   * Send password reset link to user
+   */
+  async sendPasswordResetEmail(email: string, token: string) {
+    const resetUrl = `${this.frontendUrl}/reset-password?token=${token}`;
+    const subject = `Réinitialisation de votre mot de passe - KeyPro Service`;
+    const html = templates.passwordReset(resetUrl);
+
+    return this.sendEmail(email, subject, html);
+  }
+
+  /**
    * Internal helper to send email or log it
    */
   private async sendEmail(to: string, subject: string, html: string) {

@@ -358,5 +358,31 @@ export const templates = {
       <p>Cordialement,<br><strong>L'équipe KeyPro</strong></p>
     `;
     return emailLayout(content, previewText);
+  },
+
+  /**
+   * Password reset request (French)
+   */
+  passwordReset: (resetUrl: string) => {
+    const previewText = `Réinitialisez votre mot de passe KeyPro Service.`;
+    const content = `
+      <div class="badge">SÉCURITÉ</div>
+      <h1 style="margin-top: 0; color: ${SECONDARY_COLOR}; font-size: 24px;">Réinitialisation de mot de passe</h1>
+      <p>Vous avez demandé la réinitialisation de votre mot de passe pour votre compte <span class="highlight">KeyPro Service</span>.</p>
+      
+      <p>Cliquez sur le bouton ci-dessous pour choisir un nouveau mot de passe. Ce lien est valable pendant 60 minutes.</p>
+
+      <div style="text-align: center;">
+        <a href="${resetUrl}" class="button">Réinitialiser mon mot de passe</a>
+      </div>
+
+      <div class="card">
+        <p style="margin: 0; font-size: 13px; color: #666;">Si vous n'avez pas demandé ce changement, vous pouvez ignorer cet email en toute sécurité. Votre mot de passe restera inchangé.</p>
+      </div>
+
+      <p>Pour des raisons de sécurité, ce lien expirera bientôt. Si le bouton ne fonctionne pas, copiez et collez l'adresse suivante dans votre navigateur :</p>
+      <p style="font-size: 12px; color: #888; word-break: break-all;">${resetUrl}</p>
+    `;
+    return emailLayout(content, previewText);
   }
 };

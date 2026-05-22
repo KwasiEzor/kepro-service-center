@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import authService from '../services/auth.service';
+import emailService from '../services/email.service';
 import { sendSuccess, sendError } from '../utils/response';
 import { AuthRequest } from '../types';
 import { env } from '../../env';
@@ -106,6 +107,40 @@ export class AuthController {
       }
 
       return sendSuccess(res, { user });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Initiate password reset
+   * POST /api/auth/forgot-password
+   */
+  async forgotPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email } = req.body;
+      const token = await authService.forgotPassword(email);
+
+      // Send email
+      await emailService.sendPasswordResetEmail(email, token);
+
+      return sendSuccess(res, null, 'If that email exists in our system, a reset link has been sent');
+    } catch (error) {
+      // Don't leak user existence
+      return sendSuccess(res, null, 'If that email exists in our system, a reset link has been sent');
+    }
+  }
+
+  /**
+   * Complete password reset
+   * POST /api/auth/reset-password
+   */
+  async resetPassword(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { token, password } = req.body;
+      await authService.resetPassword(token, password);
+
+      return sendSuccess(res, null, 'Password reset successful');
     } catch (error) {
       next(error);
     }

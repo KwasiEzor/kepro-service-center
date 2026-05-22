@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { User, UserRole } from '@prisma/client';
 import prisma from '../config/database';
 import { authConfig } from '../config/auth';
@@ -229,6 +230,59 @@ export class AuthService {
 
     const { password: _, ...userWithoutPassword } = user;
     return userWithoutPassword;
+  }
+
+  /**
+   * Initiate forgot password flow
+   */
+  async forgotPassword(email: string): Promise<string> {
+    const user = await prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date();
+    expires.setHours(expires.getHours() + 1); // 1 hour expiry
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        resetPasswordToken: token,
+        resetPasswordExpires: expires,
+      },
+    });
+
+    return token;
+  }
+
+  /**
+   * Reset password with token
+   */
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    const user = await prisma.user.findUnique({
+      where: { resetPasswordToken: token },
+    });
+
+    if (!user || !user.resetPasswordExpires || user.resetPasswordExpires < new Date()) {
+      throw new UnauthorizedError('Invalid or expired reset token');
+    }
+
+    const hashedPassword = await this.hashPassword(newPassword);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+      },
+    });
+
+    // Revoke all existing sessions for security
+    await prisma.session.deleteMany({
+      where: { userId: user.id },
+    });
   }
 }
 
