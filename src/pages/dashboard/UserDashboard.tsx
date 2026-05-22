@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   LogOut, 
   FileText, 
-  Settings, 
-  Loader2,
-  LayoutDashboard,
   ChevronLeft,
   ChevronRight,
-  User as UserIcon
+  User as UserIcon,
+  MessageSquare
 } from 'lucide-react';
 import { Logo } from '../../components/Logo';
-import { api } from '../../lib/api';
-import { ApiResponse } from '../../types';
 import UserQuotes from './UserQuotes';
 import UserProfile from './UserProfile';
 import UserContacts from './UserContacts';
 import UserInvoices from './UserInvoices';
-import { MessageSquare } from 'lucide-react';
 
 type UserView = 'overview' | 'quotes' | 'invoices' | 'profile' | 'messages';
 
 export default function UserDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [activeView, setActiveView] = useState<UserView>('overview');
 
   const handleLogout = async () => {
@@ -43,7 +40,7 @@ export default function UserDashboard() {
           >
             <Logo size="md" showSubtitle={false} />
             <span className="px-2 py-1 bg-bg-secondary text-text-primary text-[10px] font-black tracking-widest rounded uppercase">
-              Member
+              {user?.role}
             </span>
           </button>
 
@@ -55,7 +52,7 @@ export default function UserDashboard() {
             <button
               onClick={handleLogout}
               className="p-2 hover:bg-bg-secondary rounded-lg transition-colors"
-              title="Logout"
+              title={t('common.logout')}
             >
               <LogOut className="w-5 h-5" />
             </button>
@@ -71,7 +68,7 @@ export default function UserDashboard() {
             className="flex items-center gap-2 text-text-tertiary hover:text-text-primary transition-colors mb-8 group"
           >
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Dashboard
+            {t('dashboard.admin.back')}
           </button>
         )}
 
@@ -79,9 +76,9 @@ export default function UserDashboard() {
           <>
             <div className="mb-12">
               <h1 className="text-4xl md:text-5xl font-display font-black mb-4">
-                Welcome back, <span className="text-brand-red">{user?.firstName || 'Valued Customer'}</span>
+                {t('dashboard.user.welcome', { name: user?.firstName || 'Customer' })}
               </h1>
-              <p className="text-text-tertiary text-lg">Track your service requests and manage your account.</p>
+              <p className="text-text-tertiary text-lg">{t('dashboard.user.subtitle')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -92,7 +89,7 @@ export default function UserDashboard() {
                 <div className="w-14 h-14 bg-brand-red/20 text-brand-red clip-angular-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <FileText className="w-7 h-7" />
                 </div>
-                <h2 className="text-2xl font-bold mb-3 text-text-primary">Quote History</h2>
+                <h2 className="text-2xl font-bold mb-3 text-text-primary">{t('dashboard.user.sections.quotes')}</h2>
                 <p className="text-sm text-text-tertiary mb-6 leading-relaxed">
                   View your previous service requests, track their status, and see price estimations.
                 </p>
@@ -103,16 +100,16 @@ export default function UserDashboard() {
 
               <div
                 onClick={() => setActiveView('invoices')}
-                className="card-dark p-8 cursor-pointer group hover:border-[var(--color-brand-orange-primary)]/50 transition-all"
+                className="card-dark p-8 cursor-pointer group hover:border-brand-red/50 transition-all"
               >
-                <div className="w-14 h-14 bg-[var(--color-brand-orange-primary)]/20 text-[var(--color-brand-orange-primary)] clip-angular-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 bg-brand-red/20 text-brand-red clip-angular-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <FileText className="w-7 h-7" />
                 </div>
-                <h2 className="text-2xl font-bold mb-3 text-text-primary">Mes Factures</h2>
+                <h2 className="text-2xl font-bold mb-3 text-text-primary">{t('dashboard.user.sections.invoices')}</h2>
                 <p className="text-sm text-text-tertiary mb-6 leading-relaxed">
                   Consultez vos factures, téléchargez les PDF et suivez les paiements.
                 </p>
-                <span className="inline-flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-[var(--color-brand-orange-primary)]">
+                <span className="inline-flex items-center gap-2 font-black text-[10px] uppercase tracking-widest text-brand-red">
                   Voir Factures <ChevronRight className="w-4 h-4" />
                 </span>
               </div>
@@ -124,7 +121,7 @@ export default function UserDashboard() {
                 <div className="w-14 h-14 bg-blue-500/20 text-blue-500 clip-angular-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <MessageSquare className="w-7 h-7" />
                 </div>
-                <h2 className="text-2xl font-bold mb-3 text-text-primary">Messages</h2>
+                <h2 className="text-2xl font-bold mb-3 text-text-primary">{t('dashboard.user.sections.contacts')}</h2>
                 <p className="text-sm text-text-tertiary mb-6 leading-relaxed">
                   Track your support inquiries and view direct replies from our technical team.
                 </p>
@@ -140,7 +137,7 @@ export default function UserDashboard() {
                 <div className="w-14 h-14 bg-bg-secondary text-text-primary clip-angular-sm flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <UserIcon className="w-7 h-7" />
                 </div>
-                <h2 className="text-2xl font-bold mb-3 text-text-primary">Profile</h2>
+                <h2 className="text-2xl font-bold mb-3 text-text-primary">{t('dashboard.user.sections.profile')}</h2>
                 <p className="text-sm text-text-tertiary mb-6 leading-relaxed">
                   Update your contact information and preferences to help us serve you better.
                 </p>

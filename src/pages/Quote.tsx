@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { useSEO } from '../hooks/useSEO';
 import { quoteFormSchema, type QuoteFormData } from '../lib/validation';
+import { toast } from 'sonner';
 import { api } from '../lib/api';
 import { ApiResponse, ServiceType } from '../types';
 
@@ -40,7 +41,6 @@ export default function Quote() {
   const [step, setStep] = React.useState<Step>('service');
   const [serviceType, setServiceType] = React.useState('');
   const [refId, setRefId] = React.useState('');
-  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const [showDocument, setShowDocument] = React.useState(false);
   const [submittedData, setSubmittedData] = React.useState<QuoteFormData | null>(null);
 
@@ -77,7 +77,6 @@ export default function Quote() {
   };
 
   const onSubmit = async (data: QuoteFormData) => {
-    setSubmitError(null);
     try {
       const response = await api.post<ApiResponse>('/api/public/quote', data);
       if (response.data.data) {
@@ -86,8 +85,8 @@ export default function Quote() {
         setStep('success');
       }
     } catch (error: any) {
-      console.error('Quote error:', error);
-      setSubmitError(error.response?.data?.error || 'Failed to submit. Please call us directly.');
+      const message = error.response?.data?.error || 'Failed to submit. Please call us directly.';
+      toast.error(message);
     }
   };
 

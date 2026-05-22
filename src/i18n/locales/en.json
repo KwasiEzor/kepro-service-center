@@ -562,5 +562,76 @@
       "invalidEmail": "Invalid email address",
       "passwordRequired": "Password is required"
     }
+  },
+  "dashboard": {
+    "admin": {
+      "title": "Admin Dashboard",
+      "subtitle": "Manage your website content and users",
+      "badge": "ADMIN",
+      "back": "Back to Dashboard",
+      "stats": {
+        "quotes": "Total Quotes",
+        "contacts": "Contacts",
+        "invoices": "Invoices",
+        "gallery": "Images",
+        "users": "Users"
+      },
+      "sections": {
+        "gallery": {
+          "title": "Gallery Management",
+          "desc": "Upload, organize, and manage images",
+          "action": "Access Gallery"
+        },
+        "invoices": {
+          "title": "Invoice Management",
+          "desc": "Create, manage, and track invoices",
+          "action": "Access Invoices"
+        },
+        "quotes": {
+          "title": "Quote Requests",
+          "desc": "Manage and respond to quote requests",
+          "action": "View Requests"
+        },
+        "contacts": {
+          "title": "Contact Messages",
+          "desc": "View and reply to customer messages",
+          "action": "View Messages"
+        },
+        "services": {
+          "title": "Services Management",
+          "desc": "Add, edit, and manage services",
+          "action": "Manage Services"
+        },
+        "faq": {
+          "title": "FAQ Management",
+          "desc": "Manage frequently asked questions",
+          "action": "Manage FAQ"
+        },
+        "users": {
+          "title": "User Management",
+          "desc": "Manage users and permissions",
+          "action": "Manage Users"
+        }
+      }
+    },
+    "user": {
+      "title": "My Dashboard",
+      "subtitle": "Manage your requests and profile",
+      "welcome": "Welcome back, {{name}}",
+      "sections": {
+        "quotes": "My Service Quotes",
+        "invoices": "My Invoices",
+        "contacts": "My Message History",
+        "profile": "Profile Settings"
+      }
+    },
+    "common": {
+      "total": "total",
+      "actions": "Actions",
+      "status": "Status",
+      "date": "Date",
+      "loading": "Loading data...",
+      "noData": "No data found"
+    }
   }
 }

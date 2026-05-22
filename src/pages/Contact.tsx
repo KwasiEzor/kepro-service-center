@@ -24,6 +24,7 @@ import { contactFormSchema, type ContactFormData } from '../lib/validation';
 import DocumentTemplate from '../components/DocumentTemplate';
 import { AnimatePresence } from 'motion/react';
 
+import { toast } from 'sonner';
 import { api } from '../lib/api';
 
 export default function Contact() {
@@ -33,7 +34,6 @@ export default function Contact() {
     description: t('contact.header.description')
   });
   const [formState, setFormState] = React.useState<'idle' | 'submitting' | 'success'>('idle');
-  const [submitError, setSubmitError] = React.useState<string | null>(null);
   const [showDocument, setShowDocument] = React.useState(false);
   const [submittedData, setSubmittedData] = React.useState<ContactFormData | null>(null);
 
@@ -47,15 +47,14 @@ export default function Contact() {
 
   const onSubmit = async (data: ContactFormData) => {
     setFormState('submitting');
-    setSubmitError(null);
 
     try {
       await api.post('/api/public/contact', data);
       setSubmittedData(data);
       setFormState('success');
     } catch (error: any) {
-      console.error('Form error:', error);
-      setSubmitError(error.response?.data?.error || 'Failed to send. Please call us directly.');
+      const message = error.response?.data?.error || 'Failed to send. Please call us directly.';
+      toast.error(message);
       setFormState('idle');
     }
   };

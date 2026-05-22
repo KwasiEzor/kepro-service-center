@@ -563,5 +563,76 @@
       "invalidEmail": "Adresse email invalide",
       "passwordRequired": "Le mot de passe est requis"
     }
+  },
+  "dashboard": {
+    "admin": {
+      "title": "Tableau de Bord Admin",
+      "subtitle": "Gérez le contenu de votre site et vos utilisateurs",
+      "badge": "ADMIN",
+      "back": "Retour au Tableau de Bord",
+      "stats": {
+        "quotes": "Total Devis",
+        "contacts": "Contacts",
+        "invoices": "Factures",
+        "gallery": "Images",
+        "users": "Utilisateurs"
+      },
+      "sections": {
+        "gallery": {
+          "title": "Gestion de la Galerie",
+          "desc": "Téléchargez, organisez et gérez les images",
+          "action": "Accéder à la Galerie"
+        },
+        "invoices": {
+          "title": "Gestion des Factures",
+          "desc": "Créez, gérez et suivez les factures",
+          "action": "Accéder aux Factures"
+        },
+        "quotes": {
+          "title": "Demandes de Devis",
+          "desc": "Gérez et répondez aux demandes de devis",
+          "action": "Voir les Demandes"
+        },
+        "contacts": {
+          "title": "Messages de Contact",
+          "desc": "Consultez et répondez aux messages clients",
+          "action": "Voir les Messages"
+        },
+        "services": {
+          "title": "Gestion des Services",
+          "desc": "Ajoutez, modifiez et gérez les services",
+          "action": "Gérer les Services"
+        },
+        "faq": {
+          "title": "Gestion de la FAQ",
+          "desc": "Gérez les questions fréquemment posées",
+          "action": "Gérer la FAQ"
+        },
+        "users": {
+          "title": "Gestion des Utilisateurs",
+          "desc": "Gérez les utilisateurs et les permissions",
+          "action": "Gérer les Utilisateurs"
+        }
+      }
+    },
+    "user": {
+      "title": "Mon Tableau de Bord",
+      "subtitle": "Gérez vos demandes et votre profil",
+      "welcome": "Bon retour, {{name}}",
+      "sections": {
+        "quotes": "Mes Devis de Service",
+        "invoices": "Mes Factures",
+        "contacts": "Mon Historique de Messages",
+        "profile": "Paramètres du Profil"
+      }
+    },
+    "common": {
+      "total": "total",
+      "actions": "Actions",
+      "status": "Statut",
+      "date": "Date",
+      "loading": "Chargement des données...",
+      "noData": "Aucune donnée trouvée"
+    }
   }
 }

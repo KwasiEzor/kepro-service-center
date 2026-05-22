@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   LogOut, 
   FileText, 
@@ -37,6 +39,7 @@ type AdminView = 'overview' | 'quotes' | 'contacts' | 'invoices' | 'gallery' | '
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeView, setActiveView] = useState<AdminView>('overview');
@@ -48,15 +51,19 @@ export default function AdminDashboard() {
         if (response.data.data) {
           setStats(response.data.data);
         }
-      } catch (error) {
-        console.error('Failed to fetch stats:', error);
+      } catch (error: any) {
+        const message = error.response?.data?.error || 'Failed to load statistics';
+        toast.error(message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchStats();
-  }, [activeView]); // Refresh stats when returning to overview
+    // Only fetch stats when viewing overview
+    if (activeView === 'overview') {
+      fetchStats();
+    }
+  }, [activeView]);
 
   const handleLogout = async () => {
     await logout();
@@ -83,7 +90,7 @@ export default function AdminDashboard() {
             >
               <Logo size="md" showSubtitle={false} />
               <span className="px-2 py-1 bg-brand-red/20 text-brand-red text-xs font-semibold rounded">
-                ADMIN
+                {t('dashboard.admin.badge')}
               </span>
             </button>
           </div>
@@ -91,12 +98,12 @@ export default function AdminDashboard() {
           <div className="flex items-center gap-4">
             <div className="text-right">
               <p className="text-sm font-medium">{user?.firstName || user?.email}</p>
-              <p className="text-xs text-text-secondary">Administrator</p>
+              <p className="text-xs text-text-secondary">{t('common.admin')}</p>
             </div>
             <button
               onClick={handleLogout}
               className="p-2 hover:bg-bg-secondary rounded-lg transition-colors"
-              title="Logout"
+              title={t('common.logout')}
             >
               <LogOut className="w-5 h-5" />
             </button>
@@ -112,7 +119,7 @@ export default function AdminDashboard() {
             className="flex items-center gap-2 text-text-tertiary hover:text-text-primary transition-colors mb-8 group"
           >
             <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-            Back to Dashboard
+            {t('dashboard.admin.back')}
           </button>
         )}
 
@@ -121,9 +128,9 @@ export default function AdminDashboard() {
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
                 <LayoutDashboard className="w-8 h-8 text-brand-red" />
-                Admin Dashboard
+                {t('dashboard.admin.title')}
               </h1>
-              <p className="text-text-secondary">Manage your website content and users</p>
+              <p className="text-text-secondary">{t('dashboard.admin.subtitle')}</p>
             </div>
 
             {/* Stats Grid */}
@@ -136,7 +143,7 @@ export default function AdminDashboard() {
                   <FileText className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
                   <span className="text-3xl font-bold">{stats?.quotesCount || 0}</span>
                 </div>
-                <h3 className="text-text-secondary text-sm">Total Quotes</h3>
+                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.quotes')}</h3>
               </button>
 
               <button
@@ -147,7 +154,7 @@ export default function AdminDashboard() {
                   <MessageSquare className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
                   <span className="text-3xl font-bold">{stats?.contactsCount || 0}</span>
                 </div>
-                <h3 className="text-text-secondary text-sm">Contacts</h3>
+                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.contacts')}</h3>
               </button>
 
               <button
@@ -158,7 +165,7 @@ export default function AdminDashboard() {
                   <FileText className="w-8 h-8 text-[var(--color-brand-orange-primary)] group-hover:scale-110 transition-transform" />
                   <span className="text-3xl font-bold">{stats?.invoicesCount || 0}</span>
                 </div>
-                <h3 className="text-text-secondary text-sm">Factures</h3>
+                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.invoices')}</h3>
               </button>
 
               <button
@@ -169,18 +176,18 @@ export default function AdminDashboard() {
                   <Image className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
                   <span className="text-3xl font-bold">{stats?.imagesCount || 0}</span>
                 </div>
-                <h3 className="text-text-secondary text-sm">Images</h3>
+                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.gallery')}</h3>
               </button>
 
               <button 
                 onClick={() => setActiveView('users')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
+                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group md:col-start-1"
               >
                 <div className="flex items-center justify-between mb-4">
                   <Users className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
                   <span className="text-3xl font-bold">{stats?.usersCount || 0}</span>
                 </div>
-                <h3 className="text-text-secondary text-sm">Users</h3>
+                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.users')}</h3>
               </button>
             </div>
 
@@ -192,12 +199,12 @@ export default function AdminDashboard() {
               >
                 <Image className="w-10 h-10 text-brand-red mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  Gallery Management
+                  {t('dashboard.admin.sections.gallery.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  Upload, organize, and manage images
+                  {t('dashboard.admin.sections.gallery.desc')}
                 </p>
-                <span className="text-sm text-brand-red">Access Gallery →</span>
+                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.gallery.action')} →</span>
               </div>
 
               <div
@@ -206,12 +213,12 @@ export default function AdminDashboard() {
               >
                 <FileText className="w-10 h-10 text-[var(--color-brand-orange-primary)] mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-[var(--color-brand-orange-primary)] transition-colors">
-                  Gestion des Factures
+                  {t('dashboard.admin.sections.invoices.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  Créer, gérer et suivre les factures
+                  {t('dashboard.admin.sections.invoices.desc')}
                 </p>
-                <span className="text-sm text-[var(--color-brand-orange-primary)]">Accéder aux Factures →</span>
+                <span className="text-sm text-[var(--color-brand-orange-primary)]">{t('dashboard.admin.sections.invoices.action')} →</span>
               </div>
 
               <div
@@ -220,12 +227,12 @@ export default function AdminDashboard() {
               >
                 <FileText className="w-10 h-10 text-brand-red mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  Quote Requests
+                  {t('dashboard.admin.sections.quotes.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  Manage and respond to quote requests
+                  {t('dashboard.admin.sections.quotes.desc')}
                 </p>
-                <span className="text-sm text-brand-red">View Requests →</span>
+                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.quotes.action')} →</span>
               </div>
 
               <div 
@@ -234,12 +241,12 @@ export default function AdminDashboard() {
               >
                 <MessageSquare className="w-10 h-10 text-brand-red mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  Contact Messages
+                  {t('dashboard.admin.sections.contacts.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  View and reply to customer messages
+                  {t('dashboard.admin.sections.contacts.desc')}
                 </p>
-                <span className="text-sm text-brand-red">View Messages →</span>
+                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.contacts.action')} →</span>
               </div>
 
               <div 
@@ -248,12 +255,12 @@ export default function AdminDashboard() {
               >
                 <Settings className="w-10 h-10 text-brand-red mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  Services Management
+                  {t('dashboard.admin.sections.services.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  Add, edit, and manage services
+                  {t('dashboard.admin.sections.services.desc')}
                 </p>
-                <span className="text-sm text-brand-red">Manage Services →</span>
+                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.services.action')} →</span>
               </div>
 
               <div 
@@ -262,12 +269,12 @@ export default function AdminDashboard() {
               >
                 <HelpCircle className="w-10 h-10 text-brand-red mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  FAQ Management
+                  {t('dashboard.admin.sections.faq.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  Manage frequently asked questions
+                  {t('dashboard.admin.sections.faq.desc')}
                 </p>
-                <span className="text-sm text-brand-red">Manage FAQ →</span>
+                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.faq.action')} →</span>
               </div>
 
               <div 
@@ -276,12 +283,12 @@ export default function AdminDashboard() {
               >
                 <Users className="w-10 h-10 text-brand-red mb-4" />
                 <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  User Management
+                  {t('dashboard.admin.sections.users.title')}
                 </h3>
                 <p className="text-text-secondary text-sm mb-4">
-                  Manage users and permissions
+                  {t('dashboard.admin.sections.users.desc')}
                 </p>
-                <span className="text-sm text-brand-red">Manage Users →</span>
+                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.users.action')} →</span>
               </div>
             </div>
           </>
