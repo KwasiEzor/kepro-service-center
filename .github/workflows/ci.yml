@@ -27,10 +27,32 @@ jobs:
       - name: TypeScript type check
         run: npm run lint
 
+      - name: Generate Prisma client
+        run: npm run db:generate
+
+      - name: Run unit tests (Vitest)
+        run: npm run test
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests (Playwright)
+        run: npm run test:e2e
+        env:
+          VITE_API_URL: http://localhost:3001
+
       - name: Build project
         run: npm run build
         env:
           VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+          VITE_SENTRY_DSN: ${{ secrets.VITE_SENTRY_DSN }}
+
+      - name: Performance check (Lighthouse)
+        run: |
+          npm install -g @lhci/cli@0.13.x
+          lhci autorun --upload.target=temporary-public-storage || echo "Lighthouse check failed"
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
       - name: Check build output
         run: |

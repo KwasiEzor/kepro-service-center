@@ -20,10 +20,11 @@ test.describe('Dashboard Features', () => {
     // Check for welcome message
     await expect(page.getByText(/welcome back/i)).toBeVisible();
     
-    // Check for dashboard cards
-    await expect(page.getByText(/quote history/i)).toBeVisible();
-    await expect(page.getByText(/messages/i)).toBeVisible();
-    await expect(page.getByText(/profile/i)).toBeVisible();
+    // Check for dashboard sections (using more robust matching)
+    await expect(page.locator('h2', { hasText: /Service Quotes/i })).toBeVisible();
+    await expect(page.locator('h2', { hasText: /Invoices/i })).toBeVisible();
+    await expect(page.locator('h2', { hasText: /Message History/i })).toBeVisible();
+    await expect(page.locator('h2', { hasText: /Profile/i })).toBeVisible();
   });
 
   test('User can navigate to Message History', async ({ page }) => {
@@ -64,8 +65,8 @@ test.describe('Dashboard Features', () => {
     await page.goto('/admin');
     await expect(page).toHaveURL('/admin');
     
-    // Go to Quotes management
-    await page.click('text=Total Quotes');
+    // Go to Quotes management (using the stats card)
+    await page.click('h3:has-text("Quotes")');
     
     // Find a pending quote and update it
     const firstQuote = page.locator('tr').nth(1); 
@@ -87,8 +88,8 @@ test.describe('Dashboard Features', () => {
     await userPage.fill('input[type="password"]', 'User123!');
     await userPage.click('button[type="submit"]');
     
-    // Click "View History" on the Quotes card
-    await userPage.click('text=View History');
+    // Click "View Quotes" on the Quotes card
+    await userPage.click('text=View Quotes');
     
     // Check if the updated quote shows APPROVED and the technician note
     await expect(userPage.getByText('APPROVED').first()).toBeVisible();

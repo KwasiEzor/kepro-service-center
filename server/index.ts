@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -24,6 +25,19 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = parseInt(env.PORT);
+
+// Initialize Sentry
+if (env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: env.SENTRY_DSN,
+    environment: env.NODE_ENV,
+    tracesSampleRate: 1.0,
+  });
+  // The request handler must be the first middleware on the app
+  app.use(Sentry.Handlers.requestHandler());
+  // TracingHandler creates a trace for every incoming request
+  app.use(Sentry.Handlers.tracingHandler());
+}
 
 // Security middleware
 app.use(helmet({
@@ -99,6 +113,9 @@ app.use((req, res) => {
 });
 
 // Global error handler
+if (env.SENTRY_DSN) {
+  app.use(Sentry.Handlers.errorHandler());
+}
 app.use(errorHandler);
 
 // Start background jobs

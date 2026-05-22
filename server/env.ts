@@ -34,6 +34,7 @@ const envSchema = z.object({
 
   // Logging
   LOG_LEVEL: z.string().optional().default('info'),
+  SENTRY_DSN: z.string().url().optional(),
 });
 
 // Parse and validate environment variables
