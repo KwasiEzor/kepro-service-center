@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Contact } from '../../types';
 import { 
   MessageSquare, 
   ChevronRight,
-  Reply
+  Reply,
+  Search
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { format } from 'date-fns';
@@ -11,6 +12,7 @@ import { Pagination } from '../../components/Pagination';
 import { EmptyState } from '../../components/EmptyState';
 import { TableSkeleton } from '../../components/TableSkeleton';
 import { useTable } from '../../hooks/useTable';
+import { useDebounce } from '../../hooks/useDebounce';
 
 export default function UserContacts() {
   const {
@@ -18,8 +20,17 @@ export default function UserContacts() {
     loading,
     page,
     setPage,
-    pagination
+    pagination,
+    filters,
+    setFilters
   } = useTable<Contact>('/api/user/contacts');
+
+  const [searchInput, setSearchInput] = useState(filters.search || '');
+  const debouncedSearch = useDebounce(searchInput, 500);
+
+  useEffect(() => {
+    setFilters(prev => ({ ...prev, search: debouncedSearch }));
+  }, [debouncedSearch, setFilters]);
 
   const getStatusColor = (status: Contact['status']) => {
     switch (status) {
@@ -33,16 +44,30 @@ export default function UserContacts() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <h2 className="text-2xl font-bold flex items-center gap-2">
           <MessageSquare className="w-6 h-6 text-brand-red" />
           My Message History
         </h2>
-        {!loading && pagination.total > 0 && (
-          <span className="text-xs text-text-tertiary uppercase tracking-widest">
-            {pagination.total} total message{pagination.total !== 1 ? 's' : ''}
-          </span>
-        )}
+        
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-tertiary" />
+            <input
+              type="text"
+              placeholder="Search messages..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="bg-bg-secondary border border-border-primary rounded-xl pl-10 pr-4 py-2 text-xs font-bold focus:outline-none focus:border-brand-red/50 transition-colors w-full md:w-64"
+            />
+          </div>
+
+          {!loading && pagination.total > 0 && (
+            <span className="text-xs text-text-tertiary uppercase tracking-widest whitespace-nowrap">
+              {pagination.total} total message{pagination.total !== 1 ? 's' : ''}
+            </span>
+          )}
+        </div>
       </div>
 
       {loading ? (

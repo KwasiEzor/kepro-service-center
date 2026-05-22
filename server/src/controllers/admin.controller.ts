@@ -16,18 +16,46 @@ export class AdminController {
    */
   async getStats(req: Request, res: Response, next: NextFunction) {
     try {
-      const [quotesCount, contactsCount, usersCount, imagesCount] = await Promise.all([
+      const [
+        quotesCount, 
+        contactsCount, 
+        usersCount, 
+        imagesCount, 
+        invoicesCount,
+        revenueData
+      ] = await Promise.all([
         prisma.quote.count(),
         prisma.contact.count(),
         prisma.user.count(),
-        prisma.image.count()
+        prisma.image.count(),
+        prisma.invoice.count(),
+        prisma.invoice.aggregate({
+          where: { status: InvoiceStatus.PAID },
+          _sum: { total: true }
+        })
       ]);
+
+      // Get recent activity
+      const [recentQuotes, recentContacts, recentInvoices] = await Promise.all([
+        prisma.quote.findMany({ take: 5, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, serviceType: true, createdAt: true, status: true } }),
+        prisma.contact.findMany({ take: 5, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, subject: true, createdAt: true, status: true } }),
+        prisma.invoice.findMany({ take: 5, orderBy: { createdAt: 'desc' }, select: { id: true, invoiceNumber: true, total: true, createdAt: true, status: true } })
+      ]);
+
+      const recentActivity = [
+        ...recentQuotes.map(q => ({ type: 'QUOTE', id: q.id, title: `New quote: ${q.serviceType}`, user: q.name, date: q.createdAt, status: q.status })),
+        ...recentContacts.map(c => ({ type: 'CONTACT', id: c.id, title: `New message: ${c.subject}`, user: c.name, date: c.createdAt, status: c.status })),
+        ...recentInvoices.map(i => ({ type: 'INVOICE', id: i.id, title: `Invoice ${i.invoiceNumber}`, user: `€${i.total}`, date: i.createdAt, status: i.status }))
+      ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 10);
 
       return sendSuccess(res, {
         quotesCount,
         contactsCount,
         usersCount,
-        imagesCount
+        imagesCount,
+        invoicesCount,
+        totalRevenue: revenueData._sum.total || 0,
+        recentActivity
       });
     } catch (error) {
       next(error);

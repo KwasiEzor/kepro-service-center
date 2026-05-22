@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api';
@@ -24,6 +24,7 @@ import { Pagination } from '../../components/Pagination';
 import { EmptyState } from '../../components/EmptyState';
 import { TableSkeleton } from '../../components/TableSkeleton';
 import { useTable } from '../../hooks/useTable';
+import { useDebounce } from '../../hooks/useDebounce';
 import { exportToCSV } from '../../lib/export';
 
 export default function QuotesTable() {
@@ -40,6 +41,13 @@ export default function QuotesTable() {
     sort,
     setSort
   } = useTable<Quote>('/api/admin/quotes');
+
+  const [searchInput, setSearchInput] = useState(filters.search || '');
+  const debouncedSearch = useDebounce(searchInput, 500);
+
+  useEffect(() => {
+    setFilters(prev => ({ ...prev, search: debouncedSearch }));
+  }, [debouncedSearch, setFilters]);
 
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -128,8 +136,8 @@ export default function QuotesTable() {
             <input
               type="text"
               placeholder="Search quotes..."
-              value={filters.search || ''}
-              onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               className="bg-bg-secondary border border-border-primary rounded-xl pl-10 pr-4 py-2 text-xs font-bold focus:outline-none focus:border-brand-red/50 transition-colors w-full md:w-64"
             />
           </div>

@@ -18,6 +18,8 @@ import {
 import { Logo } from '../../components/Logo';
 import { api } from '../../lib/api';
 import { ApiResponse } from '../../types';
+import { cn } from '../../lib/utils';
+import { format } from 'date-fns';
 import QuotesTable from './QuotesTable';
 import ContactsTable from './ContactsTable';
 import InvoicesTable from './InvoicesTable';
@@ -31,7 +33,16 @@ interface Stats {
   contactsCount: number;
   usersCount: number;
   imagesCount: number;
-  invoicesCount?: number;
+  invoicesCount: number;
+  totalRevenue: number;
+  recentActivity: Array<{
+    type: 'QUOTE' | 'CONTACT' | 'INVOICE';
+    id: string;
+    title: string;
+    user: string;
+    date: string;
+    status: string;
+  }>;
 }
 
 type AdminView = 'overview' | 'quotes' | 'contacts' | 'invoices' | 'gallery' | 'services' | 'faq' | 'users';
@@ -134,7 +145,7 @@ export default function AdminDashboard() {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
               <button 
                 onClick={() => setActiveView('quotes')}
                 className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
@@ -162,26 +173,23 @@ export default function AdminDashboard() {
                 className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
               >
                 <div className="flex items-center justify-between mb-4">
-                  <FileText className="w-8 h-8 text-[var(--color-brand-orange-primary)] group-hover:scale-110 transition-transform" />
+                  <FileText className="w-8 h-8 text-blue-500 group-hover:scale-110 transition-transform" />
                   <span className="text-3xl font-bold">{stats?.invoicesCount || 0}</span>
                 </div>
                 <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.invoices')}</h3>
               </button>
 
-              <button
-                onClick={() => setActiveView('gallery')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
-              >
+              <div className="card-dark p-6 text-left border-l-4 border-l-green-500">
                 <div className="flex items-center justify-between mb-4">
-                  <Image className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
-                  <span className="text-3xl font-bold">{stats?.imagesCount || 0}</span>
+                  <div className="w-8 h-8 bg-green-500/10 text-green-500 rounded-lg flex items-center justify-center font-black">€</div>
+                  <span className="text-3xl font-bold">€{(stats?.totalRevenue || 0).toLocaleString()}</span>
                 </div>
-                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.gallery')}</h3>
-              </button>
+                <h3 className="text-text-secondary text-sm font-bold uppercase tracking-widest">Total Revenue</h3>
+              </div>
 
               <button 
                 onClick={() => setActiveView('users')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group md:col-start-1"
+                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
               >
                 <div className="flex items-center justify-between mb-4">
                   <Users className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
@@ -191,104 +199,150 @@ export default function AdminDashboard() {
               </button>
             </div>
 
-            {/* Management Sections */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div 
-                onClick={() => setActiveView('gallery')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <Image className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  {t('dashboard.admin.sections.gallery.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.gallery.desc')}
-                </p>
-                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.gallery.action')} →</span>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              {/* Management Sections */}
+              <div className="lg:col-span-2 space-y-6">
+                <h2 className="text-xl font-bold uppercase tracking-widest text-text-tertiary">Quick Access</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div 
+                    onClick={() => setActiveView('gallery')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <Image className="w-10 h-10 text-brand-red mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
+                      {t('dashboard.admin.sections.gallery.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.gallery.desc')}
+                    </p>
+                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.gallery.action')} →</span>
+                  </div>
+
+                  <div
+                    onClick={() => setActiveView('invoices')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <FileText className="w-10 h-10 text-blue-500 mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-500 transition-colors">
+                      {t('dashboard.admin.sections.invoices.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.invoices.desc')}
+                    </p>
+                    <span className="text-sm text-blue-500">{t('dashboard.admin.sections.invoices.action')} →</span>
+                  </div>
+
+                  <div
+                    onClick={() => setActiveView('quotes')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <FileText className="w-10 h-10 text-brand-red mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
+                      {t('dashboard.admin.sections.quotes.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.quotes.desc')}
+                    </p>
+                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.quotes.action')} →</span>
+                  </div>
+
+                  <div 
+                    onClick={() => setActiveView('contacts')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <MessageSquare className="w-10 h-10 text-brand-red mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
+                      {t('dashboard.admin.sections.contacts.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.contacts.desc')}
+                    </p>
+                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.contacts.action')} →</span>
+                  </div>
+
+                  <div 
+                    onClick={() => setActiveView('services')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <Settings className="w-10 h-10 text-brand-red mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
+                      {t('dashboard.admin.sections.services.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.services.desc')}
+                    </p>
+                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.services.action')} →</span>
+                  </div>
+
+                  <div 
+                    onClick={() => setActiveView('faq')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <HelpCircle className="w-10 h-10 text-brand-red mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
+                      {t('dashboard.admin.sections.faq.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.faq.desc')}
+                    </p>
+                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.faq.action')} →</span>
+                  </div>
+
+                  <div 
+                    onClick={() => setActiveView('users')}
+                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
+                  >
+                    <Users className="w-10 h-10 text-brand-red mb-4" />
+                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
+                      {t('dashboard.admin.sections.users.title')}
+                    </h3>
+                    <p className="text-text-secondary text-sm mb-4">
+                      {t('dashboard.admin.sections.users.desc')}
+                    </p>
+                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.users.action')} →</span>
+                  </div>
+                </div>
               </div>
 
-              <div
-                onClick={() => setActiveView('invoices')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <FileText className="w-10 h-10 text-[var(--color-brand-orange-primary)] mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-[var(--color-brand-orange-primary)] transition-colors">
-                  {t('dashboard.admin.sections.invoices.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.invoices.desc')}
-                </p>
-                <span className="text-sm text-[var(--color-brand-orange-primary)]">{t('dashboard.admin.sections.invoices.action')} →</span>
-              </div>
-
-              <div
-                onClick={() => setActiveView('quotes')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <FileText className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  {t('dashboard.admin.sections.quotes.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.quotes.desc')}
-                </p>
-                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.quotes.action')} →</span>
-              </div>
-
-              <div 
-                onClick={() => setActiveView('contacts')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <MessageSquare className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  {t('dashboard.admin.sections.contacts.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.contacts.desc')}
-                </p>
-                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.contacts.action')} →</span>
-              </div>
-
-              <div 
-                onClick={() => setActiveView('services')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <Settings className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  {t('dashboard.admin.sections.services.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.services.desc')}
-                </p>
-                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.services.action')} →</span>
-              </div>
-
-              <div 
-                onClick={() => setActiveView('faq')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <HelpCircle className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  {t('dashboard.admin.sections.faq.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.faq.desc')}
-                </p>
-                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.faq.action')} →</span>
-              </div>
-
-              <div 
-                onClick={() => setActiveView('users')}
-                className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-              >
-                <Users className="w-10 h-10 text-brand-red mb-4" />
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                  {t('dashboard.admin.sections.users.title')}
-                </h3>
-                <p className="text-text-secondary text-sm mb-4">
-                  {t('dashboard.admin.sections.users.desc')}
-                </p>
-                <span className="text-sm text-brand-red">{t('dashboard.admin.sections.users.action')} →</span>
+              {/* Recent Activity Feed */}
+              <div className="space-y-6">
+                <h2 className="text-xl font-bold uppercase tracking-widest text-text-tertiary">Recent Activity</h2>
+                <div className="card-dark p-6 space-y-6">
+                  {stats?.recentActivity?.map((activity, idx) => (
+                    <div key={`${activity.type}-${activity.id}-${idx}`} className="flex gap-4 group">
+                      <div className={cn(
+                        "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110",
+                        activity.type === 'QUOTE' && "bg-brand-red/10 text-brand-red",
+                        activity.type === 'CONTACT' && "bg-blue-500/10 text-blue-500",
+                        activity.type === 'INVOICE' && "bg-green-500/10 text-green-500"
+                      )}>
+                        {activity.type === 'QUOTE' && <FileText className="w-5 h-5" />}
+                        {activity.type === 'CONTACT' && <MessageSquare className="w-5 h-5" />}
+                        {activity.type === 'INVOICE' && <FileText className="w-5 h-5" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2 mb-0.5">
+                          <p className="font-bold text-sm text-text-primary truncate">{activity.title}</p>
+                          <span className="text-[10px] text-text-tertiary whitespace-nowrap">
+                            {format(new Date(activity.date), 'HH:mm')}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-2">
+                           <p className="text-xs text-text-secondary truncate">{activity.user}</p>
+                           <span className={cn(
+                             "text-[9px] font-black tracking-tighter uppercase px-1.5 py-0.5 rounded",
+                             activity.status === 'PAID' || activity.status === 'APPROVED' ? "bg-green-500/10 text-green-500" : "bg-bg-secondary text-text-tertiary"
+                           )}>
+                             {activity.status}
+                           </span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {(!stats?.recentActivity || stats.recentActivity.length === 0) && (
+                    <p className="text-sm text-text-tertiary italic text-center py-4">No recent activity</p>
+                  )}
+                </div>
               </div>
             </div>
           </>
