@@ -25,13 +25,13 @@ export function AuthButtons() {
       <>
         <Link
           to="/login"
-          className="hidden sm:block px-4 py-2 text-xs font-bold uppercase tracking-wider text-white/80 hover:text-white transition-colors"
+          className="hidden sm:block px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors text-text-secondary hover:text-text-primary"
         >
           {t('common.login')}
         </Link>
         <Link
           to="/register"
-          className="hidden sm:block px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs font-bold uppercase tracking-wider transition-all clip-angular-2xs"
+          className="hidden sm:block px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all clip-angular-2xs bg-bg-secondary border border-border-primary text-text-primary hover:bg-border-primary"
         >
           {t('common.register')}
         </Link>
@@ -45,7 +45,7 @@ export function AuthButtons() {
         <DropdownMenu.Trigger asChild>
           <button
             type="button"
-            className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all clip-angular-2xs"
+            className="flex items-center gap-2 px-4 py-2 transition-all clip-angular-2xs bg-bg-secondary border border-border-primary text-text-primary hover:bg-border-primary"
             aria-label={t('common.account')}
           >
             <User className="w-4 h-4" />
@@ -53,7 +53,7 @@ export function AuthButtons() {
               {user?.firstName || t('common.account')}
             </span>
             {user?.role === UserRole.ADMIN && (
-              <Shield className="w-3 h-3 text-[var(--color-brand-orange-primary)] shadow-[0_0_10px_var(--color-brand-orange-primary)]" />
+              <Shield className="w-3 h-3 text-brand-orange-primary shadow-[0_0_10px_theme(colors.brand.orange.primary)]" />
             )}
           </button>
         </DropdownMenu.Trigger>
@@ -72,16 +72,16 @@ export function AuthButtons() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.15 }}
-                  className="w-56 bg-[var(--color-brand-dark)] border border-white/20 shadow-2xl clip-angular-sm"
+                  className="w-56 shadow-2xl clip-angular-sm bg-bg-primary border border-border-primary"
                 >
                   {/* User Info Header */}
-                  <div className="p-4 border-b border-white/10">
-                    <p className="text-sm font-semibold">
+                  <div className="p-4 border-b border-border-primary">
+                    <p className="text-sm font-semibold text-text-primary">
                       {user?.firstName} {user?.lastName}
                     </p>
-                    <p className="text-xs text-white/60">{user?.email}</p>
+                    <p className="text-xs text-text-tertiary">{user?.email}</p>
                     {user?.role === UserRole.ADMIN && (
-                      <span className="inline-block mt-2 px-2 py-1 bg-[var(--color-brand-orange-primary)]/20 text-[var(--color-brand-orange-primary)] text-xs font-bold uppercase tracking-wider">
+                      <span className="inline-block mt-2 px-2 py-1 bg-brand-orange-primary/20 text-brand-orange-primary text-xs font-bold uppercase tracking-wider">
                         {t('common.admin')}
                       </span>
                     )}
@@ -94,7 +94,7 @@ export function AuthButtons() {
                         to={user?.role === UserRole.ADMIN ? '/admin' : '/dashboard'}
                         className={cn(
                           "flex items-center gap-3 px-3 py-2 rounded text-sm transition-colors outline-none",
-                          "hover:bg-white/10 focus:bg-white/10"
+                          "hover:bg-bg-secondary focus:bg-bg-secondary text-text-secondary hover:text-text-primary"
                         )}
                       >
                         <LayoutDashboard className="w-4 h-4" />
@@ -107,7 +107,7 @@ export function AuthButtons() {
                         onClick={handleLogout}
                         className={cn(
                           "w-full flex items-center gap-3 px-3 py-2 rounded text-sm transition-colors outline-none",
-                          "hover:bg-white/10 focus:bg-white/10 text-orange-400"
+                          "hover:bg-bg-secondary focus:bg-bg-secondary text-orange-400"
                         )}
                       >
                         <LogOut className="w-4 h-4" />

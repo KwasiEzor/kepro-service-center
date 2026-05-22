@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Toaster } from 'sonner';
 import Navbar from './Navbar';
 import ChatBot from './ChatBot';
 import { Logo } from './Logo';
@@ -15,6 +16,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen gradient-bg selection:bg-[var(--color-brand-orange-primary)]/30 selection:text-white relative overflow-x-hidden">
+      <Toaster position="top-right" richColors />
       {/* Global Automotive Background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         {/* Main Background Glows */}
@@ -31,18 +33,18 @@ export default function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 py-20 px-6 sm:px-12 border-t border-white/5 bg-black/50 backdrop-blur-sm">
+      <footer className="relative z-10 py-20 px-6 sm:px-12 backdrop-blur-sm" style={{ borderTop: '1px solid var(--color-border-primary)', backgroundColor: 'var(--color-bg-secondary)' }}>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="space-y-6">
             <Logo size="md" showSubtitle={false} />
-            <p className="text-white/40 text-sm leading-relaxed max-w-xs">
+            <p className="text-sm leading-relaxed max-w-xs" style={{ color: 'var(--color-text-tertiary)' }}>
               {t('footer.tagline')}
             </p>
           </div>
 
           <div>
             <h4 className="font-bold text-sm uppercase tracking-widest mb-6">{t('footer.services.title')}</h4>
-            <ul className="space-y-4 text-white/40 text-sm">
+            <ul className="space-y-4 text-[var(--color-text-tertiary)] text-sm">
               <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.keyProgramming')}</a></li>
               <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.diagnostics')}</a></li>
               <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.services.ecuRemap')}</a></li>
@@ -52,7 +54,7 @@ export default function Layout() {
 
           <div>
             <h4 className="font-bold text-sm uppercase tracking-widest mb-6">{t('footer.company.title')}</h4>
-            <ul className="space-y-4 text-white/40 text-sm">
+            <ul className="space-y-4 text-[var(--color-text-tertiary)] text-sm">
               <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.about')}</a></li>
               <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.serviceArea')}</a></li>
               <li><a href="#" className="hover:text-[var(--color-brand-orange-primary)] transition-colors">{t('footer.company.privacy')}</a></li>
@@ -62,7 +64,7 @@ export default function Layout() {
 
           <div>
             <h4 className="font-bold text-sm uppercase tracking-widest mb-6">{t('footer.support.title')}</h4>
-            <ul className="space-y-4 text-white/40 text-sm">
+            <ul className="space-y-4 text-[var(--color-text-tertiary)] text-sm">
               <li className="flex items-center gap-3">
                 <span className="w-1.5 h-1.5 bg-[var(--color-brand-orange-primary)] rounded-full shadow-[0_0_10px_var(--color-brand-orange-primary)]" />
                 {t('footer.support.emergency')}
@@ -72,7 +74,7 @@ export default function Layout() {
             </ul>
           </div>
         </div>        
-        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-white/20">
+        <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-[var(--color-border-secondary)] flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-tertiary)]/50">
           <p>{t('footer.copyright')}</p>
           <div className="flex gap-8">
             <a href="#">{t('footer.social.instagram')}</a>

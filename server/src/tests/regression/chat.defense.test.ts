@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
-import chatRouter from './api';
+import chatRouter from '../../../api';
 
 const app = express();
 app.use(express.json());

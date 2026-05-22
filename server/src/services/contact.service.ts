@@ -19,6 +19,7 @@ export class ContactService {
 
     // Send async notification
     emailService.sendAdminContactNotification(data);
+    emailService.sendUserContactConfirmation(data);
 
     return contact;
   }

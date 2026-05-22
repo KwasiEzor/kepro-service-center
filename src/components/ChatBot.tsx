@@ -12,6 +12,18 @@ export default function ChatBot() {
   const [messages, setMessages] = React.useState([
     { role: 'bot', content: t('chatbot.greeting') }
   ]);
+
+  // Update greeting when language changes
+  React.useEffect(() => {
+    setMessages(prev => {
+      if (prev.length > 0 && prev[0].role === 'bot' && (prev[0].content === t('chatbot.greeting', { lng: 'en' }) || prev[0].content === t('chatbot.greeting', { lng: 'fr' }))) {
+        const newMessages = [...prev];
+        newMessages[0] = { ...newMessages[0], content: t('chatbot.greeting') };
+        return newMessages;
+      }
+      return prev;
+    });
+  }, [t]);
   const [isLoading, setIsLoading] = React.useState(false);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
@@ -102,22 +114,22 @@ export default function ChatBot() {
             className="absolute bottom-20 right-0 w-[350px] sm:w-[400px] h-[550px] glass-dark rounded-[30px] shadow-2xl flex flex-col overflow-hidden"
           >
             {/* Header */}
-            <div className="p-6 bg-brand-blue/50 flex items-center justify-between border-b border-white/10">
+            <div className="p-6 flex items-center justify-between bg-bg-secondary border-b border-border-primary">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center p-2">
-                  <Bot className="text-white w-full h-full" />
+                  <Bot className="w-full h-full text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white leading-none">{t('chatbot.title')}</h3>
+                  <h3 className="font-bold leading-none text-text-primary">{t('chatbot.title')}</h3>
                   <span className="text-[10px] text-green-400 flex items-center gap-1 mt-1 font-medium">
                     <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
                     {t('chatbot.status')}
                   </span>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setIsOpen(false)}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                className="p-2 rounded-full transition-colors text-text-primary hover:bg-border-primary"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -139,20 +151,21 @@ export default function ChatBot() {
                   )}
                 >
                   <div className={cn(
-                    "p-4 rounded-[20px]",
-                    msg.role === 'user' 
-                      ? "bg-brand-red text-white rounded-tr-none" 
-                      : "glass text-white/90 rounded-tl-none shadow-lg border border-white/5"
-                  )}>
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.content}</p>
+                    "p-4 rounded-[20px] text-sm leading-relaxed whitespace-pre-wrap",
+                    msg.role === 'user'
+                      ? "bg-brand-red text-white rounded-tr-none"
+                      : "bg-bg-secondary text-text-primary border border-border-secondary rounded-tl-none shadow-lg"
+                  )}
+                  >
+                    <p>{msg.content}</p>
                   </div>
-                  <span className="text-[10px] text-white/30 mt-1 px-2 font-medium">
+                  <span className="text-[10px] mt-1 px-2 font-medium text-text-tertiary">
                     {msg.role === 'user' ? 'You' : 'KeyPro AI Assistant'}
                   </span>
                 </motion.div>
               ))}
               {isLoading && (
-                <div className="flex gap-2 items-center text-white/40 ml-2">
+                <div className="flex gap-2 items-center ml-2 text-text-tertiary">
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span className="text-[10px] font-medium tracking-wider">AI IS ANALYZING...</span>
                 </div>
@@ -160,8 +173,8 @@ export default function ChatBot() {
             </div>
 
             {/* Input */}
-            <div className="p-4 glass border-t border-white/10">
-              <div className="flex items-center gap-2 bg-white/5 border border-white/10 rounded-full py-1 px-2 pr-1 focus-within:border-brand-red focus-within:bg-white/10 transition-all group">
+            <div className="p-4 glass border-t border-border-primary">
+              <div className="flex items-center gap-2 rounded-full py-1 px-2 pr-1 focus-within:border-brand-red transition-all group bg-bg-secondary border border-border-primary">
                 <input
                   type="file"
                   ref={fileInputRef}
@@ -171,7 +184,7 @@ export default function ChatBot() {
                 />
                 <button
                   onClick={() => fileInputRef.current?.click()}
-                  className="p-2 hover:bg-white/10 rounded-full text-white/40 hover:text-white transition-colors"
+                  className="p-2 rounded-full transition-colors text-text-tertiary hover:bg-border-primary hover:text-text-primary"
                   title="Upload dashboard photo for AI diagnostic"
                 >
                   <Camera className="w-5 h-5" />
@@ -182,17 +195,17 @@ export default function ChatBot() {
                   onChange={(e) => setMessage(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                   placeholder={t('chatbot.placeholder')}
-                  className="flex-1 bg-transparent border-none py-2 px-2 focus:outline-none text-sm"
+                  className="flex-1 bg-transparent border-none py-2 px-2 focus:outline-none text-sm text-text-primary"
                 />
                 <button
                   onClick={handleSend}
                   disabled={!message.trim() || isLoading}
-                  className="w-10 h-10 bg-brand-red rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-50 shadow-lg"
+                  className="w-10 h-10 bg-brand-red text-white rounded-full flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-50 shadow-lg"
                 >
                   <Send className="w-4 h-4" />
                 </button>
               </div>
-              <p className="text-[9px] text-white/30 mt-2 px-4 text-center">
+              <p className="text-[9px] mt-2 px-4 text-center text-text-tertiary">
                 Tip: Upload a photo of your dashboard for an instant AI diagnostic.
               </p>
             </div>
@@ -230,7 +243,7 @@ export default function ChatBot() {
         
         {/* Pulsing notification bit */}
         {!isOpen && (
-          <span className="absolute top-0 right-0 w-4 h-4 bg-white rounded-full flex items-center justify-center text-[10px] text-brand-red font-bold animate-bounce border-2 border-brand-red">
+          <span className="absolute top-0 right-0 w-4 h-4 rounded-full flex items-center justify-center text-[10px] text-brand-red font-bold animate-bounce border-2 border-brand-red bg-white">
             1
           </span>
         )}

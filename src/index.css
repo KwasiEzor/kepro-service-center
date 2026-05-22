@@ -31,26 +31,52 @@
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display: "Space Grotesk", sans-serif;
 
-  /* Brand Colors - Automotive Orange Theme */
+  /* Brand Colors - Automotive Orange Theme (consistent across themes) */
   --color-brand-orange-primary: #FF6B2C;
   --color-brand-orange-secondary: #FF8C4D;
   --color-brand-orange-light: #FFA06D;
+  --color-brand-orange-dark: #E65A1F;
+
+  /* Theme-aware Colors */
+  --color-bg-primary: var(--color-bg-primary);
+  --color-bg-secondary: var(--color-bg-secondary);
+  --color-bg-tertiary: var(--color-bg-tertiary);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-tertiary: var(--color-text-tertiary);
+  --color-border-primary: var(--color-border-primary);
+  --color-border-secondary: var(--color-border-secondary);
 
   /* Alias for consistency */
   --color-brand-red: #FF6B2C;
-  --color-brand-blue: #1A1A1A;
   --color-brand-orange: #FF6B2C;
 
-  /* Dark Backgrounds */
-  --color-brand-dark: #0D0D0D;
-  --color-brand-gray: #1A1A1A;
-  --color-brand-gray-light: #2A2A2A;
+  /* Legacy */
+  --radius-apple: 22px;
+}
+
+/* Dark Theme (Default) */
+:root,
+:root.dark {
+  /* Backgrounds */
+  --color-bg-primary: #0D0D0D;
+  --color-bg-secondary: #1A1A1A;
+  --color-bg-tertiary: #2A2A2A;
+
+  /* Text */
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #D1D5DB;
+  --color-text-tertiary: #9CA3AF;
+
+  /* Borders */
+  --color-border-primary: rgba(255, 255, 255, 0.1);
+  --color-border-secondary: rgba(255, 255, 255, 0.05);
 
   /* Glass Morphism */
-  --color-glass-white: rgba(255, 255, 255, 0.05);
+  --color-glass-bg: rgba(255, 255, 255, 0.05);
   --color-glass-border: rgba(255, 255, 255, 0.1);
 
-  /* Orange with opacity variants */
+  /* Orange with opacity */
   --color-orange-5: rgba(255, 107, 44, 0.05);
   --color-orange-10: rgba(255, 107, 44, 0.1);
   --color-orange-15: rgba(255, 107, 44, 0.15);
@@ -59,33 +85,100 @@
   --color-orange-40: rgba(255, 107, 44, 0.4);
   --color-orange-50: rgba(255, 107, 44, 0.5);
 
-  /* Secondary orange with opacity */
+  /* Legacy support */
+  --color-brand-dark: #0D0D0D;
+  --color-brand-gray: #1A1A1A;
+  --color-brand-gray-light: #2A2A2A;
+  --color-brand-blue: #1A1A1A;
+  --color-glass-white: rgba(255, 255, 255, 0.05);
   --color-orange-secondary-10: rgba(255, 140, 77, 0.1);
   --color-orange-secondary-20: rgba(255, 140, 77, 0.2);
+}
 
-  /* Legacy */
-  --radius-apple: 22px;
+/* Light Theme */
+:root.light {
+  /* Backgrounds */
+  --color-bg-primary: #FFFFFF;
+  --color-bg-secondary: #F3F4F6;
+  --color-bg-tertiary: #E5E7EB;
+
+  /* Text */
+  --color-text-primary: #111827;
+  --color-text-secondary: #374151;
+  --color-text-tertiary: #6B7280;
+
+  /* Borders */
+  --color-border-primary: rgba(0, 0, 0, 0.1);
+  --color-border-secondary: rgba(0, 0, 0, 0.05);
+
+  /* Glass Morphism */
+  --color-glass-bg: rgba(255, 255, 255, 0.7);
+  --color-glass-border: rgba(0, 0, 0, 0.1);
+
+  /* Orange with opacity */
+  --color-orange-5: rgba(255, 107, 44, 0.05);
+  --color-orange-10: rgba(255, 107, 44, 0.1);
+  --color-orange-15: rgba(255, 107, 44, 0.15);
+  --color-orange-20: rgba(255, 107, 44, 0.2);
+  --color-orange-30: rgba(255, 107, 44, 0.3);
+  --color-orange-40: rgba(255, 107, 44, 0.4);
+  --color-orange-50: rgba(255, 107, 44, 0.5);
+
+  /* Legacy support */
+  --color-brand-dark: #FFFFFF;
+  --color-brand-gray: #F3F4F6;
+  --color-brand-gray-light: #E5E7EB;
+  --color-brand-blue: #F3F4F6;
+  --color-glass-white: rgba(255, 255, 255, 0.7);
+  --color-orange-secondary-10: rgba(255, 140, 77, 0.1);
+  --color-orange-secondary-20: rgba(255, 140, 77, 0.2);
 }
 
 @layer base {
   body {
-    @apply bg-[#0D0D0D] text-white selection:bg-brand-orange/30;
+    background-color: var(--color-bg-primary);
+    color: var(--color-text-primary);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
+  body.dark {
+    @apply selection:bg-brand-orange/30;
+  }
+
+  body.light {
+    @apply selection:bg-brand-orange/20;
+  }
+
+  /* Custom scrollbar - Dark Theme */
+  .dark ::-webkit-scrollbar {
     width: 10px;
   }
-  ::-webkit-scrollbar-track {
-    background: var(--color-brand-dark);
+  .dark ::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
   }
-  ::-webkit-scrollbar-thumb {
+  .dark ::-webkit-scrollbar-thumb {
     background: var(--color-brand-orange-primary);
     border-radius: 10px;
-    border: 3px solid var(--color-brand-dark);
+    border: 3px solid var(--color-bg-primary);
   }
-  ::-webkit-scrollbar-thumb:hover {
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-orange-secondary);
+  }
+
+  /* Custom scrollbar - Light Theme */
+  .light ::-webkit-scrollbar {
+    width: 10px;
+  }
+  .light ::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+  }
+  .light ::-webkit-scrollbar-thumb {
+    background: var(--color-brand-orange-primary);
+    border-radius: 10px;
+    border: 3px solid var(--color-bg-secondary);
+  }
+  .light ::-webkit-scrollbar-thumb:hover {
     background: var(--color-brand-orange-secondary);
   }
 }
@@ -93,11 +186,21 @@
 @layer utilities {
   /* Glass Morphism */
   .glass {
-    @apply bg-glass-white backdrop-blur-xl border border-glass-border;
+    background-color: var(--color-glass-bg);
+    border: 1px solid var(--color-glass-border);
+    backdrop-filter: blur(12px);
   }
 
   .glass-dark {
-    @apply bg-black/40 backdrop-blur-2xl border border-white/5;
+    backdrop-filter: blur(24px);
+  }
+
+  .dark .glass-dark {
+    @apply bg-black/40 border-white/5;
+  }
+
+  .light .glass-dark {
+    @apply bg-white/40 border-black/5;
   }
 
   /* Text Effects */
@@ -120,7 +223,12 @@
 
   /* Card Backgrounds */
   .card-dark {
-    @apply bg-gradient-to-br from-brand-gray to-brand-dark border border-white/5;
+    background: linear-gradient(to bottom right, var(--color-bg-secondary), var(--color-bg-primary));
+    border: 1px solid var(--color-border-primary);
+  }
+
+  .light .card-dark {
+    background: linear-gradient(to bottom right, var(--color-bg-secondary), var(--color-bg-tertiary));
   }
 
   /* Brand Gradient Backgrounds */

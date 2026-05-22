@@ -53,7 +53,8 @@ export default function Services() {
     fetchServices();
   }, []);
 
-  const lang = i18n.language.startsWith('fr') ? 'Fr' : 'En';
+  const currentLang = i18n.language || 'fr';
+  const lang = currentLang.startsWith('fr') ? 'Fr' : 'En';
 
   // Group services by category
   const categories = Array.from(new Set(services.map(s => s.category || 'other')));
@@ -98,7 +99,7 @@ export default function Services() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+            className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 border border-border-primary text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
           >
             <Settings className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]">
@@ -112,7 +113,7 @@ export default function Services() {
             transition={{ delay: 0.1, duration: 0.8 }}
             className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-[1.05]"
           >
-            <span className="block text-white">{t('services.header.titlePart1')}</span>
+            <span className="block text-text-primary">{t('services.header.titlePart1')}</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
               {t('services.header.titlePart2')}
             </span>
@@ -122,7 +123,8 @@ export default function Services() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+            style={{ color: 'var(--color-text-secondary)' }}
           >
             {t('services.header.description')}
           </motion.p>
@@ -152,10 +154,10 @@ export default function Services() {
                   transition={{ delay: 0.2 }}
                   className="flex items-center gap-6"
                 >
-                  <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 clip-angular-md flex items-center justify-center border border-white/10 backdrop-blur-xl">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 clip-angular-md flex items-center justify-center border border-border-primary backdrop-blur-xl">
                     <cat.icon className="w-10 h-10 text-[var(--color-brand-orange-primary)]" />
                   </div>
-                  <h2 className="text-4xl md:text-6xl font-display font-black leading-none text-white">
+                  <h2 className="text-4xl md:text-6xl font-display font-black leading-none text-text-primary">
                     {cat.title}
                   </h2>
                 </motion.div>
@@ -167,7 +169,8 @@ export default function Services() {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
-                    className="text-xl text-white/70 leading-relaxed"
+                    className="text-xl leading-relaxed"
+                    style={{ color: 'var(--color-text-secondary)' }}
                   >
                     {cat.description}
                   </motion.p>
@@ -189,13 +192,13 @@ export default function Services() {
                       viewport={{ once: true }}
                       transition={{ delay: 0.5 + i * 0.1 }}
                       whileHover={{ y: -4, scale: 1.02 }}
-                      className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md border border-white/10 hover:border-white/20 transition-all"
+                      className="group relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md border border-border-primary hover:border-border-primary transition-all"
                     >
                       {/* Gradient glow on hover */}
                       <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 clip-angular-md transition-all duration-300 -z-10" />
 
-                      <h4 className="font-bold text-white mb-2 text-sm">{s.name}</h4>
-                      <p className="text-xs text-white/50 leading-relaxed mb-3">
+                      <h4 className="font-bold mb-2 text-sm" style={{ color: 'var(--color-text-primary)' }}>{s.name}</h4>
+                      <p className="text-xs leading-relaxed mb-3" style={{ color: 'var(--color-text-secondary)' }}>
                         {s.detail}
                       </p>
                       {s.price && (
@@ -217,7 +220,7 @@ export default function Services() {
                 className="flex-1 relative group"
               >
                 <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/20 to-white/5">
-                  <div className="relative clip-angular-lg overflow-hidden aspect-[4/3] border border-white/10 shadow-2xl">
+                  <div className="relative clip-angular-lg overflow-hidden aspect-[4/3] border border-border-primary shadow-2xl">
                     <LazyImage
                       src={cat.image}
                       alt={cat.title}
@@ -246,8 +249,8 @@ export default function Services() {
 
         {/* Premium Brand Coverage Banner */}
         <section className="mt-40 py-24 relative overflow-hidden mb-20">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white/[0.02] to-transparent" />
-          <div className="absolute inset-0 border-y border-white/5" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg-secondary/20 to-transparent" />
+          <div className="absolute inset-0 border-y border-border-secondary" />
 
           <div className="relative z-10 max-w-7xl mx-auto px-6">
             <motion.div
@@ -256,9 +259,9 @@ export default function Services() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <div className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-white/10 text-xs font-bold tracking-widest uppercase backdrop-blur-xl">
-                <ShieldCheck className="w-3.5 h-3.5 text-white/40" />
-                <span className="text-white/40">{t('services.brandCoverage.title')}</span>
+              <div className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm border text-xs font-bold tracking-widest uppercase backdrop-blur-xl bg-bg-secondary border-border-primary">
+                <ShieldCheck className="w-3.5 h-3.5 text-text-tertiary" />
+                <span className="text-text-tertiary">{t('services.brandCoverage.title')}</span>
               </div>
             </motion.div>
 
@@ -271,9 +274,9 @@ export default function Services() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
                   whileHover={{ y: -4, opacity: 1 }}
-                  className="group flex items-center justify-center p-8 backdrop-blur-xl bg-gradient-to-br from-white/5 to-white/[0.02] clip-angular-md border border-white/5 hover:border-white/10 transition-all cursor-default"
+                  className="group flex items-center justify-center p-8 backdrop-blur-xl clip-angular-md border hover:border-border-primary transition-all cursor-default bg-bg-secondary border-border-primary"
                 >
-                  <span className="text-lg md:text-xl font-display font-black tracking-tight text-white/30 group-hover:text-white/70 transition-colors">
+                  <span className="text-lg md:text-xl font-display font-black tracking-tight group-hover:text-text-secondary transition-colors text-text-tertiary">
                     {brand}
                   </span>
                 </motion.div>

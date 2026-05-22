@@ -134,7 +134,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="font-display text-6xl md:text-7xl lg:text-8xl font-black tracking-tight mb-8 leading-[1.05]"
             >
-              <span className="block text-white">{t('home.hero.titlePart1')}</span>
+              <span className="block text-text-primary">{t('home.hero.titlePart1')}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong">
                 {t('home.hero.titlePart2')}
               </span>
@@ -145,7 +145,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-lg md:text-xl text-white/70 mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium"
+              className="text-lg md:text-xl mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed font-medium text-text-secondary"
             >
               {t('home.hero.subtitle')}. {t('home.hero.description')}
             </motion.p>
@@ -170,9 +170,9 @@ export default function Home() {
 
               <Link
                 to="/services"
-                className="group relative inline-flex items-center gap-3 px-8 py-4 clip-angular-sm font-bold text-lg overflow-hidden border border-white/10 backdrop-blur-xl hover:border-[var(--color-brand-orange-primary)]/30 hover:bg-white/5 transition-all"
+                className="group relative inline-flex items-center gap-3 px-8 py-4 clip-angular-sm font-bold text-lg overflow-hidden border border-border-primary backdrop-blur-xl hover:border-[var(--color-brand-orange-primary)]/30 hover:bg-bg-secondary transition-all"
               >
-                <span className="relative z-10 text-white/90 group-hover:text-white transition-colors">
+                <span className="relative z-10 group-hover:text-text-primary transition-colors text-text-secondary">
                   Explore Services
                 </span>
               </Link>
@@ -192,7 +192,7 @@ export default function Home() {
                   animate={{ opacity: 0.4, y: 0 }}
                   transition={{ delay: 0.6 + i * 0.05 }}
                   whileHover={{ opacity: 1, scale: 1.05 }}
-                  className="text-sm font-display font-bold tracking-widest text-white cursor-default transition-all"
+                  className="text-sm font-display font-bold tracking-widest text-text-primary cursor-default transition-all"
                 >
                   {brand}
                 </motion.span>
@@ -210,7 +210,7 @@ export default function Home() {
             {/* Main Image Card with Gradient Border */}
             <motion.div
               style={{ y: y2 }}
-              className="relative z-10 clip-angular-xl overflow-hidden border border-white/10 shadow-2xl bg-gradient-to-br from-white/5 to-transparent p-1"
+              className="relative z-10 clip-angular-xl overflow-hidden border border-border-primary shadow-2xl bg-gradient-to-br from-white/5 to-transparent p-1"
             >
               <div className="clip-angular-lg overflow-hidden relative group">
                 <img
@@ -229,7 +229,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="absolute top-12 -left-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md shadow-2xl max-w-[240px] border border-white/10"
+              className="absolute top-12 -left-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md shadow-2xl max-w-[240px] border border-border-primary"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 bg-gradient-to-br from-emerald-500/20 to-green-500/20 clip-angular-sm flex items-center justify-center">
@@ -238,7 +238,7 @@ export default function Home() {
                 <span className="text-xs font-bold tracking-wider text-emerald-400 uppercase">{t('home.hero.floating.verified')}</span>
               </div>
               <p className="text-sm font-bold mb-1">{t('home.hero.floating.responseTitle')}</p>
-              <p className="text-xs text-white/60">{t('home.hero.floating.responseDesc')}</p>
+              <p className="text-xs" style={{ color: 'var(--color-text-tertiary)' }}>{t('home.hero.floating.responseDesc')}</p>
             </motion.div>
 
             <motion.div
@@ -246,7 +246,7 @@ export default function Home() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.7 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className="absolute bottom-12 -right-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md shadow-2xl max-w-[260px] border border-white/10"
+              className="absolute bottom-12 -right-12 backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-6 clip-angular-md shadow-2xl max-w-[260px] border border-border-primary"
             >
               <div className="flex items-center gap-1 mb-3">
                 {[1, 2, 3, 4, 5].map(i => (
@@ -254,8 +254,8 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-sm font-bold mb-2">{t('home.hero.floating.supportTitle')}</p>
-              <p className="text-xs text-white/60 italic">"{t('home.hero.floating.supportQuote')}"</p>
-              <p className="text-[10px] text-white/40 mt-2 font-bold">— {t('home.hero.floating.supportAuthor')}</p>
+              <p className="text-xs italic text-text-tertiary">"{t('home.hero.floating.supportQuote')}"</p>
+              <p className="text-[10px] mt-2 font-bold text-text-tertiary">— {t('home.hero.floating.supportAuthor')}</p>
             </motion.div>
 
             {/* Glowing Orbs */}
@@ -280,7 +280,7 @@ export default function Home() {
                 className="relative group"
               >
                 {/* Card with Gradient Border */}
-                <div className="relative backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 clip-angular-md border border-white/10 hover:border-white/20 transition-all duration-300">
+                <div className="relative backdrop-blur-xl bg-bg-secondary p-8 clip-angular-md border border-border-primary hover:border-border-primary transition-all duration-300">
                   {/* Icon */}
                   <motion.div
                     initial={{ scale: 0 }}
@@ -293,12 +293,12 @@ export default function Home() {
                   </motion.div>
 
                   {/* Value */}
-                  <h3 className="text-4xl md:text-5xl font-display font-black mb-3 text-center bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
+                  <h3 className="text-4xl md:text-5xl font-display font-black mb-3 text-center bg-gradient-to-r from-text-primary to-text-secondary bg-clip-text text-transparent">
                     {stat.value}
                   </h3>
 
                   {/* Label */}
-                  <p className="text-xs text-white/50 font-bold tracking-widest uppercase text-center">
+                  <p className="text-xs font-bold tracking-widest uppercase text-center text-text-secondary">
                     {stat.label}
                   </p>
 
@@ -338,12 +338,12 @@ export default function Home() {
               </motion.div>
 
               <h2 className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]">
-                <span className="block text-white">{t('home.services.titlePart1')}</span>
+                <span className="block text-text-primary">{t('home.services.titlePart1')}</span>
                 <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong">
                   {t('home.services.titlePart2')}
                 </span>
               </h2>
-              <p className="text-white/70 text-lg leading-relaxed">
+              <p className="text-lg leading-relaxed text-text-secondary">
                 {t('home.services.description')}
               </p>
             </motion.div>
@@ -355,10 +355,10 @@ export default function Home() {
             >
               <Link
                 to="/services"
-                className="group inline-flex items-center gap-3 px-8 py-4 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-white/10 backdrop-blur-xl hover:bg-white/10 transition-all font-bold"
+                className="group inline-flex items-center gap-3 px-8 py-4 clip-angular-sm bg-gradient-to-r from-white/5 to-white/10 border border-border-primary backdrop-blur-xl hover:bg-bg-secondary transition-all font-bold"
               >
-                <span className="text-white">{t('home.services.seeAll')}</span>
-                <ChevronRight className="w-5 h-5 text-white/70 group-hover:translate-x-1 transition-transform" />
+                <span style={{ color: 'var(--color-text-primary)' }}>{t('home.services.seeAll')}</span>
+                <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" style={{ color: 'var(--color-text-secondary)' }} />
               </Link>
             </motion.div>
           </div>
@@ -376,7 +376,7 @@ export default function Home() {
                 className="group relative"
               >
                 {/* Card */}
-                <div className="relative backdrop-blur-2xl bg-gradient-to-br from-white/10 to-white/5 p-8 clip-angular-lg border border-white/10 hover:border-white/20 transition-all duration-500 overflow-hidden">
+                <div className="relative backdrop-blur-2xl bg-bg-secondary p-8 clip-angular-lg border border-border-primary hover:border-border-primary transition-all duration-500 overflow-hidden">
                   {/* Gradient Overlay on Hover */}
                   <div className={cn(
                     "absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-10 transition-opacity duration-500 clip-angular-lg",
@@ -398,12 +398,12 @@ export default function Home() {
                   </motion.div>
 
                   {/* Title */}
-                  <h3 className="text-2xl font-display font-bold mb-4 text-white relative z-10">
+                  <h3 className="text-2xl font-display font-bold mb-4 text-text-primary relative z-10">
                     {service.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-white/60 leading-relaxed mb-6 relative z-10 text-sm">
+                  <p className="leading-relaxed mb-6 relative z-10 text-sm" style={{ color: 'var(--color-text-tertiary)' }}>
                     {service.description}
                   </p>
 
@@ -416,7 +416,7 @@ export default function Home() {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.15 + i * 0.1 }}
                         viewport={{ once: true }}
-                        className="flex items-center gap-2 text-xs text-white/50"
+                        className="flex items-center gap-2 text-xs text-text-secondary"
                       >
                         <div className="w-1 h-1 clip-angular-sm bg-gradient-to-r from-cyan-400 to-blue-400" />
                         {feature}
@@ -443,7 +443,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto relative">
           {/* Automotive Card with Orange Border */}
           <div className="relative p-1 rounded-[56px] bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20">
-            <div className="relative overflow-hidden rounded-[52px] bg-gradient-to-br from-[var(--color-brand-gray)] to-[var(--color-brand-dark)] p-12 md:p-20 text-center border border-white/10">
+            <div className="relative overflow-hidden rounded-[52px] bg-gradient-to-br from-[var(--color-brand-gray)] to-[var(--color-brand-dark)] p-12 md:p-20 text-center border border-border-primary">
               {/* Advanced Background Pattern */}
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff08_1px,transparent_1px),linear-gradient(to_bottom,#ffffff08_1px,transparent_1px)] bg-[size:3rem_3rem]" />
@@ -497,7 +497,7 @@ export default function Home() {
                   transition={{ delay: 0.1 }}
                   className="text-5xl md:text-7xl font-display font-black mb-6 leading-[1.1]"
                 >
-                  <span className="block text-white">{t('home.cta.titlePart1')}</span>
+                  <span className="block text-text-primary">{t('home.cta.titlePart1')}</span>
                   <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong">
                     {t('home.cta.titlePart2')}
                   </span>
@@ -508,7 +508,8 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
-                  className="text-lg md:text-xl text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed"
+                  className="text-lg md:text-xl mb-12 max-w-2xl mx-auto leading-relaxed"
+                  style={{ color: 'var(--color-text-secondary)' }}
                 >
                   {t('home.cta.description')}
                 </motion.p>
@@ -538,7 +539,7 @@ export default function Home() {
                   {/* Secondary CTA */}
                   <Link
                     to="/contact"
-                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-white/5 border border-[var(--color-brand-orange-primary)]/30 text-white clip-angular-sm font-bold text-xl hover:bg-white/10 hover:border-[var(--color-brand-orange-primary)]/50 transition-all flex items-center justify-center gap-3"
+                    className="group w-full sm:w-auto px-10 py-5 backdrop-blur-xl bg-bg-secondary border border-[var(--color-brand-orange-primary)]/30 text-text-primary clip-angular-sm font-bold text-xl hover:bg-bg-secondary hover:border-[var(--color-brand-orange-primary)]/50 transition-all flex items-center justify-center gap-3"
                   >
                     {t('home.cta.contactSupport')}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

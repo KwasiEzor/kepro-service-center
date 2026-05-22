@@ -58,11 +58,11 @@ export default function Brands() {
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-display font-bold mb-8"
+          className="text-5xl md:text-7xl font-display font-bold mb-8 text-text-primary"
         >
           {t('brands.title')}
         </motion.h1>
-        <p className="text-xl text-white/50 max-w-2xl mx-auto leading-relaxed">
+        <p className="text-xl max-w-2xl mx-auto leading-relaxed text-text-secondary">
           {t('brands.subtitle')}
         </p>
       </section>
@@ -77,10 +77,10 @@ export default function Brands() {
               viewport={{ once: true }}
               className="space-y-12"
             >
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-white/5 pb-10">
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-border-secondary pb-10">
                 <div className="max-w-xl">
-                  <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">{cat.title}</h2>
-                  <p className="text-lg text-white/40">{cat.description}</p>
+                  <h2 className="text-3xl md:text-5xl font-display font-bold mb-4 text-text-primary">{cat.title}</h2>
+                  <p className="text-lg text-text-tertiary">{cat.description}</p>
                 </div>
                 <div className="flex items-center gap-2 text-brand-red font-bold uppercase tracking-widest text-xs">
                   <ShieldCheck className="w-5 h-5" /> {t('brands.certification')}
@@ -88,7 +88,7 @@ export default function Brands() {
               </div>
 
               {/* Hero car image */}
-              <div className="relative clip-angular-xl overflow-hidden aspect-[21/9] border border-white/10">
+              <div className="relative clip-angular-xl overflow-hidden aspect-[21/9] border border-border-primary">
                 <LazyImage
                   src={cat.image}
                   alt={cat.title}
@@ -100,20 +100,20 @@ export default function Brands() {
 
               <div className="grid md:grid-cols-2 gap-8">
                 {cat.brands.map((brand) => (
-                  <div key={brand.name} className="glass p-10 clip-angular-lg hover:bg-white/5 transition-all group border-white/5">
+                  <div key={brand.name} className="glass p-10 clip-angular-lg hover:bg-bg-secondary transition-all group border-border-secondary">
                     <div className="flex items-center justify-between mb-8">
                       <div>
-                        <h3 className="text-4xl font-display font-black tracking-tighter mb-1 tracking-wider text-white group-hover:text-brand-red transition-colors">{brand.name}</h3>
-                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/30">{brand.series}</p>
+                        <h3 className="text-4xl font-display font-black tracking-tighter mb-1 tracking-wider text-text-primary group-hover:text-brand-red transition-colors">{brand.name}</h3>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-text-tertiary opacity-80">{brand.series}</p>
                       </div>
                       <div className="w-12 h-12 glass clip-angular-sm flex items-center justify-center p-3">
-                         <Cpu className="text-white/40 w-full h-full" />
+                         <Cpu className="w-full h-full text-text-tertiary" />
                       </div>
                     </div>
                     
                     <div className="flex flex-wrap gap-2">
                        {brand.features.map(f => (
-                         <span key={f} className="text-[10px] font-bold uppercase tracking-widest border border-white/10 px-3 py-1.5 clip-angular-sm text-white/50 group-hover:border-brand-red/30 group-hover:text-white transition-all">
+                         <span key={f} className="text-[10px] font-bold uppercase tracking-widest border px-3 py-1.5 clip-angular-sm group-hover:border-brand-red/30 group-hover:text-text-primary transition-all border-border-primary text-text-secondary">
                            {f}
                          </span>
                        ))}
@@ -128,14 +128,14 @@ export default function Brands() {
 
       {/* Verification footer */}
       <section className="mt-32 px-6 sm:px-12">
-        <div className="max-w-4xl mx-auto glass p-12 rounded-[50px] text-center border-brand-red/10 overflow-hidden relative group">
+        <div className="max-w-4xl mx-auto glass p-12 rounded-[50px] text-center border border-border-secondary overflow-hidden relative group">
            <div className="absolute inset-0 bg-brand-red/5 mix-blend-overlay group-hover:bg-brand-red/10 transition-colors" />
            <CheckCircle2 className="w-12 h-12 text-brand-red mx-auto mb-8 shadow-2xl" />
-           <h3 className="text-2xl md:text-3xl font-display font-bold mb-6">{t('brands.cta.title')}</h3>
-           <p className="text-white/40 max-w-xl mx-auto mb-10 leading-relaxed">
+           <h3 className="text-2xl md:text-3xl font-display font-bold mb-6 text-text-primary">{t('brands.cta.title')}</h3>
+           <p className="max-w-xl mx-auto mb-10 leading-relaxed text-text-tertiary">
              {t('brands.cta.description')}
            </p>
-           <button className="px-8 py-3 bg-white text-brand-blue clip-angular-sm font-bold hover:scale-105 transition-all bg-glow-red">
+           <button className="px-8 py-3 bg-text-primary text-bg-primary clip-angular-sm font-bold hover:scale-105 transition-all bg-glow-red">
              {t('brands.cta.button')}
            </button>
         </div>

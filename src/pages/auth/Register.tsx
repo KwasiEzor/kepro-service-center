@@ -95,7 +95,7 @@ export default function Register() {
         <div className="card-dark p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mb-2">Create Account</h1>
-            <p className="text-white/60">Join KeyPro Service Center</p>
+            <p className="text-text-secondary">Join KeyPro Service Center</p>
           </div>
 
           {error && (
@@ -116,7 +116,7 @@ export default function Register() {
                 <input
                   type="text"
                   {...register('firstName')}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                   placeholder="John"
                 />
               </div>
@@ -125,7 +125,7 @@ export default function Register() {
                 <input
                   type="text"
                   {...register('lastName')}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                   placeholder="Doe"
                 />
               </div>
@@ -140,7 +140,7 @@ export default function Register() {
               <input
                 type="email"
                 {...register('email')}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                 placeholder="your@email.com"
               />
               {errors.email && (
@@ -157,7 +157,7 @@ export default function Register() {
               <input
                 type="tel"
                 {...register('phone')}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                 placeholder="+33 6 12 34 56 78"
               />
             </div>
@@ -174,13 +174,13 @@ export default function Register() {
                   {...register('password', {
                     onChange: (e) => setPasswordValue(e.target.value)
                   })}
-                  className="w-full px-4 py-3 pr-12 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 pr-12 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary hover:text-text-secondary transition-colors"
                   aria-label={showPassword ? "Hide password" : "Show password"}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -197,12 +197,12 @@ export default function Register() {
                         className={`h-1 flex-1 rounded-full transition-colors ${
                           level <= passwordStrength.score
                             ? passwordStrength.color
-                            : 'bg-white/10'
+                            : 'bg-bg-secondary'
                         }`}
                       />
                     ))}
                   </div>
-                  <p className="text-xs text-white/60">
+                  <p className="text-xs text-text-secondary">
                     Password strength: <span className={`font-semibold ${
                       passwordStrength.score === 1 ? 'text-red-400' :
                       passwordStrength.score === 2 ? 'text-yellow-400' :
@@ -226,13 +226,13 @@ export default function Register() {
                 <input
                   type={showConfirmPassword ? "text" : "password"}
                   {...register('confirmPassword')}
-                  className="w-full px-4 py-3 pr-12 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 pr-12 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-text-tertiary hover:text-text-secondary transition-colors"
                   aria-label={showConfirmPassword ? "Hide password" : "Show password"}
                 >
                   {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -251,7 +251,7 @@ export default function Register() {
             >
               {isLoading ? (
                 <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-text-primary border-t-transparent rounded-full animate-spin" />
                   Creating account...
                 </>
               ) : (
@@ -265,7 +265,7 @@ export default function Register() {
 
           {/* Login Link */}
           <div className="mt-6 text-center text-sm">
-            <span className="text-white/60">Already have an account? </span>
+            <span className="text-text-secondary">Already have an account? </span>
             <Link to="/login" className="text-brand-red hover:underline font-medium">
               Sign in
             </Link>
@@ -273,7 +273,7 @@ export default function Register() {
 
           {/* Back to Home */}
           <div className="mt-6 text-center">
-            <Link to="/" className="text-sm text-white/60 hover:text-white transition-colors">
+            <Link to="/" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
               ← Back to Home
             </Link>
           </div>

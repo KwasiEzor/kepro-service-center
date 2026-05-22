@@ -32,7 +32,8 @@ export default function FAQ() {
     fetchFaqs();
   }, []);
 
-  const lang = i18n.language.startsWith('fr') ? 'Fr' : 'En';
+  const currentLang = i18n.language || 'fr';
+  const lang = currentLang.startsWith('fr') ? 'Fr' : 'En';
 const localizedFaqs = faqs.map(f => ({
   id: f.id,
   question: getLocalizedField(f, 'question', lang),
@@ -63,8 +64,8 @@ const localizedFaqs = faqs.map(f => ({
           <HelpCircle className="w-10 h-10 text-white" />
         </motion.div>
 
-        <h1 className="text-5xl md:text-7xl font-display font-bold mb-6">{t('faq.title')}</h1>
-        <p className="text-white/60 text-lg mb-10">{t('faq.subtitle')}</p>
+        <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-text-primary">{t('faq.title')}</h1>
+        <p className="text-lg mb-10 text-text-tertiary">{t('faq.subtitle')}</p>
 
         <div className="relative max-w-xl mx-auto">
           <input
@@ -72,9 +73,9 @@ const localizedFaqs = faqs.map(f => ({
             placeholder={t('faq.search.placeholder')}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full glass bg-white/5 border-white/10 clip-angular-sm py-4 px-12 focus:outline-none focus:border-brand-red focus:bg-white/10 transition-all text-white placeholder:text-white/20"
+            className="w-full bg-bg-secondary border border-border-primary text-text-primary clip-angular-sm py-4 px-12 focus:outline-none focus:border-brand-red transition-all"
           />
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/20" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-tertiary opacity-70" />
         </div>
       </section>
 
@@ -86,23 +87,23 @@ const localizedFaqs = faqs.map(f => ({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
               key={idx}
-              className="glass border-white/5 rounded-[30px] overflow-hidden transition-all duration-300 hover:border-white/10"
+              className="glass border-border-secondary rounded-[30px] overflow-hidden transition-all duration-300 hover:border-border-primary"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
                 className="w-full px-8 py-6 flex items-center justify-between text-left group"
               >
                 <span className={cn(
-                  "text-lg font-bold transition-colors",
-                  openIndex === idx ? "text-brand-red" : "text-white group-hover:text-white/80"
+                  "text-lg font-bold transition-colors text-text-primary",
+                  openIndex === idx ? "text-brand-red" : "group-hover:text-text-primary"
                 )}>
                   {faq.question}
                 </span>
                 <div className={cn(
                   "w-8 h-8 clip-angular-sm flex items-center justify-center transition-all",
-                  openIndex === idx ? "bg-brand-red rotate-180" : "bg-white/5"
+                  openIndex === idx ? "bg-brand-red rotate-180" : "bg-bg-secondary"
                 )}>
-                  {openIndex === idx ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                  {openIndex === idx ? <Plus className="w-4 h-4 text-white" /> : <Plus className="w-4 h-4 text-text-primary" />}
                 </div>
               </button>
               
@@ -114,8 +115,8 @@ const localizedFaqs = faqs.map(f => ({
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
                   >
-                    <div className="px-8 pb-8 text-white/50 leading-relaxed text-sm">
-                      <div className="pt-4 border-t border-white/5">
+                    <div className="px-8 pb-8 leading-relaxed text-sm text-text-secondary">
+                      <div className="pt-4 border-t border-border-secondary">
                         {faq.answer}
                       </div>
                     </div>
@@ -126,7 +127,7 @@ const localizedFaqs = faqs.map(f => ({
           ))}
           
           {filteredFaqs.length === 0 && (
-            <div className="text-center py-20 opacity-40">
+            <div className="text-center py-20 opacity-40 text-text-tertiary">
               <p className="text-lg italic">{t('faq.noResults')}</p>
             </div>
           )}
@@ -138,11 +139,11 @@ const localizedFaqs = faqs.map(f => ({
           whileInView={{ opacity: 1 }}
           className="mt-20 p-10 glass clip-angular-lg text-center"
         >
-          <h3 className="text-2xl font-bold mb-4">{t('faq.cta.title')}</h3>
-          <p className="text-white/40 mb-8 max-w-md mx-auto">{t('faq.cta.description')}</p>
+          <h3 className="text-2xl font-bold mb-4 text-text-primary">{t('faq.cta.title')}</h3>
+          <p className="mb-8 max-w-md mx-auto text-text-tertiary">{t('faq.cta.description')}</p>
           <button 
             onClick={() => window.location.href = '/contact'}
-            className="bg-white text-brand-blue px-8 py-3 clip-angular-sm font-bold hover:scale-105 transition-transform"
+            className="bg-text-primary text-bg-primary px-8 py-3 clip-angular-sm font-bold hover:scale-105 transition-transform"
           >
             {t('faq.cta.button')}
           </button>

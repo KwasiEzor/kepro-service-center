@@ -106,7 +106,7 @@ export default function Gallery() {
     <>
       <div className="relative pt-20 pb-20">
       {/* Hero Header */}
-      <section className="relative py-24 px-6 border-b border-white/5 overflow-hidden">
+      <section className="relative py-24 px-6 border-b border-border-secondary overflow-hidden">
             <div className="container mx-auto max-w-7xl relative z-10">
               <div className="flex flex-col items-center text-center space-y-6">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-brand-orange-primary/10 border border-brand-orange-primary/20 rounded-full animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -123,7 +123,7 @@ export default function Gallery() {
                   </span>
                 </h1>
                 
-                <p className="max-w-2xl text-lg text-white/60 leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+                <p className="max-w-2xl text-lg leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200" style={{ color: 'var(--color-text-tertiary)' }}>
                   {t('gallery.header.description')}
                 </p>
               </div>
@@ -143,8 +143,9 @@ export default function Gallery() {
                       "px-8 py-3 text-sm font-black italic uppercase tracking-widest transition-all duration-300 border-2",
                       activeCategory === cat.id
                         ? "bg-brand-orange-primary border-brand-orange-primary text-black scale-105 shadow-lg shadow-brand-orange-primary/20"
-                        : "bg-white/5 border-white/10 text-white/40 hover:border-white/20 hover:text-white"
+                        : "border-border-primary hover:border-border-primary hover:text-text-primary"
                     )}
+                    style={activeCategory !== cat.id ? { backgroundColor: 'var(--color-bg-secondary)', color: 'var(--color-text-tertiary)' } : undefined}
                   >
                     {t(`gallery.filters.${cat.key}`)}
                   </button>
@@ -155,18 +156,22 @@ export default function Gallery() {
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-40 gap-6">
                   <Loader2 className="w-16 h-16 text-brand-orange-primary animate-spin" />
-                  <p className="text-white/40 font-bold uppercase tracking-widest animate-pulse">
+                  <p className="font-bold uppercase tracking-widest animate-pulse" style={{ color: 'var(--color-text-tertiary)' }}>
                     {t('common.loading')}
                   </p>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredImages.map((img, index) => (
-                    <div 
+                    <div
                       key={img.id}
                       onClick={() => setSelectedImage(index)}
-                      className="group relative aspect-[4/3] bg-white/5 border border-white/10 overflow-hidden cursor-pointer animate-in fade-in zoom-in duration-500"
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      className="group relative aspect-[4/3] overflow-hidden cursor-pointer animate-in fade-in zoom-in duration-500"
+                      style={{
+                        backgroundColor: 'var(--color-bg-secondary)',
+                        border: '1px solid var(--color-border-primary)',
+                        animationDelay: `${index * 50}ms`
+                      }}
                     >
                       <img
                         src={formatImageUrl(img.url)}
@@ -185,12 +190,12 @@ export default function Gallery() {
                             img.alt?.toLowerCase().includes('diag') ? 'DIAG' : 
                             img.alt?.toLowerCase().includes('car') ? 'CAR' : img.category}
                           </span>
-                          <span className="flex items-center gap-1.5 text-white/40 text-[10px] font-bold uppercase tracking-wider">
+                          <span className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider" style={{ color: 'var(--color-text-tertiary)' }}>
                             <Calendar className="w-3 h-3" />
                             {new Date(img.createdAt).toLocaleDateString()}
                           </span>
                         </div>
-                        <h3 className="text-xl font-black italic text-white uppercase tracking-tight line-clamp-1">
+                        <h3 className="text-xl font-black italic text-text-primary uppercase tracking-tight line-clamp-1">
                           {img.alt || 'Technical Intervention'}
                         </h3>
                         
@@ -216,8 +221,7 @@ export default function Gallery() {
                   <button
                     onClick={() => handlePageChange(pagination.page - 1)}
                     disabled={pagination.page === 1}
-                    className="p-3 glass border border-white/10 text-white disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
-                    style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
+                    className="p-3 glass border disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all border-border-primary text-text-primary clip-angular-sm"
                   >
                     <ChevronLeft className="w-6 h-6" />
                   </button>
@@ -231,9 +235,12 @@ export default function Gallery() {
                           "w-12 h-12 flex items-center justify-center font-black italic transition-all",
                           pagination.page === p
                             ? "bg-brand-orange-primary text-black scale-110 shadow-lg shadow-brand-orange-primary/20"
-                            : "glass border border-white/10 text-white/40 hover:text-white"
+                            : "glass border hover:text-text-primary"
                         )}
-                        style={{ clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)' }}
+                        style={{
+                          clipPath: 'polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px)',
+                          ...(pagination.page !== p ? { borderColor: 'var(--color-border-primary)', color: 'var(--color-text-tertiary)' } : {})
+                        }}
                       >
                         {p}
                       </button>
@@ -243,8 +250,12 @@ export default function Gallery() {
                   <button
                     onClick={() => handlePageChange(pagination.page + 1)}
                     disabled={pagination.page === pagination.totalPages}
-                    className="p-3 glass border border-white/10 text-white disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
-                    style={{ clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)' }}
+                    className="p-3 glass border disabled:opacity-20 hover:bg-brand-orange-primary hover:text-black transition-all"
+                    style={{
+                      clipPath: 'polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px)',
+                      borderColor: 'var(--color-border-primary)',
+                      color: 'var(--color-text-primary)'
+                    }}
                   >
                     <ChevronRight className="w-6 h-6" />
                   </button>
@@ -254,10 +265,10 @@ export default function Gallery() {
               {/* Empty State */}
               {!loading && filteredImages.length === 0 && (
                 <div className="py-40 text-center space-y-6">
-                  <div className="inline-block p-6 bg-white/5 rounded-full mb-4">
-                    <Camera className="w-12 h-12 text-white/20" />
+                  <div className="inline-block p-6 bg-bg-secondary rounded-full mb-4">
+                    <Camera className="w-12 h-12" style={{ color: 'var(--color-text-tertiary)', opacity: 0.7 }} />
                   </div>
-                  <p className="text-2xl font-black italic text-white/40 uppercase tracking-widest">
+                  <p className="text-2xl font-black italic uppercase tracking-widest" style={{ color: 'var(--color-text-tertiary)' }}>
                     {t('gallery.empty')}
                   </p>
                 </div>
@@ -269,28 +280,29 @@ export default function Gallery() {
       {/* Lightbox */}
       {selectedImage !== null && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 lg:p-12">
-          <div 
-            className="absolute inset-0 bg-black/95 backdrop-blur-xl animate-in fade-in duration-300"
+          <div
+            className="absolute inset-0 backdrop-blur-xl animate-in fade-in duration-300"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.95)' }}
             onClick={() => setSelectedImage(null)}
           />
           
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute top-6 right-6 md:top-10 md:right-10 z-[110] p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all hover:rotate-90"
+            className="absolute top-6 right-6 md:top-10 md:right-10 z-[110] p-3 bg-bg-secondary hover:bg-white/20 rounded-full text-text-primary transition-all hover:rotate-90"
           >
             <X className="w-8 h-8" />
           </button>
 
           <button
             onClick={(e) => { e.stopPropagation(); prevImage(); }}
-            className="absolute left-4 md:left-10 z-[110] p-4 bg-white/5 hover:bg-brand-orange-primary hover:text-black rounded-full text-white transition-all transform hover:scale-110 active:scale-95 group"
+            className="absolute left-4 md:left-10 z-[110] p-4 bg-bg-secondary hover:bg-brand-orange-primary hover:text-black rounded-full text-white transition-all transform hover:scale-110 active:scale-95 group"
           >
             <ChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition-transform" />
           </button>
 
           <button
             onClick={(e) => { e.stopPropagation(); nextImage(); }}
-            className="absolute right-4 md:right-10 z-[110] p-4 bg-white/5 hover:bg-brand-orange-primary hover:text-black rounded-full text-white transition-all transform hover:scale-110 active:scale-95 group"
+            className="absolute right-4 md:right-10 z-[110] p-4 bg-bg-secondary hover:bg-brand-orange-primary hover:text-black rounded-full text-white transition-all transform hover:scale-110 active:scale-95 group"
           >
             <ChevronRight className="w-8 h-8 group-hover:translate-x-1 transition-transform" />
           </button>
@@ -307,7 +319,7 @@ export default function Gallery() {
                 <span className="px-4 py-1.5 bg-brand-orange-primary text-black text-xs font-black italic uppercase tracking-[0.2em]">
                   {filteredImages[selectedImage].category}
                 </span>
-                <span className="text-white/40 text-xs font-bold uppercase tracking-[0.1em] flex items-center gap-2">
+                <span className="text-xs font-bold uppercase tracking-[0.1em] flex items-center gap-2" style={{ color: 'var(--color-text-tertiary)' }}>
                   <Calendar className="w-4 h-4" />
                   {new Date(filteredImages[selectedImage].createdAt).toLocaleDateString(undefined, {
                     year: 'numeric',
@@ -316,13 +328,13 @@ export default function Gallery() {
                   })}
                 </span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-black italic text-white uppercase tracking-tighter">
+              <h2 className="text-3xl md:text-5xl font-black italic text-text-primary uppercase tracking-tighter">
                 {filteredImages[selectedImage].alt || 'Technical Intervention'}
               </h2>
             </div>
             
             {/* Counter */}
-            <div className="absolute bottom-0 text-white/20 font-black italic text-sm tracking-[0.5em] mb-4">
+            <div className="absolute bottom-0 font-black italic text-sm tracking-[0.5em] mb-4" style={{ color: 'var(--color-text-tertiary)', opacity: 0.7 }}>
               {String(selectedImage + 1).padStart(2, '0')} / {String(filteredImages.length).padStart(2, '0')}
             </div>
           </div>

@@ -25,6 +25,7 @@ export class QuoteService {
 
     // Send async notification (don't await to not block response)
     emailService.sendAdminQuoteNotification(data);
+    emailService.sendUserQuoteConfirmation(data);
 
     return quote;
   }

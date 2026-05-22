@@ -1,11 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
-import adminRouter from './src/routes/admin.routes';
-import prisma from './src/config/database';
+import adminRouter from '../../routes/admin.routes';
+import prisma from '../../config/database';
 
 // Mock dependencies
-vi.mock('./src/config/database', () => ({
+vi.mock('../../config/database', () => ({
   default: {
     service: {
       create: vi.fn().mockResolvedValue({ id: '1', nameEn: 'Test' }),
@@ -17,12 +17,12 @@ vi.mock('./src/config/database', () => ({
   },
 }));
 
-vi.mock('./src/middleware/auth', () => ({
-  authenticate: (req, res, next) => {
+vi.mock('../../middleware/auth', () => ({
+  authenticate: (req: any, res: any, next: any) => {
     req.user = { id: 'admin-id', role: 'ADMIN' };
     next();
   },
-  requireAdmin: (req, res, next) => next(),
+  requireAdmin: (req: any, res: any, next: any) => next(),
 }));
 
 const app = express();

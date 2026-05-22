@@ -41,13 +41,13 @@ export function Logo({ className, size = 'md', showSubtitle = true }: LogoProps)
           className="absolute inset-0 bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] flex items-center justify-center group-hover:scale-110 transition-transform bg-glow-orange"
           style={{ clipPath: 'polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%)' }}
         >
-          <Key className={cn('text-white', sizes.icon)} />
+          <Key className={cn('text-text-primary', sizes.icon)} />
         </div>
       </div>
 
       {/* Brand Text */}
       <div className="flex flex-col">
-        <span className={cn('font-display font-black tracking-tighter leading-none text-white', sizes.text)}>
+        <span className={cn('font-display font-black tracking-tighter leading-none text-text-primary', sizes.text)}>
           KEYPRO
         </span>
         {showSubtitle && (

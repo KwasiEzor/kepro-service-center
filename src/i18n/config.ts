@@ -19,17 +19,25 @@ i18n
         translation: fr,
       },
     },
+    supportedLngs: ['en', 'fr'],
     fallbackLng: 'fr', // French as default (KeyPro is French-based)
-    debug: false,
+    load: 'languageOnly',
+    nonExplicitSupportedLngs: true,
+    debug: true, // Enable for better troubleshooting
     interpolation: {
       escapeValue: false, // React already escapes
     },
+    react: {
+      useSuspense: false, // Disable suspense to prevent app-level rendering blocks
+    },
     detection: {
       // Order of language detection
-      order: ['localStorage', 'navigator', 'htmlTag'],
-      // Cache language in localStorage
-      caches: ['localStorage'],
+      order: ['localStorage', 'cookie', 'navigator', 'htmlTag'],
+      // Cache language in localStorage and cookie
+      caches: ['localStorage', 'cookie'],
       lookupLocalStorage: 'i18nextLng',
+      lookupCookie: 'i18next',
+      cookieMinutes: 10080, // 7 days
     },
   });
 

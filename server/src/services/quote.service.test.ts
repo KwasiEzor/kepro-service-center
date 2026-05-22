@@ -2,11 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { QuoteService } from './quote.service';
 import prisma from '../config/database';
 import { QuoteStatus } from '@prisma/client';
+import emailService from './email.service';
 
 // Mock EmailService
 vi.mock('./email.service', () => ({
   default: {
     sendAdminQuoteNotification: vi.fn(),
+    sendUserQuoteConfirmation: vi.fn(),
   },
 }));
 
@@ -57,6 +59,8 @@ describe('QuoteService', () => {
           status: QuoteStatus.PENDING,
         }),
       });
+      expect(emailService.sendAdminQuoteNotification).toHaveBeenCalledWith(mockQuoteData);
+      expect(emailService.sendUserQuoteConfirmation).toHaveBeenCalledWith(mockQuoteData);
       expect(result).toEqual(mockCreatedQuote);
     });
   });

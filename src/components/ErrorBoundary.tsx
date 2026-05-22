@@ -31,13 +31,13 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
               <AlertTriangle className="w-10 h-10 text-red-500" />
             </div>
-            <h1 className="text-3xl font-bold mb-4">Something Went Wrong</h1>
-            <p className="text-white/60 mb-8">
+            <h1 className="text-3xl font-bold mb-4 text-text-primary">Something Went Wrong</h1>
+            <p className="text-text-secondary mb-8">
               Unexpected error occurred. Refresh page or contact support.
             </p>
             <button
               onClick={() => window.location.href = '/'}
-              className="px-8 py-4 bg-brand-red rounded-full font-bold hover:scale-105 transition-all"
+              className="px-8 py-4 bg-brand-red text-white rounded-full font-bold hover:scale-105 transition-all"
             >
               Return Home
             </button>

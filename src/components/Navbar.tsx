@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { Logo } from './Logo';
+import { ThemeToggle } from './ThemeToggle';
 import { AuthButtons } from './navbar/AuthButtons';
 import { MobileMenu } from './navbar/MobileMenu';
 
@@ -53,8 +54,8 @@ export default function Navbar() {
           )}
         >
           {/* Decorative beveled corner overlays */}
-          <div className="absolute top-0 left-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
-          <div className="absolute bottom-0 right-0 w-6 h-6 bg-[var(--color-brand-orange-primary)] opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
+          <div className="absolute top-0 left-0 w-6 h-6 bg-brand-orange-primary opacity-80" style={{ clipPath: 'polygon(0 0, 100% 0, 0 100%)' }} />
+          <div className="absolute bottom-0 right-0 w-6 h-6 bg-brand-orange-primary opacity-80" style={{ clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' }} />
 
           {/* Logo */}
           <Logo className="relative z-50" size="md" />
@@ -68,8 +69,8 @@ export default function Navbar() {
                 className={cn(
                   'relative px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all',
                   location.pathname === item.href
-                    ? 'text-[var(--color-brand-orange-primary)]'
-                    : 'text-white/70 hover:text-white'
+                    ? 'text-brand-orange-primary'
+                    : 'text-text-secondary hover:text-text-primary'
                 )}
               >
                 <span className="relative z-10">{t(`nav.${item.name}`)}</span>
@@ -77,7 +78,7 @@ export default function Navbar() {
                   {location.pathname === item.href && (
                     <motion.div
                       layoutId="nav-active-bg"
-                      className="absolute inset-0 bg-[var(--color-brand-orange-primary)]/10 border border-[var(--color-brand-orange-primary)]/30 clip-angular-xs"
+                      className="absolute inset-0 bg-brand-orange-primary/10 border border-brand-orange-primary/30 clip-angular-xs"
                       transition={{ type: 'spring', bounce: 0.2, duration: 0.6 }}
                     />
                   )}
@@ -88,22 +89,23 @@ export default function Navbar() {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <LanguageSwitcher />
             <AuthButtons />
 
             {/* Quote CTA Button - Desktop */}
             <Link
               to="/quote"
-              className="hidden sm:block relative px-6 py-3 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white text-xs font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 bg-glow-orange overflow-hidden group clip-angular-sm"
+              className="hidden sm:block relative px-6 py-3 bg-gradient-to-r from-brand-orange-primary to-brand-orange-secondary text-xs font-black uppercase tracking-wider transition-all hover:scale-105 active:scale-95 bg-glow-orange overflow-hidden group clip-angular-sm text-white"
             >
               <span className="relative z-10">{t('nav.quote')}</span>
-              <div className="absolute inset-0 bg-white/20 translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
+              <div className="absolute inset-0 translate-x-full group-hover:translate-x-0 transition-transform duration-300 bg-white/20" />
             </Link>
 
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden relative z-50 p-2 glass border border-white/20 clip-angular-2xs transition-all hover:bg-white/10 active:scale-95"
+              className="md:hidden relative z-50 p-2 glass clip-angular-2xs transition-all active:scale-95 border border-border-primary"
               aria-label={isMobileMenuOpen ? t('common.close') : t('common.open')}
               aria-expanded={isMobileMenuOpen}
             >

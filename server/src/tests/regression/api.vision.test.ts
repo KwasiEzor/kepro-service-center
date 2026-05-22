@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import request from 'supertest';
 import express from 'express';
-import chatRouter from './api';
-import prisma from './src/config/database';
+import chatRouter from '../../../api';
+import prisma from '../../config/database';
 import fs from 'fs/promises';
 
 // Mock dependencies
-vi.mock('./src/config/database', () => ({
+vi.mock('../../config/database', () => ({
   default: {
     image: {
       create: vi.fn().mockReturnValue({

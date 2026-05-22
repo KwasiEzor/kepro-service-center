@@ -17,14 +17,36 @@ export function LanguageSwitcher() {
     { code: 'en', label: 'English', flag: '🇬🇧' },
   ];
 
-  // More robust language matching that handles regional codes (en-US, fr-FR)
+  // Reactive language detection that handles regional codes
+  const currentLangCode = i18n.language || i18n.resolvedLanguage || 'fr';
   const currentLanguage = languages.find(
-    (lang) => i18n.language?.startsWith(lang.code) || i18n.resolvedLanguage?.startsWith(lang.code)
+    (lang) => currentLangCode.startsWith(lang.code)
   ) || languages[0];
 
-  const handleLanguageChange = (langCode: string) => {
-    i18n.changeLanguage(langCode);
-    setIsOpen(false);
+  const handleLanguageChange = async (langCode: string) => {
+    if (currentLangCode.startsWith(langCode)) {
+      setIsOpen(false);
+      return;
+    }
+
+    try {
+      // Set opening to false first for better UX
+      setIsOpen(false);
+      
+      // Explicitly change language and await it
+      await i18n.changeLanguage(langCode);
+      
+      // Force update document attributes for accessibility and SEO
+      document.documentElement.lang = langCode;
+      document.documentElement.setAttribute('lang', langCode);
+      
+      // Explicitly set localStorage as a manual backup to i18next detection
+      localStorage.setItem('i18nextLng', langCode);
+      
+      console.log(`Language successfully changed to: ${langCode}`);
+    } catch (error) {
+      console.error('Failed to change language:', error);
+    }
   };
 
   // Update position coordinates
@@ -75,33 +97,33 @@ export function LanguageSwitcher() {
         ref={buttonRef}
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 clip-angular-sm backdrop-blur-xl bg-white/5 border border-white/10 hover:border-[var(--color-brand-orange-primary)]/50 hover:bg-[var(--color-brand-orange-primary)]/10 hover:scale-105 active:scale-95 transition-all"
+        className="flex items-center gap-2 px-4 py-2 clip-angular-sm backdrop-blur-xl bg-bg-secondary border border-border-primary hover:border-brand-orange-primary/50 hover:bg-brand-orange-primary/10 hover:scale-105 active:scale-95 transition-all"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <Globe className="w-4 h-4 text-[var(--color-brand-orange-primary)]" />
+        <Globe className="w-4 h-4 text-brand-orange-primary" />
         <span className="text-sm font-bold">{currentLanguage.flag}</span>
-        <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">
+        <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline text-text-primary">
           {currentLanguage.code}
         </span>
       </button>
 
       <AnimatePresence>
-        {isOpen && buttonRef.current && createPortal(
+        {isOpen && createPortal(
           <motion.div
             ref={dropdownRef}
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="fixed w-48 clip-angular-sm backdrop-blur-2xl bg-[var(--color-brand-gray)]/95 border border-white/10 shadow-2xl z-[1000] overflow-hidden"
+            className="fixed w-48 clip-angular-sm backdrop-blur-2xl bg-bg-primary/95 border border-border-primary shadow-2xl z-[1000] overflow-hidden"
             style={{
-              top: `${coords.top}px`,
-              right: `${coords.right}px`,
+              top: coords.top > 0 ? `${coords.top}px` : '80px',
+              right: coords.right > 0 ? `${coords.right}px` : '20px',
             }}
           >
             {languages.map((lang) => {
-              const isSelected = i18n.language?.startsWith(lang.code) || i18n.resolvedLanguage?.startsWith(lang.code);
+              const isSelected = currentLangCode.startsWith(lang.code);
               return (
                 <button
                   key={lang.code}
@@ -110,14 +132,14 @@ export function LanguageSwitcher() {
                   className={cn(
                     'w-full flex items-center gap-3 px-4 py-3 text-left transition-all hover:translate-x-1',
                     isSelected
-                      ? 'bg-[var(--color-brand-orange-primary)]/20 text-white border-l-2 border-[var(--color-brand-orange-primary)]'
-                      : 'text-white/70 hover:bg-white/5 hover:text-white'
+                      ? 'bg-brand-orange-primary/20 text-text-primary border-l-2 border-brand-orange-primary'
+                      : 'text-text-secondary hover:bg-bg-secondary hover:text-text-primary'
                   )}
                 >
                   <span className="text-xl">{lang.flag}</span>
                   <div className="flex-1">
                     <p className="text-sm font-bold">{lang.label}</p>
-                    <p className="text-[10px] uppercase tracking-widest text-white/40">
+                    <p className="text-[10px] uppercase tracking-widest text-text-tertiary">
                       {lang.code}
                     </p>
                   </div>
@@ -125,7 +147,7 @@ export function LanguageSwitcher() {
                     <motion.div
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      className="w-2 h-2 clip-angular-sm bg-[var(--color-brand-orange-primary)]"
+                      className="w-2 h-2 clip-angular-sm bg-brand-orange-primary"
                     />
                   )}
                 </button>

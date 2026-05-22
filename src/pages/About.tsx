@@ -46,12 +46,12 @@ export default function About() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-5xl md:text-7xl font-display font-black mb-8 tracking-tight leading-[1.05]">
-              <span className="block text-white">{t('about.hero.title1')}</span>
+              <span className="block text-text-primary">{t('about.hero.title1')}</span>
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-glow-strong animate-gradient">
                 {t('about.hero.title2')}
               </span>
             </h1>
-            <p className="text-xl text-white/60 leading-relaxed max-w-xl">
+            <p className="text-xl leading-relaxed max-w-xl" style={{ color: 'var(--color-text-tertiary)' }}>
               {t('about.hero.description')}
             </p>
           </motion.div>
@@ -61,7 +61,7 @@ export default function About() {
             animate={{ opacity: 1, scale: 1 }}
             className="relative"
           >
-            <div className="clip-angular-lg overflow-hidden shadow-2xl border border-white/10">
+            <div className="clip-angular-lg overflow-hidden shadow-2xl border border-border-primary">
               <img 
                 src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=1200" 
                 alt="Our Engineering Team"
@@ -83,16 +83,16 @@ export default function About() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.2 }}
               viewport={{ once: true }}
-              className="glass p-10 rounded-[35px] border-white/5 hover:bg-white/10 transition-all group relative overflow-hidden"
+              className="glass p-10 rounded-[35px] border-border-secondary hover:bg-bg-secondary transition-all group relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                <v.icon className="w-20 h-20 text-white" />
+                <v.icon className="w-20 h-20 text-text-primary" />
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm flex items-center justify-center p-3 mb-8 group-hover:scale-110 transition-transform shadow-lg shadow-[var(--color-brand-orange-primary)]/20">
-                <v.icon className="w-full h-full text-white" />
+                <v.icon className="w-full h-full text-text-primary" />
               </div>
               <h3 className="text-2xl font-bold mb-4">{v.title}</h3>
-              <p className="text-sm text-white/50 leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
                 {v.text}
               </p>
             </motion.div>
@@ -101,15 +101,15 @@ export default function About() {
       </section>
 
       {/* Experience Timeline */}
-      <section className="py-32 px-6 sm:px-12 bg-white/5 mt-32">
+      <section className="py-32 px-6 sm:px-12 bg-bg-secondary mt-32">
         <div className="max-w-4xl mx-auto text-center mb-20">
           <h2 className="text-4xl md:text-6xl font-display font-bold mb-8">{t('about.journey.title')}</h2>
-          <p className="text-white/60 text-lg">{t('about.journey.subtitle')}</p>
+          <p className="text-lg" style={{ color: 'var(--color-text-tertiary)' }}>{t('about.journey.subtitle')}</p>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-20 relative">
           {/* Vertical Line */}
-          <div className="absolute left-[30px] md:left-1/2 top-0 bottom-0 w-px bg-white/10" />
+          <div className="absolute left-[30px] md:left-1/2 top-0 bottom-0 w-px bg-bg-secondary" />
 
           {timeline.map((item, idx) => (
             <motion.div 
@@ -125,10 +125,10 @@ export default function About() {
               {/* Content Box - Desktop Alternating */}
               <div className="flex-1 hidden md:block">
                 <div className={idx % 2 === 0 ? "text-left" : "text-right"}>
-                  <h3 className="text-3xl font-display font-black text-white mb-2 uppercase tracking-tighter">
+                  <h3 className="text-3xl font-display font-black text-text-primary mb-2 uppercase tracking-tighter">
                     {item.title}
                   </h3>
-                  <p className="text-white/40 leading-relaxed text-sm">
+                  <p className="leading-relaxed text-sm text-text-tertiary">
                     {item.desc}
                   </p>
                 </div>
@@ -143,7 +143,7 @@ export default function About() {
               <div className="flex-1">
                 <div className="md:hidden text-center">
                   <h3 className="text-2xl font-bold mb-2 uppercase tracking-tight">{item.title}</h3>
-                  <p className="text-white/40 text-sm">{item.desc}</p>
+                  <p className="text-sm" style={{ color: 'var(--color-text-tertiary)' }}>{item.desc}</p>
                 </div>
                 {/* Empty div for desktop alternating layout */}
                 <div className="hidden md:block" />

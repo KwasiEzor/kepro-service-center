@@ -68,7 +68,7 @@ export default function Login() {
         <div className="card-dark p-8">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold mb-2">{t('auth.login.title')}</h1>
-            <p className="text-white/60">{t('auth.login.subtitle')}</p>
+            <p style={{ color: 'var(--color-text-tertiary)' }}>{t('auth.login.subtitle')}</p>
           </div>
 
           {error && (
@@ -88,7 +88,7 @@ export default function Login() {
               <input
                 type="email"
                 {...register('email')}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                className="w-full px-4 py-3 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                 placeholder="your@email.com"
               />
               {errors.email && (
@@ -106,13 +106,14 @@ export default function Login() {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register('password')}
-                  className="w-full px-4 py-3 pr-12 bg-white/5 border border-white/10 rounded-lg focus:border-brand-red focus:outline-none transition-colors"
+                  className="w-full px-4 py-3 pr-12 bg-bg-secondary border border-border-primary rounded-lg focus:border-brand-red focus:outline-none transition-colors"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white/70 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 hover:text-text-secondary transition-colors"
+                  style={{ color: 'var(--color-text-tertiary)' }}
                   aria-label={showPassword ? t('auth.login.hidePassword') : t('auth.login.showPassword')}
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -145,7 +146,7 @@ export default function Login() {
 
           {/* Register Link */}
           <div className="mt-6 text-center text-sm">
-            <span className="text-white/60">{t('auth.login.noAccount')} </span>
+            <span style={{ color: 'var(--color-text-tertiary)' }}>{t('auth.login.noAccount')} </span>
             <Link to="/register" className="text-brand-red hover:underline font-medium">
               {t('auth.login.createAccount')}
             </Link>
@@ -153,19 +154,19 @@ export default function Login() {
 
           {/* Back to Home */}
           <div className="mt-6 text-center">
-            <Link to="/" className="text-sm text-white/60 hover:text-white transition-colors">
+            <Link to="/" className="text-sm hover:text-text-primary transition-colors" style={{ color: 'var(--color-text-tertiary)' }}>
               ← {t('auth.login.backToHome')}
             </Link>
           </div>
         </div>
 
         {/* Demo Credentials */}
-        <div className="mt-6 p-4 bg-white/5 border border-white/10 rounded-lg">
-          <p className="text-xs text-white/60 mb-2">{t('auth.login.demoCredentials')}</p>
-          <p className="text-xs text-white/80">
+        <div className="mt-6 p-4 rounded-lg" style={{ backgroundColor: 'var(--color-bg-secondary)', border: '1px solid var(--color-border-primary)' }}>
+          <p className="text-xs mb-2" style={{ color: 'var(--color-text-tertiary)' }}>{t('auth.login.demoCredentials')}</p>
+          <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
             <strong>{t('auth.login.demoAdmin')}</strong> admin@keypro.service / Admin123!
           </p>
-          <p className="text-xs text-white/80">
+          <p className="text-xs" style={{ color: 'var(--color-text-secondary)' }}>
             <strong>{t('auth.login.demoUser')}</strong> user@example.com / User123!
           </p>
         </div>
