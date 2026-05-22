@@ -184,23 +184,46 @@ export class InvoiceService {
   /**
    * Get all invoices (admin, paginated)
    */
-  async getAll(skip: number, take: number) {
+  async getAll(skip: number, take: number, options: { status?: string, search?: string, sortBy?: string, sortOrder?: string } = {}) {
+    const { status, search, sortBy, sortOrder } = options;
+    
+    const where: any = {};
+    if (status && status !== 'all') {
+      where.status = status as InvoiceStatus;
+    }
+
+    if (search) {
+      where.OR = [
+        { invoiceNumber: { contains: search, mode: 'insensitive' } },
+        { user: { email: { contains: search, mode: 'insensitive' } } },
+        { quote: { email: { contains: search, mode: 'insensitive' } } },
+      ];
+    }
+
+    const orderBy: any = {};
+    if (sortBy) {
+      orderBy[sortBy] = sortOrder === 'asc' ? 'asc' : 'desc';
+    } else {
+      orderBy.createdAt = 'desc';
+    }
+
     const [invoices, total] = await Promise.all([
       prisma.invoice.findMany({
+        where,
         skip,
         take,
-        orderBy: { createdAt: 'desc' },
+        orderBy,
         include: {
           user: {
             select: { email: true, firstName: true, lastName: true },
           },
           quote: {
-            select: { brand: true, model: true, year: true },
+            select: { brand: true, model: true, year: true, email: true },
           },
           items: { select: { id: true } }, // Just count
         },
       }),
-      prisma.invoice.count(),
+      prisma.invoice.count({ where }),
     ]);
 
     return { invoices, total };

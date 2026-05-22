@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { api } from '../../lib/api';
-import { Image as ImageType, ApiResponse } from '../../types';
+import { Image as ImageType } from '../../types';
 import { 
   Image, 
   Upload, 
@@ -8,12 +10,13 @@ import {
   Loader2, 
   Plus, 
   X,
-  Filter,
-  CheckCircle2,
   AlertCircle
 } from 'lucide-react';
 import { cn, formatImageUrl } from '../../lib/utils';
 import { config } from '../../lib/config';
+import { Pagination } from '../../components/Pagination';
+import { EmptyState } from '../../components/EmptyState';
+import { useTable } from '../../hooks/useTable';
 
 const CATEGORIES = [
   { id: 'all', label: 'All Images' },
@@ -24,10 +27,21 @@ const CATEGORIES = [
 ];
 
 export default function GalleryManagement() {
-  const [images, setImages] = useState<ImageType[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
+  const { t } = useTranslation();
   const [activeCategory, setActiveCategory] = useState('all');
+  
+  const endpoint = `/api/admin/images${activeCategory === 'all' ? '' : `?category=${activeCategory}`}`;
+  
+  const {
+    data: images,
+    loading,
+    page,
+    setPage,
+    pagination,
+    refetch
+  } = useTable<ImageType>(endpoint, 18);
+
+  const [uploading, setUploading] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -36,23 +50,6 @@ export default function GalleryManagement() {
   const [uploadCategory, setUploadCategory] = useState('gallery');
   const [altText, setAltText] = useState('');
   const [uploadError, setUploadError] = useState<string | null>(null);
-
-  const fetchImages = async () => {
-    try {
-      setLoading(true);
-      const categoryParam = activeCategory === 'all' ? '' : `?category=${activeCategory}`;
-      const response = await api.get<ApiResponse<{ data: ImageType[], pagination: any }>>(`/api/admin/images${categoryParam}`);
-      setImages(response.data.data?.data || []);
-    } catch (error) {
-      console.error('Failed to fetch images:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchImages();
-  }, [activeCategory]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -74,10 +71,6 @@ export default function GalleryManagement() {
     formData.append('alt', altText);
 
     try {
-      // Note: Our ApiClient needs to handle FormData correctly. 
-      // Fetch does this automatically if we don't set Content-Type manually.
-      // We need to check if our ApiClient sets Content-Type.
-      
       const response = await fetch(`${config.apiUrl}/api/admin/images/upload`, {
         method: 'POST',
         headers: {
@@ -91,11 +84,13 @@ export default function GalleryManagement() {
         throw new Error(errorData.error || 'Upload failed');
       }
 
-      await fetchImages();
+      toast.success('Image uploaded successfully');
+      await refetch();
       setShowUploadModal(false);
       resetUploadForm();
     } catch (error: any) {
       setUploadError(error.message);
+      toast.error(error.message);
     } finally {
       setUploading(false);
     }
@@ -114,10 +109,11 @@ export default function GalleryManagement() {
 
     try {
       await api.delete(`/api/admin/images/${id}`);
-      setImages(images.filter(img => img.id !== id));
-    } catch (error) {
-      console.error('Failed to delete image:', error);
-      alert('Failed to delete image.');
+      toast.success('Image deleted successfully');
+      await refetch();
+    } catch (error: any) {
+      const message = error.response?.data?.error || 'Failed to delete image';
+      toast.error(message);
     }
   };
 
@@ -128,9 +124,9 @@ export default function GalleryManagement() {
         <div>
           <h2 className="text-2xl font-bold flex items-center gap-2">
             <Image className="w-6 h-6 text-brand-red" />
-            Gallery Management
+            {t('dashboard.admin.sections.gallery.title')}
           </h2>
-          <p className="text-white/40 text-sm">Manage brand logos and service images</p>
+          <p className="text-text-tertiary text-sm">{t('dashboard.admin.sections.gallery.desc')}</p>
         </div>
 
         <button
@@ -138,7 +134,7 @@ export default function GalleryManagement() {
           className="flex items-center gap-2 px-6 py-3 bg-brand-red text-white font-bold clip-angular-sm hover:scale-105 transition-transform"
         >
           <Plus className="w-5 h-5" />
-          Upload Image
+          {t('dashboard.admin.sections.gallery.action')}
         </button>
       </div>
 
@@ -147,12 +143,15 @@ export default function GalleryManagement() {
         {CATEGORIES.map(cat => (
           <button
             key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
+            onClick={() => {
+              setActiveCategory(cat.id);
+              setPage(1); // Reset to first page when changing category
+            }}
             className={cn(
               "px-4 py-2 text-xs font-bold uppercase tracking-widest clip-angular-sm border transition-all",
               activeCategory === cat.id
                 ? "bg-brand-red border-brand-red text-white"
-                : "bg-white/5 border-white/10 text-white/40 hover:border-white/20 hover:text-white"
+                : "bg-bg-secondary border-border-primary text-text-tertiary hover:border-border-primary hover:text-text-primary"
             )}
           >
             {cat.label}
@@ -162,53 +161,70 @@ export default function GalleryManagement() {
 
       {/* Images Grid */}
       {loading ? (
-        <div className="flex items-center justify-center py-40">
-          <Loader2 className="w-12 h-12 text-brand-red animate-spin" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {images.map((img) => (
-            <div key={img.id} className="group relative aspect-square card-dark overflow-hidden group">
-              <img
-                src={formatImageUrl(img.url)}
-                alt={img.alt || ''}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4">
-                <span className="text-[10px] font-bold uppercase tracking-widest bg-brand-red px-2 py-1 rounded">
-                  {img.category}
-                </span>
-                <button
-                  onClick={() => handleDelete(img.id)}
-                  className="p-3 bg-white/10 hover:bg-red-500/20 text-red-500 rounded-full transition-colors"
-                  title="Delete Image"
-                >
-                  <Trash2 className="w-5 h-5" />
-                </button>
-              </div>
-            </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 animate-pulse">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="aspect-square bg-bg-secondary rounded-xl" />
           ))}
-          
-          {images.length === 0 && (
-            <div className="col-span-full text-center py-20 bg-white/5 rounded-3xl border border-white/5">
-              <p className="text-white/40 italic">No images found in this category.</p>
+        </div>
+      ) : images.length === 0 ? (
+        <EmptyState
+          icon={Image}
+          title={t('dashboard.common.noData')}
+          description="Images will appear here once uploaded."
+        />
+      ) : (
+        <>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {images.map((img) => (
+              <div key={img.id} className="group relative aspect-square card-dark overflow-hidden">
+                <img
+                  src={formatImageUrl(img.url)}
+                  alt={img.alt || ''}
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+                  <span className="text-[10px] font-bold uppercase tracking-widest bg-brand-red px-2 py-1 rounded">
+                    {img.category}
+                  </span>
+                  <button
+                    onClick={() => handleDelete(img.id)}
+                    className="p-3 bg-bg-secondary hover:bg-red-500/20 text-red-500 rounded-full transition-colors"
+                    title="Delete Image"
+                  >
+                    <Trash2 className="w-5 h-5" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {pagination.pages > 1 && (
+            <div className="mt-8">
+              <Pagination
+                currentPage={pagination.page}
+                totalPages={pagination.pages}
+                totalItems={pagination.total}
+                itemsPerPage={pagination.limit}
+                onPageChange={setPage}
+              />
             </div>
           )}
-        </div>
+        </>
       )}
 
       {/* Upload Modal */}
       {showUploadModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
           <div 
-            className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+            className="absolute inset-0 backdrop-blur-sm"
+            style={{ backgroundColor: 'rgba(0, 0, 0, 0.8)' }}
             onClick={() => !uploading && setShowUploadModal(false)}
           />
           
           <div className="relative w-full max-w-xl card-dark p-8 md:p-12 overflow-hidden animate-in fade-in zoom-in duration-300">
             <button
               onClick={() => setShowUploadModal(false)}
-              className="absolute top-6 right-6 p-2 hover:bg-white/10 rounded-full transition-colors"
+              className="absolute top-6 right-6 p-2 hover:bg-bg-secondary rounded-full transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
@@ -223,7 +239,7 @@ export default function GalleryManagement() {
               <div 
                 onClick={() => fileInputRef.current?.click()}
                 className={cn(
-                  "relative aspect-video border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-brand-red/50 transition-all overflow-hidden group",
+                  "relative aspect-video border-2 border-dashed border-border-primary rounded-2xl flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-brand-red/50 transition-all overflow-hidden group",
                   selectedFile && "border-green-500/50"
                 )}
               >
@@ -234,18 +250,18 @@ export default function GalleryManagement() {
                       alt="Preview"
                       className="absolute inset-0 w-full h-full object-contain p-4"
                     />
-                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity" style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
                       <p className="text-sm font-bold">Change Image</p>
                     </div>
                   </>
                 ) : (
                   <>
-                    <div className="p-4 bg-white/5 rounded-full group-hover:scale-110 transition-transform">
-                      <Plus className="w-8 h-8 text-white/40" />
+                    <div className="p-4 bg-bg-secondary rounded-full group-hover:scale-110 transition-transform">
+                      <Plus className="w-8 h-8 text-text-tertiary" />
                     </div>
                     <div className="text-center">
                       <p className="font-bold">Click to select</p>
-                      <p className="text-xs text-white/40">PNG, JPG or WebP (Max 5MB)</p>
+                      <p className="text-xs text-text-tertiary">PNG, JPG or WebP (Max 5MB)</p>
                     </div>
                   </>
                 )}
@@ -261,11 +277,11 @@ export default function GalleryManagement() {
               {/* Category & Alt Text */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-white/40 ml-2">Category</label>
+                  <label className="text-xs font-bold uppercase tracking-widest text-text-tertiary ml-2">Category</label>
                   <select
                     value={uploadCategory}
                     onChange={(e) => setUploadCategory(e.target.value)}
-                    className="w-full bg-white/5 border border-white/10 clip-angular-sm py-4 px-4 focus:outline-none focus:border-brand-red transition-all text-white"
+                    className="w-full bg-bg-secondary border border-border-primary clip-angular-sm py-4 px-4 focus:outline-none focus:border-brand-red transition-all text-text-primary"
                   >
                     <option value="gallery">Gallery</option>
                     <option value="brands">Brands</option>
@@ -274,13 +290,13 @@ export default function GalleryManagement() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-widest text-white/40 ml-2">Alt Text</label>
+                  <label className="text-xs font-bold uppercase tracking-widest text-text-tertiary ml-2">Alt Text</label>
                   <input
                     type="text"
                     value={altText}
                     onChange={(e) => setAltText(e.target.value)}
                     placeholder="Brief description"
-                    className="w-full bg-white/5 border border-white/10 clip-angular-sm py-4 px-4 focus:outline-none focus:border-brand-red transition-all text-white placeholder:text-white/20"
+                    className="w-full bg-bg-secondary border border-border-primary clip-angular-sm py-4 px-4 focus:outline-none focus:border-brand-red transition-all text-text-primary placeholder:text-text-tertiary"
                   />
                 </div>
               </div>
@@ -299,7 +315,7 @@ export default function GalleryManagement() {
                   "w-full py-5 clip-angular-sm font-black text-xl flex items-center justify-center gap-3 transition-all",
                   selectedFile && !uploading
                     ? "bg-brand-red hover:scale-[1.02] shadow-lg shadow-brand-red/20"
-                    : "bg-white/10 text-white/20 cursor-not-allowed"
+                    : "bg-bg-secondary text-text-tertiary cursor-not-allowed"
                 )}
               >
                 {uploading ? (

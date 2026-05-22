@@ -39,15 +39,39 @@ export class AdminController {
    */
   async getQuotes(req: Request, res: Response, next: NextFunction) {
     try {
+      const { status, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
+      
+      const where: any = {};
+      if (status && status !== 'all') {
+        where.status = status as QuoteStatus;
+      }
+
+      if (search) {
+        where.OR = [
+          { name: { contains: search as string, mode: 'insensitive' } },
+          { email: { contains: search as string, mode: 'insensitive' } },
+          { brand: { contains: search as string, mode: 'insensitive' } },
+          { model: { contains: search as string, mode: 'insensitive' } },
+        ];
+      }
+
+      const orderBy: any = {};
+      if (sortBy) {
+        orderBy[sortBy as string] = sortOrder === 'asc' ? 'asc' : 'desc';
+      } else {
+        orderBy.createdAt = 'desc';
+      }
+
       const [quotes, total] = await Promise.all([
         prisma.quote.findMany({
+          where,
           skip: pagination.skip,
           take: pagination.take,
-          orderBy: { createdAt: 'desc' },
+          orderBy,
           include: { user: { select: { email: true, firstName: true } } }
         }),
-        prisma.quote.count()
+        prisma.quote.count({ where })
       ]);
       return sendSuccess(res, paginateResponse(quotes, pagination, total));
     } catch (error) {
@@ -97,18 +121,55 @@ export class AdminController {
   }
 
   /**
+   * Delete a quote
+   */
+  async deleteQuote(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await prisma.quote.delete({ where: { id } });
+      return sendSuccess(res, null, 'Quote deleted successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * Get all contacts
    */
   async getContacts(req: Request, res: Response, next: NextFunction) {
     try {
+      const { status, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
+
+      const where: any = {};
+      if (status && status !== 'all') {
+        where.status = status as ContactStatus;
+      }
+
+      if (search) {
+        where.OR = [
+          { name: { contains: search as string, mode: 'insensitive' } },
+          { email: { contains: search as string, mode: 'insensitive' } },
+          { subject: { contains: search as string, mode: 'insensitive' } },
+          { message: { contains: search as string, mode: 'insensitive' } },
+        ];
+      }
+
+      const orderBy: any = {};
+      if (sortBy) {
+        orderBy[sortBy as string] = sortOrder === 'asc' ? 'asc' : 'desc';
+      } else {
+        orderBy.createdAt = 'desc';
+      }
+
       const [contacts, total] = await Promise.all([
         prisma.contact.findMany({
+          where,
           skip: pagination.skip,
           take: pagination.take,
-          orderBy: { createdAt: 'desc' }
+          orderBy
         }),
-        prisma.contact.count()
+        prisma.contact.count({ where })
       ]);
       return sendSuccess(res, paginateResponse(contacts, pagination, total));
     } catch (error) {
@@ -143,6 +204,19 @@ export class AdminController {
       }
 
       return sendSuccess(res, updated, 'Contact message updated');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Delete a contact message
+   */
+  async deleteContact(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await prisma.contact.delete({ where: { id } });
+      return sendSuccess(res, null, 'Contact message deleted');
     } catch (error) {
       next(error);
     }
@@ -342,9 +416,32 @@ export class AdminController {
 
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
+      const { role, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
+
+      const where: any = {};
+      if (role && role !== 'all') {
+        where.role = role as any;
+      }
+
+      if (search) {
+        where.OR = [
+          { email: { contains: search as string, mode: 'insensitive' } },
+          { firstName: { contains: search as string, mode: 'insensitive' } },
+          { lastName: { contains: search as string, mode: 'insensitive' } },
+        ];
+      }
+
+      const orderBy: any = {};
+      if (sortBy) {
+        orderBy[sortBy as string] = sortOrder === 'asc' ? 'asc' : 'desc';
+      } else {
+        orderBy.createdAt = 'desc';
+      }
+
       const [users, total] = await Promise.all([
         prisma.user.findMany({
+          where,
           skip: pagination.skip,
           take: pagination.take,
           select: {
@@ -355,19 +452,19 @@ export class AdminController {
             phone: true,
             role: true,
             emailVerified: true,
-          createdAt: true,
-          updatedAt: true,
-          _count: {
-            select: {
-              quotes: true,
-              contacts: true
+            createdAt: true,
+            updatedAt: true,
+            _count: {
+              select: {
+                quotes: true,
+                contacts: true
+              }
             }
-          }
-        },
-        orderBy: { createdAt: 'desc' }
-      }),
-      prisma.user.count()
-    ]);
+          },
+          orderBy
+        }),
+        prisma.user.count({ where })
+      ]);
       return sendSuccess(res, paginateResponse(users, pagination, total));
     } catch (error) {
       next(error);
@@ -427,10 +524,17 @@ export class AdminController {
    */
   async getInvoices(req: Request, res: Response, next: NextFunction) {
     try {
+      const { status, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
       const { invoices, total } = await invoiceService.getAll(
         pagination.skip,
-        pagination.take
+        pagination.take,
+        { 
+          status: status as string, 
+          search: search as string, 
+          sortBy: sortBy as string, 
+          sortOrder: sortOrder as string 
+        }
       );
       return sendSuccess(res, paginateResponse(invoices, pagination, total));
     } catch (error) {

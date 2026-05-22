@@ -20,6 +20,12 @@ router.patch('/quotes/:id/status',
   validateBody(z.object({ status: z.string(), adminNotes: z.string().optional(), estimatedPrice: z.coerce.number().optional() })),
   (req, res, next) => adminController.updateQuoteStatus(req, res, next)
 );
+router.delete('/quotes/:id',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ id: z.string() })),
+  (req, res, next) => adminController.deleteQuote(req, res, next)
+);
 
 // Contact Management
 router.get('/contacts', authenticate, requireAdmin, (req, res, next) => adminController.getContacts(req, res, next));
@@ -29,6 +35,12 @@ router.patch('/contacts/:id/status',
   validateParams(z.object({ id: z.string() })),
   validateBody(z.object({ status: z.string(), adminReply: z.string().optional() })),
   (req, res, next) => adminController.updateContactStatus(req, res, next)
+);
+router.delete('/contacts/:id',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ id: z.string() })),
+  (req, res, next) => adminController.deleteContact(req, res, next)
 );
 
 // Gallery Management
