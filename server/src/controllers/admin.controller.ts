@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { sendSuccess, sendError } from '../utils/response';
 import prisma from '../config/database';
-import { QuoteStatus, ContactStatus } from '@prisma/client';
+import { QuoteStatus, ContactStatus, InvoiceStatus } from '@prisma/client';
 import { AuthRequest } from '../types';
 import fs from 'fs/promises';
 import path from 'path';
 import { env } from '../../env';
 import { getPaginationParams, paginateResponse } from '../utils/pagination';
+import emailService from '../services/email.service';
+import invoiceService from '../services/invoice.service';
 
 export class AdminController {
   /**
@@ -61,6 +63,15 @@ export class AdminController {
       const { id } = req.params;
       const { status, adminNotes, estimatedPrice } = req.body;
 
+      const currentQuote = await prisma.quote.findUnique({
+        where: { id },
+        select: { status: true, email: true, name: true, brand: true, model: true }
+      });
+
+      if (!currentQuote) {
+        return sendError(res, 'Quote not found', 404);
+      }
+
       const updated = await prisma.quote.update({
         where: { id },
         data: { 
@@ -69,6 +80,15 @@ export class AdminController {
           estimatedPrice
         }
       });
+
+      // Send email if status changed or admin notes added
+      if (status !== currentQuote.status || (adminNotes && adminNotes !== updated.adminNotes)) {
+        emailService.sendUserQuoteStatusUpdate(
+          updated.email, 
+          updated.name, 
+          updated
+        );
+      }
 
       return sendSuccess(res, updated, 'Quote updated successfully');
     } catch (error) {
@@ -111,6 +131,16 @@ export class AdminController {
           adminReply
         }
       });
+
+      // Send email notification if reply is added
+      if (adminReply) {
+        emailService.sendUserContactReply(
+          updated.email,
+          updated.name,
+          updated.subject || 'Your inquiry',
+          adminReply
+        );
+      }
 
       return sendSuccess(res, updated, 'Contact message updated');
     } catch (error) {
@@ -385,6 +415,124 @@ export class AdminController {
 
       await prisma.user.delete({ where: { id } });
       return sendSuccess(res, null, 'User deleted successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  // ==================== INVOICE MANAGEMENT ====================
+
+  /**
+   * Get all invoices (admin)
+   */
+  async getInvoices(req: Request, res: Response, next: NextFunction) {
+    try {
+      const pagination = getPaginationParams(req);
+      const { invoices, total } = await invoiceService.getAll(
+        pagination.skip,
+        pagination.take
+      );
+      return sendSuccess(res, paginateResponse(invoices, pagination, total));
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Get single invoice by ID
+   */
+  async getInvoice(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const invoice = await invoiceService.getById(id);
+      if (!invoice) {
+        return sendError(res, 'Invoice not found', 404);
+      }
+      return sendSuccess(res, invoice);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Create invoice from quote
+   */
+  async createInvoiceFromQuote(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { quoteId } = req.params;
+      const { items, taxAmount, dueDate, notes } = req.body;
+
+      const invoice = await invoiceService.createFromQuote({
+        quoteId,
+        items,
+        taxAmount,
+        dueDate: new Date(dueDate),
+        notes,
+      });
+
+      return sendSuccess(res, invoice, 'Invoice created successfully', 201);
+    } catch (error: any) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update invoice
+   */
+  async updateInvoice(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const updated = await invoiceService.update(id, req.body);
+      return sendSuccess(res, updated, 'Invoice updated successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Update invoice status
+   */
+  async updateInvoiceStatus(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      const updated = await invoiceService.updateStatus(
+        id,
+        status as InvoiceStatus
+      );
+      return sendSuccess(res, updated, 'Invoice status updated');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Mark invoice as paid
+   */
+  async markInvoicePaid(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const { paymentMethod, paidAt } = req.body;
+      const updated = await invoiceService.markPaid(
+        id,
+        paymentMethod,
+        paidAt ? new Date(paidAt) : undefined
+      );
+
+      return sendSuccess(res, updated, 'Invoice marked as paid');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * Delete invoice
+   */
+  async deleteInvoice(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await invoiceService.delete(id);
+      return sendSuccess(res, null, 'Invoice deleted successfully');
     } catch (error) {
       next(error);
     }

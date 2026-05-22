@@ -95,6 +95,26 @@ export class EmailService {
   }
 
   /**
+   * Send invoice notification to customer
+   */
+  async sendInvoiceNotification(invoice: any) {
+    const html = templates.invoiceNotification(invoice);
+    const email = invoice.user?.email || invoice.quote?.email;
+    const subject = `Votre facture ${invoice.invoiceNumber} - KeyPro Service`;
+    return this.sendEmail(email, subject, html);
+  }
+
+  /**
+   * Send payment confirmation to customer
+   */
+  async sendPaymentConfirmation(invoice: any) {
+    const html = templates.paymentConfirmation(invoice);
+    const email = invoice.user?.email || invoice.quote?.email;
+    const subject = `Paiement reçu - Facture ${invoice.invoiceNumber}`;
+    return this.sendEmail(email, subject, html);
+  }
+
+  /**
    * Internal helper to send email or log it
    */
   private async sendEmail(to: string, subject: string, html: string) {

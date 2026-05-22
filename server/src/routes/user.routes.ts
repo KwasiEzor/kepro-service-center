@@ -20,5 +20,7 @@ router.patch('/profile', validateBody(profileSchema), (req, res, next) => userCo
 
 router.get('/quotes', (req, res, next) => userController.getMyQuotes(req, res, next));
 router.get('/contacts', (req, res, next) => userController.getMyContacts(req, res, next));
+router.get('/invoices', (req, res, next) => userController.getMyInvoices(req, res, next));
+router.get('/invoices/:id', (req, res, next) => userController.getMyInvoiceById(req, res, next));
 
 export default router;

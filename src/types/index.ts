@@ -118,3 +118,34 @@ export interface FAQ {
   order: number;
   active: boolean;
 }
+
+export type InvoiceStatus = 'DRAFT' | 'SENT' | 'PAID' | 'OVERDUE' | 'CANCELLED';
+
+export interface InvoiceItem {
+  id: string;
+  invoiceId: string;
+  serviceId?: string;
+  description: string;
+  quantity: number;
+  unitPrice: number;
+  total: number;
+  order: number;
+}
+
+export interface Invoice {
+  id: string;
+  invoiceNumber: string;
+  quoteId: string;
+  userId?: string;
+  subtotal: number;
+  taxAmount: number;
+  total: number;
+  notes?: string;
+  dueDate: string;
+  paidAt?: string;
+  paymentMethod?: string;
+  status: InvoiceStatus;
+  items?: InvoiceItem[];
+  createdAt: string;
+  updatedAt: string;
+}

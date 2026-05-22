@@ -278,5 +278,85 @@ export const templates = {
       <p>Cordialement,<br><strong>L'équipe KeyPro</strong></p>
     `;
     return emailLayout(content, previewText);
+  },
+
+  /**
+   * Invoice sent notification for customer (French)
+   */
+  invoiceNotification: (invoice: any) => {
+    const previewText = `Votre facture ${invoice.invoiceNumber} est prête`;
+    const content = `
+      <div class="badge">FACTURE</div>
+      <h1 style="margin-top: 0; color: ${SECONDARY_COLOR}; font-size: 24px;">Bonjour ${invoice.user?.firstName || invoice.quote?.name || 'Client'},</h1>
+      <p>Votre facture est maintenant disponible pour le service effectué sur votre <span class="highlight">${invoice.quote?.brand} ${invoice.quote?.model}</span>.</p>
+
+      <div class="card" style="border-left: 4px solid ${BRAND_COLOR};">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div>
+            <span class="label">Numéro de Facture</span>
+            <p style="margin: 5px 0; font-size: 20px; font-weight: bold;">${invoice.invoiceNumber}</p>
+          </div>
+          <div style="text-align: right;">
+            <span class="label">Date d'échéance</span>
+            <p style="margin: 5px 0; font-size: 16px; font-weight: bold;">${new Date(invoice.dueDate).toLocaleDateString('fr-FR')}</p>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="background: ${SECONDARY_COLOR}; color: white; padding: 20px; border-radius: 8px; text-align: center;">
+          <span class="label" style="color: #aaa;">Montant Total</span>
+          <p style="margin: 5px 0 0 0; font-size: 32px; font-weight: bold;">€${invoice.total.toFixed(2)}</p>
+        </div>
+
+        ${invoice.notes ? `
+        <div style="margin-top: 15px;">
+          <span class="label">Notes</span>
+          <p style="margin: 5px 0; color: #666; font-style: italic;">${invoice.notes}</p>
+        </div>
+        ` : ''}
+      </div>
+
+      <p>Vous pouvez consulter et télécharger votre facture depuis votre tableau de bord.</p>
+
+      <div style="text-align: center;">
+        <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/invoices" class="button">Voir ma facture</a>
+      </div>
+
+      <p style="font-size: 13px; color: #666;">Modes de paiement acceptés : Espèces, Carte bancaire, Virement, Chèque</p>
+    `;
+    return emailLayout(content, previewText);
+  },
+
+  /**
+   * Payment confirmation for customer (French)
+   */
+  paymentConfirmation: (invoice: any) => {
+    const previewText = `Paiement reçu pour la facture ${invoice.invoiceNumber}`;
+    const content = `
+      <div class="badge" style="background: #10B981; color: white;">PAYÉ</div>
+      <h1 style="margin-top: 0; color: ${SECONDARY_COLOR}; font-size: 24px;">Paiement Confirmé</h1>
+      <p>Nous vous confirmons la bonne réception de votre paiement pour la facture <strong>${invoice.invoiceNumber}</strong>.</p>
+
+      <div class="card" style="border-left: 4px solid #10B981;">
+        <div style="margin-bottom: 15px;">
+          <span class="label">Montant Payé</span>
+          <p style="margin: 5px 0; font-size: 28px; font-weight: bold; color: #10B981;">€${invoice.total.toFixed(2)}</p>
+        </div>
+        <div>
+          <span class="label">Mode de Paiement</span>
+          <p style="margin: 5px 0; font-size: 16px;">${invoice.paymentMethod}</p>
+        </div>
+        <div style="margin-top: 10px;">
+          <span class="label">Date de Paiement</span>
+          <p style="margin: 5px 0; font-size: 14px;">${new Date(invoice.paidAt).toLocaleDateString('fr-FR')}</p>
+        </div>
+      </div>
+
+      <p>Merci pour votre confiance. Nous restons à votre disposition pour tout service futur.</p>
+
+      <p>Cordialement,<br><strong>L'équipe KeyPro</strong></p>
+    `;
+    return emailLayout(content, previewText);
   }
 };

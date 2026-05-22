@@ -62,11 +62,67 @@ router.patch('/users/:id',
   })),
   (req, res, next) => adminController.updateUser(req, res, next)
 );
-router.delete('/users/:id', 
-  authenticate, 
-  requireAdmin, 
-  validateParams(z.object({ id: z.string() })), 
+router.delete('/users/:id',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ id: z.string() })),
   (req, res, next) => adminController.deleteUser(req, res, next)
 );
+
+// Invoice Management
+router.get('/invoices', authenticate, requireAdmin, (req, res, next) => adminController.getInvoices(req, res, next));
+router.get('/invoices/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.getInvoice(req, res, next));
+router.post('/invoices/from-quote/:quoteId',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ quoteId: z.string() })),
+  validateBody(z.object({
+    items: z.array(z.object({
+      description: z.string(),
+      quantity: z.number().positive(),
+      unitPrice: z.number().positive(),
+      total: z.number().positive()
+    })),
+    taxAmount: z.number().nonnegative().optional(),
+    dueDate: z.string().optional(),
+    notes: z.string().optional()
+  })),
+  (req, res, next) => adminController.createInvoiceFromQuote(req, res, next)
+);
+router.put('/invoices/:id',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ id: z.string() })),
+  validateBody(z.object({
+    items: z.array(z.object({
+      description: z.string(),
+      quantity: z.number().positive(),
+      unitPrice: z.number().positive(),
+      total: z.number().positive()
+    })).optional(),
+    taxAmount: z.number().nonnegative().optional(),
+    dueDate: z.string().optional(),
+    notes: z.string().optional()
+  })),
+  (req, res, next) => adminController.updateInvoice(req, res, next)
+);
+router.patch('/invoices/:id/status',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ id: z.string() })),
+  validateBody(z.object({ status: z.enum(['DRAFT', 'SENT', 'PAID', 'OVERDUE', 'CANCELLED']) })),
+  (req, res, next) => adminController.updateInvoiceStatus(req, res, next)
+);
+router.patch('/invoices/:id/paid',
+  authenticate,
+  requireAdmin,
+  validateParams(z.object({ id: z.string() })),
+  validateBody(z.object({
+    paymentMethod: z.string(),
+    paidAt: z.string().optional()
+  })),
+  (req, res, next) => adminController.markInvoicePaid(req, res, next)
+);
+router.delete('/invoices/:id', authenticate, requireAdmin, validateParams(z.object({ id: z.string() })), (req, res, next) => adminController.deleteInvoice(req, res, next));
 
 export default router;
