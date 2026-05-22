@@ -1,22 +1,32 @@
 import nodemailer from 'nodemailer';
 import { CreateQuoteDTO, CreateContactDTO } from '../types';
 import { env } from '../../env';
+import { templates } from './email-templates';
 
 export class EmailService {
   private transporter: nodemailer.Transporter | null = null;
+  private frontendUrl: string;
 
   constructor() {
-    // Only initialize if config is present
-    if (env.SMTP_HOST && env.SMTP_USER) {
-      this.transporter = nodemailer.createTransport({
+    this.frontendUrl = env.FRONTEND_URL || 'http://localhost:3000';
+    
+    // Only initialize if host is present
+    if (env.SMTP_HOST) {
+      const config: any = {
         host: env.SMTP_HOST,
         port: parseInt(env.SMTP_PORT),
         secure: env.SMTP_PORT === '465',
-        auth: {
+      };
+
+      // Only add auth if user is provided
+      if (env.SMTP_USER) {
+        config.auth = {
           user: env.SMTP_USER,
           pass: env.SMTP_PASS || '',
-        },
-      });
+        };
+      }
+
+      this.transporter = nodemailer.createTransport(config);
     } else {
       console.warn('⚠️ Email service not configured. Emails will be logged to console instead.');
     }
@@ -26,23 +36,8 @@ export class EmailService {
    * Send notification to admin about a new quote
    */
   async sendAdminQuoteNotification(quote: CreateQuoteDTO) {
-    const subject = `🔔 New Quote Request: ${quote.brand} ${quote.model}`;
-    const html = `
-      <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
-        <h2 style="color: #FF6B2C;">New Quote Request</h2>
-        <p><strong>Customer:</strong> ${quote.name || 'Logged-in User'}</p>
-        <p><strong>Email:</strong> ${quote.email || 'N/A'}</p>
-        <p><strong>Phone:</strong> ${quote.phone || 'N/A'}</p>
-        <hr/>
-        <p><strong>Vehicle:</strong> ${quote.year} ${quote.brand} ${quote.model}</p>
-        <p><strong>Service:</strong> ${quote.serviceType}</p>
-        <p><strong>Urgency:</strong> ${quote.urgency || 'Normal'}</p>
-        <p><strong>Description:</strong></p>
-        <div style="background: #f9f9f9; padding: 10px; border-radius: 5px;">${quote.description || quote.message || 'No description provided'}</div>
-        <br/>
-        <a href="${env.FRONTEND_URL}/admin" style="background: #FF6B2C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View in Dashboard</a>
-      </div>
-    `;
+    const subject = `🔔 Nouvelle demande de devis : ${quote.brand} ${quote.model}`;
+    const html = templates.adminQuoteNotification(quote, `${this.frontendUrl}/admin`);
 
     return this.sendEmail(env.ADMIN_EMAIL || '', subject, html);
   }
@@ -51,22 +46,52 @@ export class EmailService {
    * Send notification to admin about a new contact message
    */
   async sendAdminContactNotification(contact: CreateContactDTO) {
-    const subject = `✉️ New Message: ${contact.subject || 'General Inquiry'}`;
-    const html = `
-      <div style="font-family: sans-serif; max-width: 600px; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
-        <h2 style="color: #FF6B2C;">New Contact Message</h2>
-        <p><strong>From:</strong> ${contact.name}</p>
-        <p><strong>Email:</strong> ${contact.email}</p>
-        <p><strong>Subject:</strong> ${contact.subject || contact.topic || 'General Inquiry'}</p>
-        <hr/>
-        <p><strong>Message:</strong></p>
-        <div style="background: #f9f9f9; padding: 10px; border-radius: 5px;">${contact.message}</div>
-        <br/>
-        <a href="${env.FRONTEND_URL}/admin" style="background: #FF6B2C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">View in Dashboard</a>
-      </div>
-    `;
+    const subject = `✉️ Nouveau message : ${contact.subject || contact.topic || 'Demande générale'}`;
+    const html = templates.adminContactNotification(contact, `${this.frontendUrl}/admin`);
 
     return this.sendEmail(env.ADMIN_EMAIL || '', subject, html);
+  }
+
+  /**
+   * Send confirmation to user about their quote request
+   */
+  async sendUserQuoteConfirmation(quote: CreateQuoteDTO) {
+    if (!quote.email) return;
+
+    const subject = `🚗 Nous avons reçu votre demande de devis - KeyPro Service`;
+    const html = templates.quoteConfirmation(quote, `${this.frontendUrl}/dashboard`);
+
+    return this.sendEmail(quote.email, subject, html);
+  }
+
+  /**
+   * Send notification to user about quote status update
+   */
+  async sendUserQuoteStatusUpdate(email: string, name: string, quote: any) {
+    const subject = `🔔 Mise à jour de votre demande de service : ${quote.brand} ${quote.model}`;
+    const html = templates.quoteStatusUpdate(name, quote, `${this.frontendUrl}/dashboard`);
+
+    return this.sendEmail(email, subject, html);
+  }
+
+  /**
+   * Send confirmation to user about their contact message
+   */
+  async sendUserContactConfirmation(contact: CreateContactDTO) {
+    const subject = `✉️ Message bien reçu - KeyPro Service`;
+    const html = templates.contactConfirmation(contact);
+
+    return this.sendEmail(contact.email, subject, html);
+  }
+
+  /**
+   * Send admin reply to user
+   */
+  async sendUserContactReply(email: string, name: string, originalSubject: string, reply: string) {
+    const subject = `Re: ${originalSubject || 'Votre demande'} - KeyPro Service`;
+    const html = templates.contactReply(name, originalSubject, reply, `${this.frontendUrl}/dashboard`);
+
+    return this.sendEmail(email, subject, html);
   }
 
   /**

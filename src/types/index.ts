@@ -65,6 +65,8 @@ export interface Quote {
   updatedAt: string;
 }
 
+export type ServiceType = 'keys' | 'diagnostic' | 'immobilizer' | 'other';
+
 export interface Contact {
   id: string;
   userId?: string;

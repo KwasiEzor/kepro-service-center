@@ -302,7 +302,7 @@
     "steps": {
       "service": "Service Type",
       "vehicle": "Vehicle Information",
-      "details": "Issue Details"
+      "details": "Personal Details"
     },
     "form": {
       "brand": {
@@ -311,7 +311,13 @@
       },
       "model": {
         "label": "Model",
-        "placeholder": "e.g., A4, 3 Series, C-Class"
+        "placeholder": "Select brand first",
+        "search": "Search model...",
+        "empty": "No models found"
+      },
+      "brandSearch": {
+        "placeholder": "Search brand...",
+        "empty": "No brands found"
       },
       "year": {
         "label": "Year",
@@ -322,7 +328,7 @@
         "placeholder": "17 characters"
       },
       "description": {
-        "label": "Describe your issue",
+        "label": "Additional Information (Optional)",
         "placeholder": "Share as much detail as possible about the technical problem..."
       },
       "location": {
@@ -330,28 +336,34 @@
         "placeholder": "City or postal code"
       },
       "name": {
-        "label": "Your Name",
+        "label": "Full Name",
         "placeholder": "Full name"
       },
       "phone": {
-        "label": "Phone",
+        "label": "Phone Number",
         "placeholder": "+33 6 12 34 56 78"
       },
       "email": {
-        "label": "Email",
+        "label": "Email Address",
         "placeholder": "your@email.com"
       },
       "next": "NEXT",
+      "finalStep": "FINAL STEP",
       "back": "BACK",
-      "submit": "GET ESTIMATE",
-      "submitting": "Processing"
+      "backToVehicle": "BACK TO VEHICLE",
+      "submit": "SEND REQUEST",
+      "submitting": "SENDING...",
+      "detailsTitle": "Personal Details",
+      "detailsSubtitle": "How should our technical team contact you?",
+      "consent": "By submitting, you agree to our processing of your technical data for service purposes. <br /> Response time is usually within <span class=\"text-text-primary font-bold\">15-30 minutes</span> for urgent requests."
     },
     "success": {
-      "title": "Estimate Generated",
-      "refNumber": "Reference Number",
-      "subtitle": "We'll Call You Back Shortly",
-      "description": "Our technical team will review your request and reach out within 2 hours with detailed pricing and next steps.",
-      "done": "DONE"
+      "title": "Request Received",
+      "refNumber": "Reference ID:",
+      "viewReceipt": "View & Print Receipt",
+      "subtitle": "Urgency Priority: High",
+      "description": "Thank you. Our technical supervisor has been notified. We will contact you via phone shortly to confirm the intervention.",
+      "done": "RETURN HOME"
     }
   },
   "faq": {

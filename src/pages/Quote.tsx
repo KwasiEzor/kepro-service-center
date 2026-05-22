@@ -2,6 +2,8 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import CarSelector from '../components/CarSelector';
+import DocumentTemplate from '../components/DocumentTemplate';
 import {
   Car,
   Key,
@@ -10,13 +12,15 @@ import {
   ChevronRight,
   ChevronLeft,
   CheckCircle2,
+  XCircle,
   MapPin,
   Phone,
   Mail,
   Zap,
   Lock,
   ShieldCheck,
-  Info
+  Info,
+  FileText
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '../lib/utils';
@@ -37,6 +41,8 @@ export default function Quote() {
   const [serviceType, setServiceType] = React.useState('');
   const [refId, setRefId] = React.useState('');
   const [submitError, setSubmitError] = React.useState<string | null>(null);
+  const [showDocument, setShowDocument] = React.useState(false);
+  const [submittedData, setSubmittedData] = React.useState<QuoteFormData | null>(null);
 
   const serviceOptions = [
     { id: 'keys', label: t('quote.services.keys.label'), icon: Key, description: t('quote.services.keys.description') },
@@ -51,9 +57,13 @@ export default function Quote() {
     formState: { errors, isSubmitting },
     setValue,
     trigger,
+    watch,
   } = useForm<QuoteFormData>({
     resolver: zodResolver(quoteFormSchema),
   });
+
+  const brand = watch('brand');
+  const model = watch('model');
 
   const handleNext = async () => {
     if (step === 'service') {
@@ -71,6 +81,7 @@ export default function Quote() {
     try {
       const response = await api.post<ApiResponse>('/api/public/quote', data);
       if (response.data.data) {
+        setSubmittedData(data);
         setRefId(response.data.data.id.toUpperCase().slice(-6));
         setStep('success');
       }
@@ -95,7 +106,7 @@ export default function Quote() {
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 border border-white/10 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
+            className="inline-flex items-center gap-2 px-6 py-2.5 clip-angular-sm bg-gradient-to-r from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10 border border-border-primary text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-xl"
           >
             <Zap className="w-3.5 h-3.5 text-[var(--color-brand-orange-primary)]" />
             <span className="text-[var(--color-brand-orange-primary)]">
@@ -109,7 +120,7 @@ export default function Quote() {
             transition={{ delay: 0.1 }}
             className="text-5xl md:text-7xl font-display font-black mb-4 leading-[1.1]"
           >
-            <span className="block text-white">{t('quote.header.titlePart1')}</span>
+            <span className="block text-text-primary">{t('quote.header.titlePart1')}</span>
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] animate-gradient">
               {t('quote.header.titlePart2')}
             </span>
@@ -137,7 +148,7 @@ export default function Quote() {
                     "relative w-10 h-10 clip-angular-sm flex items-center justify-center text-sm font-black transition-all",
                     step === s
                       ? "bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white shadow-lg shadow-[var(--color-brand-orange-primary)]/50"
-                      : "bg-white/5 border border-white/10 text-white/50"
+                      : "bg-bg-secondary border border-border-primary text-text-tertiary"
                   )}>
                     <span className="relative z-10">{idx + 1}</span>
                     {step === s && (
@@ -146,7 +157,7 @@ export default function Quote() {
                   </div>
                   <span className={cn(
                     "text-xs font-bold uppercase tracking-widest hidden sm:block transition-colors",
-                    step === s ? "text-white" : "text-white/40"
+                    step === s ? "text-text-primary" : "text-text-tertiary"
                   )}>
                     {t(`quote.steps.${s}`)}
                   </span>
@@ -156,7 +167,7 @@ export default function Quote() {
                     "w-16 h-0.5 clip-angular-sm transition-all",
                     ['service', 'vehicle', 'details'].indexOf(step) > idx
                       ? "bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]"
-                      : "bg-white/10"
+                      : "bg-border-primary"
                   )} />
                 )}
               </React.Fragment>
@@ -165,8 +176,8 @@ export default function Quote() {
         )}
 
         {/* Premium Form Container */}
-        <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-white/10 to-white/5">
-          <div className="backdrop-blur-2xl bg-gradient-to-br from-[var(--color-brand-gray)]/80 to-[var(--color-brand-dark)]/80 clip-angular-lg overflow-hidden border border-white/10 shadow-2xl">
+        <div className="relative p-1 clip-angular-xl bg-gradient-to-br from-border-primary to-border-secondary">
+          <div className="backdrop-blur-2xl bg-bg-secondary clip-angular-lg overflow-hidden border border-border-primary shadow-2xl">
             <AnimatePresence mode="wait">
               {step === 'service' && (
                 <motion.div
@@ -177,10 +188,10 @@ export default function Quote() {
                   className="p-8 md:p-16"
                 >
                   <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-white">
+                    <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-text-primary">
                       {t('quote.header.description')}
                     </h2>
-                    <p className="text-white/60 text-lg">{t('quote.header.description')}</p>
+                    <p className="text-text-secondary text-lg">{t('quote.header.description')}</p>
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-6 mb-12">
@@ -196,7 +207,7 @@ export default function Quote() {
                           "group relative flex items-start gap-6 p-8 clip-angular-md border-2 text-left transition-all",
                           serviceType === opt.id
                             ? "border-[var(--color-brand-orange-primary)]/50 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/10 to-[var(--color-brand-orange-secondary)]/10"
-                            : "border-white/10 bg-white/5 hover:border-white/20"
+                            : "border-border-primary bg-bg-tertiary hover:border-border-secondary"
                         )}
                       >
                         {/* Glow effect when selected */}
@@ -208,7 +219,7 @@ export default function Quote() {
                           "w-14 h-14 clip-angular-sm flex items-center justify-center transition-all shadow-xl",
                           serviceType === opt.id
                             ? "bg-gradient-to-br from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] text-white"
-                            : "bg-white/10 text-white/50 group-hover:bg-white/15"
+                            : "bg-bg-secondary text-text-tertiary group-hover:bg-bg-tertiary"
                         )}>
                           <opt.icon className="w-7 h-7" />
                         </div>
@@ -216,11 +227,11 @@ export default function Quote() {
                         <div className="flex-1">
                           <h3 className={cn(
                             "font-bold text-lg mb-2 transition-colors",
-                            serviceType === opt.id ? "text-white" : "text-white/90"
+                            serviceType === opt.id ? "text-text-primary" : "text-text-primary/90"
                           )}>
                             {opt.label}
                           </h3>
-                          <p className="text-sm text-white/50 leading-relaxed">
+                          <p className="text-sm text-text-tertiary leading-relaxed">
                             {opt.description}
                           </p>
                         </div>
@@ -240,7 +251,7 @@ export default function Quote() {
                         "absolute inset-0 clip-angular-sm transition-all",
                         serviceType
                           ? "bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]"
-                          : "bg-white/10"
+                          : "bg-bg-secondary"
                       )} />
                       <div className={cn(
                         "absolute inset-0 clip-angular-sm blur-xl opacity-0 transition-opacity",
@@ -263,86 +274,63 @@ export default function Quote() {
                 >
                   <button
                     onClick={() => setStep('service')}
-                    className="group flex items-center gap-2 text-xs font-bold text-white/50 hover:text-white transition-colors mb-10 uppercase tracking-widest"
+                    className="group flex items-center gap-2 text-xs font-bold text-text-tertiary hover:text-text-primary transition-colors mb-10 uppercase tracking-widest"
                   >
                     <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                     {t('quote.form.back')}
                   </button>
 
                   <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-white">
+                    <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-text-primary">
                       {t('quote.steps.vehicle')}
                     </h2>
-                    <p className="text-white/60 text-lg">{t('quote.header.description')}</p>
+                    <p className="text-text-secondary text-lg">{t('quote.header.description')}</p>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6 mb-12">
-                    <div className="space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        {t('quote.form.brand.label')}
-                      </label>
-                      <input
-                        {...register('brand')}
-                        type="text"
-                        placeholder={t('quote.form.brand.placeholder')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                      />
-                      {errors.brand && (
-                        <p className="text-red-400 text-xs px-2 flex items-center gap-1">
-                          <Info className="w-3 h-3" /> {errors.brand.message}
-                        </p>
-                      )}
-                    </div>
+                  <div className="space-y-6 mb-12">
+                    <CarSelector
+                      brandValue={brand}
+                      modelValue={model}
+                      onBrandChange={(val) => setValue('brand', val, { shouldValidate: true })}
+                      onModelChange={(val) => setValue('model', val, { shouldValidate: true })}
+                      errorBrand={errors.brand?.message}
+                      errorModel={errors.model?.message}
+                    />
 
-                    <div className="space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        {t('quote.form.model.label')}
-                      </label>
-                      <input
-                        {...register('model')}
-                        type="text"
-                        placeholder={t('quote.form.model.placeholder')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                      />
-                      {errors.model && (
-                        <p className="text-red-400 text-xs px-2 flex items-center gap-1">
-                          <Info className="w-3 h-3" /> {errors.model.message}
-                        </p>
-                      )}
-                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div className="space-y-3">
+                        <label className="block text-xs font-bold text-text-tertiary uppercase tracking-widest px-2">
+                          {t('quote.form.year.label')}
+                        </label>
+                        <input
+                          {...register('year')}
+                          type="text"
+                          placeholder={t('quote.form.year.placeholder')}
+                          className="w-full bg-bg-tertiary border border-border-primary text-text-primary backdrop-blur-xl clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all placeholder:text-text-tertiary/50"
+                        />
+                        {errors.year && (
+                          <p className="text-red-400 text-xs px-2 flex items-center gap-1">
+                            <Info className="w-3 h-3" /> {errors.year.message}
+                          </p>
+                        )}
+                      </div>
 
-                    <div className="space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        {t('quote.form.year.label')}
-                      </label>
-                      <input
-                        {...register('year')}
-                        type="text"
-                        placeholder={t('quote.form.year.placeholder')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                      />
-                      {errors.year && (
-                        <p className="text-red-400 text-xs px-2 flex items-center gap-1">
-                          <Info className="w-3 h-3" /> {errors.year.message}
-                        </p>
-                      )}
-                    </div>
-
-                    <div className="space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        {t('quote.form.location.label')}
-                      </label>
-                      <input
-                        {...register('location')}
-                        type="text"
-                        placeholder={t('quote.form.location.placeholder')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
-                      />
-                      {errors.location && (
-                        <p className="text-red-400 text-xs px-2 flex items-center gap-1">
-                          <Info className="w-3 h-3" /> {errors.location.message}
-                        </p>
-                      )}
+                      <div className="space-y-3">
+                        <label className="block text-xs font-bold text-text-tertiary uppercase tracking-widest px-2">
+                          {t('quote.form.location.label')}
+                        </label>
+                        <input
+                          {...register('location')}
+                          type="text"
+                          placeholder={t('quote.form.location.placeholder')}
+                          className="w-full bg-bg-tertiary border border-border-primary text-text-primary backdrop-blur-xl clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all placeholder:text-text-tertiary/50"
+                        />
+                        {errors.location && (
+                          <p className="text-red-400 text-xs px-2 flex items-center gap-1">
+                            <Info className="w-3 h-3" /> {errors.location.message}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
 
@@ -355,7 +343,7 @@ export default function Quote() {
                     >
                       <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm" />
                       <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm blur-xl opacity-50" />
-                      <span className="relative z-10 text-white">Final Step</span>
+                      <span className="relative z-10 text-white">{t('quote.form.finalStep')}</span>
                       <ChevronRight className="relative z-10 w-5 h-5 text-white group-hover:translate-x-1 transition-transform" />
                     </motion.button>
                   </div>
@@ -372,29 +360,29 @@ export default function Quote() {
                 >
                   <button
                     onClick={() => setStep('vehicle')}
-                    className="group flex items-center gap-2 text-xs font-bold text-white/50 hover:text-white transition-colors mb-10 uppercase tracking-widest"
+                    className="group flex items-center gap-2 text-xs font-bold text-text-tertiary hover:text-text-primary transition-colors mb-10 uppercase tracking-widest"
                   >
                     <ChevronLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                    Back to vehicle
+                    {t('quote.form.backToVehicle')}
                   </button>
 
                   <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-white">
-                      Personal Details
+                    <h2 className="text-4xl md:text-5xl font-display font-black mb-4 text-text-primary">
+                      {t('quote.form.detailsTitle')}
                     </h2>
-                    <p className="text-white/60 text-lg">How should our technical team contact you?</p>
+                    <p className="text-text-secondary text-lg">{t('quote.form.detailsSubtitle')}</p>
                   </div>
 
                   <form onSubmit={handleSubmit(onSubmit)} className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Full Name
+                      <label className="block text-xs font-bold text-text-tertiary uppercase tracking-widest px-2">
+                        {t('quote.form.name.label')}
                       </label>
                       <input
                         {...register('name')}
                         type="text"
-                        placeholder={t('quote.form.placeholder.name')}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
+                        placeholder={t('quote.form.name.placeholder')}
+                        className="w-full bg-bg-tertiary border border-border-primary text-text-primary backdrop-blur-xl clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all placeholder:text-text-tertiary/50"
                       />
                       {errors.name && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -404,14 +392,14 @@ export default function Quote() {
                     </div>
 
                     <div className="space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Phone Number
+                      <label className="block text-xs font-bold text-text-tertiary uppercase tracking-widest px-2">
+                        {t('quote.form.phone.label')}
                       </label>
                       <input
                         {...register('phone')}
                         type="tel"
                         placeholder="01 23 45 67 89"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full bg-bg-tertiary border border-border-primary text-text-primary backdrop-blur-xl clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all placeholder:text-text-tertiary/50"
                       />
                       {errors.phone && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -421,14 +409,14 @@ export default function Quote() {
                     </div>
 
                     <div className="md:col-span-2 space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Email Address
+                      <label className="block text-xs font-bold text-text-tertiary uppercase tracking-widest px-2">
+                        {t('quote.form.email.label')}
                       </label>
                       <input
                         {...register('email')}
                         type="email"
                         placeholder="john@example.com"
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all text-white placeholder:text-white/30"
+                        className="w-full bg-bg-tertiary border border-border-primary text-text-primary backdrop-blur-xl clip-angular-sm py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all placeholder:text-text-tertiary/50"
                       />
                       {errors.email && (
                         <p className="text-red-400 text-xs px-2 flex items-center gap-1">
@@ -438,14 +426,14 @@ export default function Quote() {
                     </div>
 
                     <div className="md:col-span-2 space-y-3">
-                      <label className="block text-xs font-bold text-white/50 uppercase tracking-widest px-2">
-                        Additional Information (Optional)
+                      <label className="block text-xs font-bold text-text-tertiary uppercase tracking-widest px-2">
+                        {t('quote.form.description.label')}
                       </label>
                       <textarea
                         {...register('message')}
-                        placeholder={t('quote.form.placeholder.description')}
+                        placeholder={t('quote.form.description.placeholder')}
                         rows={5}
-                        className="w-full backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-md py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all resize-none text-white placeholder:text-white/30"
+                        className="w-full bg-bg-tertiary border border-border-primary text-text-primary backdrop-blur-xl clip-angular-md py-4 px-6 focus:outline-none focus:border-[var(--color-brand-orange-primary)] focus:ring-2 focus:ring-[var(--color-brand-orange-primary)]/20 transition-all resize-none placeholder:text-text-tertiary/50"
                       />
                     </div>
 
@@ -460,14 +448,14 @@ export default function Quote() {
                         <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm animate-gradient" />
                         <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)] clip-angular-sm blur-xl opacity-50" />
                         <span className="relative z-10 text-white">
-                          {isSubmitting ? 'SENDING...' : 'SEND REQUEST'}
+                          {isSubmitting ? t('quote.form.submitting') : t('quote.form.submit')}
                         </span>
                       </motion.button>
 
-                      <p className="text-[10px] text-white/30 text-center mt-8 uppercase tracking-widest leading-relaxed">
-                        By submitting, you agree to our processing of your technical data for service purposes. <br />
-                        Response time is usually within <span className="text-white/60 font-bold">15-30 minutes</span> for urgent requests.
-                      </p>
+                      <p 
+                        className="text-[10px] text-text-tertiary text-center mt-8 uppercase tracking-widest leading-relaxed"
+                        dangerouslySetInnerHTML={{ __html: t('quote.form.consent') }}
+                      />
                     </div>
                   </form>
                 </motion.div>
@@ -497,18 +485,18 @@ export default function Quote() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="text-5xl md:text-6xl font-display font-black mb-6 text-white"
+                    className="text-5xl md:text-6xl font-display font-black mb-6 text-text-primary"
                   >
-                    Request Received
+                    {t('quote.success.title')}
                   </motion.h2>
 
                   <motion.p
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="text-lg md:text-xl text-white/70 mb-16 max-w-lg mx-auto leading-relaxed"
+                    className="text-lg md:text-xl text-text-secondary mb-16 max-w-lg mx-auto leading-relaxed"
                   >
-                    Thank you. Our technical supervisor has been notified. We will contact you via phone shortly to confirm the intervention.
+                    {t('quote.success.description')}
                   </motion.p>
 
                   {/* Premium Info Card */}
@@ -518,20 +506,20 @@ export default function Quote() {
                     transition={{ delay: 0.5 }}
                     className="inline-block mb-16"
                   >
-                    <div className="relative p-1 clip-angular-md bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20">
-                      <div className="backdrop-blur-xl bg-gradient-to-br from-white/10 to-white/5 p-8 rounded-[22px] border border-white/10 text-left min-w-[320px]">
+                    <div className="relative p-1 clip-angular-md bg-gradient-to-br from-border-primary to-border-secondary">
+                      <div className="backdrop-blur-xl bg-bg-tertiary p-8 rounded-[22px] border border-border-primary text-left min-w-[320px]">
                         <div className="flex items-center gap-3 mb-6">
-                          <div className="w-10 h-10 bg-gradient-to-br from-[var(--color-brand-orange-primary)]/20 to-[var(--color-brand-orange-secondary)]/20 clip-angular-sm flex items-center justify-center">
+                          <div className="w-10 h-10 bg-bg-secondary clip-angular-sm flex items-center justify-center">
                             <Zap className="w-5 h-5 text-orange-400" />
                           </div>
                           <span className="font-bold text-sm uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-brand-orange-primary)] to-[var(--color-brand-orange-secondary)]">
-                            Urgency Priority: High
+                            {t('quote.success.subtitle')}
                           </span>
                         </div>
                         <div className="space-y-2">
                           <p className="text-sm">
-                            <span className="text-white/50">Reference ID:</span>
-                            <span className="ml-3 font-mono font-bold text-white bg-white/5 px-3 py-1 rounded-lg">{refId}</span>
+                            <span className="text-text-tertiary">{t('quote.success.refNumber')}</span>
+                            <span className="ml-3 font-mono font-bold text-text-primary bg-bg-secondary px-3 py-1 rounded-lg">{refId}</span>
                           </p>
                         </div>
                       </div>
@@ -542,19 +530,81 @@ export default function Quote() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.6 }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4"
                   >
+                    <motion.button
+                      onClick={() => setShowDocument(true)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group relative inline-flex items-center gap-3 px-12 py-5 clip-angular-sm font-bold text-lg"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-slate-800 to-slate-900 border border-border-primary clip-angular-sm" />
+                      <FileText className="relative z-10 w-5 h-5 text-white" />
+                      <span className="relative z-10 text-white">
+                        {t('quote.success.viewReceipt')}
+                      </span>
+                    </motion.button>
+
                     <motion.button
                       onClick={() => window.location.href = '/'}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="group relative inline-flex items-center gap-3 px-12 py-5 clip-angular-sm font-bold text-lg"
                     >
-                      <div className="absolute inset-0 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm" />
-                      <span className="relative z-10 text-white group-hover:text-white/90 transition-colors">
-                        Return Home
+                      <div className="absolute inset-0 bg-bg-secondary border border-border-primary clip-angular-sm" />
+                      <span className="relative z-10 text-text-primary group-hover:text-text-primary/90 transition-colors">
+                        {t('quote.success.done')}
                       </span>
                     </motion.button>
                   </motion.div>
+
+                  {/* Document Modal/Overlay */}
+                  <AnimatePresence>
+                    {showDocument && submittedData && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto pt-20 pb-20 print:p-0 print:bg-white print:static print:overflow-visible"
+                      >
+                        <motion.div
+                          initial={{ scale: 0.9, y: 20 }}
+                          animate={{ scale: 1, y: 0 }}
+                          exit={{ scale: 0.9, y: 20 }}
+                          className="relative w-full max-w-4xl print:max-w-none"
+                        >
+                          {/* Close Button - Hidden in Print */}
+                          <button
+                            onClick={() => setShowDocument(false)}
+                            className="absolute -top-12 right-0 text-white hover:text-orange-400 transition-colors flex items-center gap-2 font-bold uppercase tracking-widest text-xs print:hidden"
+                          >
+                            <span className="mr-1">Close</span> <XCircle className="w-6 h-6" />
+                          </button>
+
+                          {/* Print Action - Hidden in Print */}
+                          <button
+                            onClick={() => window.print()}
+                            className="absolute -top-12 left-0 text-white hover:text-emerald-400 transition-colors flex items-center gap-2 font-bold uppercase tracking-widest text-xs print:hidden"
+                          >
+                            <ShieldCheck className="w-6 h-6" /> Print / Save as PDF
+                          </button>
+
+                          <div className="print:m-0">
+                            <DocumentTemplate 
+                              type="quote" 
+                              data={{
+                                ...submittedData,
+                                id: refId,
+                                createdAt: new Date().toISOString(),
+                                status: 'PENDING'
+                              } as any} 
+                              refId={refId}
+                            />
+                          </div>
+                        </motion.div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -578,10 +628,10 @@ export default function Quote() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.7 + i * 0.1 }}
-              className="flex items-center gap-3 px-4 py-2 backdrop-blur-xl bg-white/5 border border-white/10 clip-angular-sm"
+              className="flex items-center gap-3 px-4 py-2 bg-bg-secondary border border-border-primary clip-angular-sm"
             >
-              <badge.icon className="w-4 h-4 text-white/40" />
-              <span className="text-xs font-bold uppercase tracking-wider text-white/50">
+              <badge.icon className="w-4 h-4 text-text-tertiary" />
+              <span className="text-xs font-bold uppercase tracking-wider text-text-tertiary">
                 {badge.text}
               </span>
             </motion.div>
