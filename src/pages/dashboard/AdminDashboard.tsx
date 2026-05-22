@@ -27,6 +27,8 @@ import GalleryManagement from './GalleryManagement';
 import ServicesManagement from './ServicesManagement';
 import FaqManagement from './FaqManagement';
 import UsersManagement from './UsersManagement';
+import { RevenueChart } from './RevenueChart';
+import { ServiceDistributionChart } from './ServiceDistributionChart';
 
 interface Stats {
   quotesCount: number;
@@ -35,6 +37,8 @@ interface Stats {
   imagesCount: number;
   invoicesCount: number;
   totalRevenue: number;
+  revenueChart: Array<{ name: string; total: number }>;
+  serviceDistribution: Array<{ name: string; value: number }>;
   recentActivity: Array<{
     type: 'QUOTE' | 'CONTACT' | 'INVOICE';
     id: string;
@@ -197,6 +201,18 @@ export default function AdminDashboard() {
                 </div>
                 <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.users')}</h3>
               </button>
+            </div>
+
+            {/* Charts Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              <div className="card-dark p-8">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-text-tertiary mb-8">Monthly Revenue Trend</h3>
+                <RevenueChart data={stats?.revenueChart || []} />
+              </div>
+              <div className="card-dark p-8">
+                <h3 className="text-sm font-bold uppercase tracking-widest text-text-tertiary mb-8">Service Distribution</h3>
+                <ServiceDistributionChart data={stats?.serviceDistribution || []} />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
