@@ -1,15 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { sendSuccess, sendError } from '../utils/response';
-import prisma from '../config/database';
-import { QuoteStatus, ContactStatus, InvoiceStatus } from '@prisma/client';
+import { QuoteStatus, ContactStatus, InvoiceStatus, UserRole } from '@prisma/client';
 import { AuthRequest } from '../types';
-import fs from 'fs/promises';
-import path from 'path';
-import { env } from '../../env';
 import { getPaginationParams, paginateResponse } from '../utils/pagination';
-import emailService from '../services/email.service';
+import analyticsService from '../services/analytics.service';
+import managementService from '../services/management.service';
+import galleryService from '../services/gallery.service';
 import invoiceService from '../services/invoice.service';
-import logger from '../utils/logger';
 
 export class AdminController {
   /**
@@ -17,87 +14,8 @@ export class AdminController {
    */
   async getStats(req: Request, res: Response, next: NextFunction) {
     try {
-      const [
-        quotesCount, 
-        contactsCount, 
-        usersCount, 
-        imagesCount, 
-        invoicesCount,
-        revenueData
-      ] = await Promise.all([
-        prisma.quote.count(),
-        prisma.contact.count(),
-        prisma.user.count(),
-        prisma.image.count(),
-        prisma.invoice.count(),
-        prisma.invoice.aggregate({
-          where: { status: InvoiceStatus.PAID },
-          _sum: { total: true }
-        })
-      ]);
-
-      // Get recent activity
-      const [recentQuotes, recentContacts, recentInvoices] = await Promise.all([
-        prisma.quote.findMany({ take: 5, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, serviceType: true, createdAt: true, status: true } }),
-        prisma.contact.findMany({ take: 5, orderBy: { createdAt: 'desc' }, select: { id: true, name: true, subject: true, createdAt: true, status: true } }),
-        prisma.invoice.findMany({ take: 5, orderBy: { createdAt: 'desc' }, select: { id: true, invoiceNumber: true, total: true, createdAt: true, status: true } })
-      ]);
-
-      // Revenue by month (last 6 months)
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-
-      const revenueByMonth = await prisma.invoice.groupBy({
-        by: ['createdAt'],
-        where: {
-          status: InvoiceStatus.PAID,
-          createdAt: { gte: sixMonthsAgo }
-        },
-        _sum: { total: true }
-      });
-
-      // Format revenue data for charts
-      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      const revenueChart = monthNames.map((name, index) => {
-        const monthRevenue = revenueByMonth
-          .filter(r => r.createdAt.getMonth() === index)
-          .reduce((sum, current) => sum + (current._sum.total || 0), 0);
-        return { name, total: monthRevenue };
-      }).filter((_, i) => {
-          const now = new Date();
-          const d = new Date();
-          d.setMonth(now.getMonth() - 6);
-          return i >= d.getMonth() || i <= now.getMonth();
-      });
-
-      // Service distribution
-      const serviceDist = await prisma.quote.groupBy({
-        by: ['serviceType'],
-        _count: { _all: true }
-      });
-
-      const serviceDistribution = serviceDist.map(s => ({
-        name: s.serviceType.replace('_', ' ').toUpperCase(),
-        value: s._count._all
-      }));
-
-      const recentActivity = [
-        ...recentQuotes.map(q => ({ type: 'QUOTE', id: q.id, title: `New quote: ${q.serviceType}`, user: q.name, date: q.createdAt, status: q.status })),
-        ...recentContacts.map(c => ({ type: 'CONTACT', id: c.id, title: `New message: ${c.subject}`, user: c.name, date: c.createdAt, status: c.status })),
-        ...recentInvoices.map(i => ({ type: 'INVOICE', id: i.id, title: `Invoice ${i.invoiceNumber}`, user: `€${i.total}`, date: i.createdAt, status: i.status }))
-      ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 10);
-
-      return sendSuccess(res, {
-        quotesCount,
-        contactsCount,
-        usersCount,
-        imagesCount,
-        invoicesCount,
-        totalRevenue: revenueData._sum.total || 0,
-        revenueChart,
-        serviceDistribution,
-        recentActivity
-      });
+      const stats = await analyticsService.getDashboardStats();
+      return sendSuccess(res, stats);
     } catch (error) {
       next(error);
     }
@@ -111,37 +29,13 @@ export class AdminController {
       const { status, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
       
-      const where: any = {};
-      if (status && status !== 'all') {
-        where.status = status as QuoteStatus;
-      }
+      const { quotes, total } = await managementService.getAllQuotes(
+        pagination.skip,
+        pagination.take,
+        { status: status as string, search: search as string },
+        { sortBy: sortBy as string, sortOrder: sortOrder as string }
+      );
 
-      if (search) {
-        where.OR = [
-          { name: { contains: search as string, mode: 'insensitive' } },
-          { email: { contains: search as string, mode: 'insensitive' } },
-          { brand: { contains: search as string, mode: 'insensitive' } },
-          { model: { contains: search as string, mode: 'insensitive' } },
-        ];
-      }
-
-      const orderBy: any = {};
-      if (sortBy) {
-        orderBy[sortBy as string] = sortOrder === 'asc' ? 'asc' : 'desc';
-      } else {
-        orderBy.createdAt = 'desc';
-      }
-
-      const [quotes, total] = await Promise.all([
-        prisma.quote.findMany({
-          where,
-          skip: pagination.skip,
-          take: pagination.take,
-          orderBy,
-          include: { user: { select: { email: true, firstName: true } } }
-        }),
-        prisma.quote.count({ where })
-      ]);
       return sendSuccess(res, paginateResponse(quotes, pagination, total));
     } catch (error) {
       next(error);
@@ -156,32 +50,11 @@ export class AdminController {
       const { id } = req.params;
       const { status, adminNotes, estimatedPrice } = req.body;
 
-      const currentQuote = await prisma.quote.findUnique({
-        where: { id },
-        select: { status: true, email: true, name: true, brand: true, model: true }
+      const updated = await managementService.updateQuote(id, {
+        status: status as QuoteStatus,
+        adminNotes,
+        estimatedPrice
       });
-
-      if (!currentQuote) {
-        return sendError(res, 'Quote not found', 404);
-      }
-
-      const updated = await prisma.quote.update({
-        where: { id },
-        data: { 
-          status: status as QuoteStatus,
-          adminNotes,
-          estimatedPrice
-        }
-      });
-
-      // Send email if status changed or admin notes added
-      if (status !== currentQuote.status || (adminNotes && adminNotes !== updated.adminNotes)) {
-        emailService.sendUserQuoteStatusUpdate(
-          updated.email, 
-          updated.name, 
-          updated
-        );
-      }
 
       return sendSuccess(res, updated, 'Quote updated successfully');
     } catch (error) {
@@ -195,7 +68,7 @@ export class AdminController {
   async deleteQuote(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await prisma.quote.delete({ where: { id } });
+      await managementService.deleteQuote(id);
       return sendSuccess(res, null, 'Quote deleted successfully');
     } catch (error) {
       next(error);
@@ -210,36 +83,13 @@ export class AdminController {
       const { status, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
 
-      const where: any = {};
-      if (status && status !== 'all') {
-        where.status = status as ContactStatus;
-      }
+      const { contacts, total } = await managementService.getAllContacts(
+        pagination.skip,
+        pagination.take,
+        { status: status as string, search: search as string },
+        { sortBy: sortBy as string, sortOrder: sortOrder as string }
+      );
 
-      if (search) {
-        where.OR = [
-          { name: { contains: search as string, mode: 'insensitive' } },
-          { email: { contains: search as string, mode: 'insensitive' } },
-          { subject: { contains: search as string, mode: 'insensitive' } },
-          { message: { contains: search as string, mode: 'insensitive' } },
-        ];
-      }
-
-      const orderBy: any = {};
-      if (sortBy) {
-        orderBy[sortBy as string] = sortOrder === 'asc' ? 'asc' : 'desc';
-      } else {
-        orderBy.createdAt = 'desc';
-      }
-
-      const [contacts, total] = await Promise.all([
-        prisma.contact.findMany({
-          where,
-          skip: pagination.skip,
-          take: pagination.take,
-          orderBy
-        }),
-        prisma.contact.count({ where })
-      ]);
       return sendSuccess(res, paginateResponse(contacts, pagination, total));
     } catch (error) {
       next(error);
@@ -254,23 +104,10 @@ export class AdminController {
       const { id } = req.params;
       const { status, adminReply } = req.body;
 
-      const updated = await prisma.contact.update({
-        where: { id },
-        data: { 
-          status: status as ContactStatus,
-          adminReply
-        }
+      const updated = await managementService.updateContact(id, {
+        status: status as ContactStatus,
+        adminReply
       });
-
-      // Send email notification if reply is added
-      if (adminReply) {
-        emailService.sendUserContactReply(
-          updated.email,
-          updated.name,
-          updated.subject || 'Your inquiry',
-          adminReply
-        );
-      }
 
       return sendSuccess(res, updated, 'Contact message updated');
     } catch (error) {
@@ -284,7 +121,7 @@ export class AdminController {
   async deleteContact(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await prisma.contact.delete({ where: { id } });
+      await managementService.deleteContact(id);
       return sendSuccess(res, null, 'Contact message deleted');
     } catch (error) {
       next(error);
@@ -298,16 +135,13 @@ export class AdminController {
     try {
       const { category } = req.query;
       const pagination = getPaginationParams(req);
-      const where = category ? { category: category as string } : undefined;
-      const [images, total] = await Promise.all([
-        prisma.image.findMany({
-          where,
-          skip: pagination.skip,
-          take: pagination.take,
-          orderBy: { createdAt: 'desc' },
-        }),
-        prisma.image.count({ where })
-      ]);
+      
+      const { images, total } = await galleryService.getAllImages(
+        pagination.skip,
+        pagination.take,
+        category as string
+      );
+
       return sendSuccess(res, paginateResponse(images, pagination, total));
     } catch (error) {
       next(error);
@@ -328,19 +162,14 @@ export class AdminController {
         return sendError(res, 'No file uploaded', 400);
       }
 
-      // Convert path to URL format (relative to public /uploads)
-      const imageUrl = `/uploads/${category || 'temp'}/${file.filename}`;
-
-      const image = await prisma.image.create({
-        data: {
-          url: imageUrl,
-          filename: file.filename,
-          alt: alt || file.originalname,
-          category: category || 'temp',
-          size: file.size,
-          mimeType: file.mimetype,
-          uploadedBy: authReq.user!.id,
-        },
+      const image = await galleryService.uploadImage({
+        filename: file.filename,
+        originalname: file.originalname,
+        size: file.size,
+        mimetype: file.mimetype,
+        category,
+        alt,
+        userId: authReq.user!.id
       });
 
       return sendSuccess(res, image, 'Image uploaded successfully', 201);
@@ -355,28 +184,7 @@ export class AdminController {
   async deleteImage(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-
-      const image = await prisma.image.findUnique({
-        where: { id },
-      });
-
-      if (!image) {
-        return sendError(res, 'Image not found', 404);
-      }
-
-      // Delete from filesystem
-      const uploadDir = env.UPLOAD_DIR;
-      const fullPath = path.join(process.cwd(), uploadDir, image.category || 'temp', image.filename);
-      try {
-        await fs.unlink(fullPath);
-      } catch (err) {
-        logger.error({ err, path: fullPath }, 'Failed to delete physical file');
-      }
-
-      await prisma.image.delete({
-        where: { id },
-      });
-
+      await galleryService.deleteImage(id);
       return sendSuccess(res, null, 'Image deleted successfully');
     } catch (error) {
       next(error);
@@ -387,15 +195,11 @@ export class AdminController {
 
   async getServices(req: Request, res: Response, next: NextFunction) {
     try {
-      const pagination = getPaginationParams(req, 100); // Services list usually small
-      const [services, total] = await Promise.all([
-        prisma.service.findMany({
-          skip: pagination.skip,
-          take: pagination.take,
-          orderBy: { order: 'asc' }
-        }),
-        prisma.service.count()
-      ]);
+      const pagination = getPaginationParams(req, 100);
+      const { services, total } = await managementService.getAllServices(
+        pagination.skip,
+        pagination.take
+      );
       return sendSuccess(res, paginateResponse(services, pagination, total));
     } catch (error) {
       next(error);
@@ -404,7 +208,7 @@ export class AdminController {
 
   async createService(req: Request, res: Response, next: NextFunction) {
     try {
-      const service = await prisma.service.create({ data: req.body });
+      const service = await managementService.createService(req.body);
       return sendSuccess(res, service, 'Service created', 201);
     } catch (error) {
       next(error);
@@ -414,7 +218,7 @@ export class AdminController {
   async updateService(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const service = await prisma.service.update({ where: { id }, data: req.body });
+      const service = await managementService.updateService(id, req.body);
       return sendSuccess(res, service, 'Service updated');
     } catch (error) {
       next(error);
@@ -424,7 +228,7 @@ export class AdminController {
   async deleteService(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await prisma.service.delete({ where: { id } });
+      await managementService.deleteService(id);
       return sendSuccess(res, null, 'Service deleted');
     } catch (error) {
       next(error);
@@ -435,15 +239,11 @@ export class AdminController {
 
   async getFAQs(req: Request, res: Response, next: NextFunction) {
     try {
-      const pagination = getPaginationParams(req, 100); // FAQs list usually small
-      const [faqs, total] = await Promise.all([
-        prisma.fAQ.findMany({
-          skip: pagination.skip,
-          take: pagination.take,
-          orderBy: { order: 'asc' }
-        }),
-        prisma.fAQ.count()
-      ]);
+      const pagination = getPaginationParams(req, 100);
+      const { faqs, total } = await managementService.getAllFAQs(
+        pagination.skip,
+        pagination.take
+      );
       return sendSuccess(res, paginateResponse(faqs, pagination, total));
     } catch (error) {
       next(error);
@@ -452,7 +252,7 @@ export class AdminController {
 
   async createFAQ(req: Request, res: Response, next: NextFunction) {
     try {
-      const faq = await prisma.fAQ.create({ data: req.body });
+      const faq = await managementService.createFAQ(req.body);
       return sendSuccess(res, faq, 'FAQ created', 201);
     } catch (error) {
       next(error);
@@ -462,7 +262,7 @@ export class AdminController {
   async updateFAQ(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const faq = await prisma.fAQ.update({ where: { id }, data: req.body });
+      const faq = await managementService.updateFAQ(id, req.body);
       return sendSuccess(res, faq, 'FAQ updated');
     } catch (error) {
       next(error);
@@ -472,7 +272,7 @@ export class AdminController {
   async deleteFAQ(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      await prisma.fAQ.delete({ where: { id } });
+      await managementService.deleteFAQ(id);
       return sendSuccess(res, null, 'FAQ deleted');
     } catch (error) {
       next(error);
@@ -486,52 +286,13 @@ export class AdminController {
       const { role, search, sortBy, sortOrder } = req.query;
       const pagination = getPaginationParams(req);
 
-      const where: any = {};
-      if (role && role !== 'all') {
-        where.role = role as any;
-      }
+      const { users, total } = await managementService.getAllUsers(
+        pagination.skip,
+        pagination.take,
+        { role: role as string, search: search as string },
+        { sortBy: sortBy as string, sortOrder: sortOrder as string }
+      );
 
-      if (search) {
-        where.OR = [
-          { email: { contains: search as string, mode: 'insensitive' } },
-          { firstName: { contains: search as string, mode: 'insensitive' } },
-          { lastName: { contains: search as string, mode: 'insensitive' } },
-        ];
-      }
-
-      const orderBy: any = {};
-      if (sortBy) {
-        orderBy[sortBy as string] = sortOrder === 'asc' ? 'asc' : 'desc';
-      } else {
-        orderBy.createdAt = 'desc';
-      }
-
-      const [users, total] = await Promise.all([
-        prisma.user.findMany({
-          where,
-          skip: pagination.skip,
-          take: pagination.take,
-          select: {
-            id: true,
-            email: true,
-            firstName: true,
-            lastName: true,
-            phone: true,
-            role: true,
-            emailVerified: true,
-            createdAt: true,
-            updatedAt: true,
-            _count: {
-              select: {
-                quotes: true,
-                contacts: true
-              }
-            }
-          },
-          orderBy
-        }),
-        prisma.user.count({ where })
-      ]);
       return sendSuccess(res, paginateResponse(users, pagination, total));
     } catch (error) {
       next(error);
@@ -541,26 +302,7 @@ export class AdminController {
   async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const { role, firstName, lastName, phone } = req.body;
-
-      const user = await prisma.user.update({
-        where: { id },
-        data: {
-          role,
-          firstName,
-          lastName,
-          phone
-        },
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          phone: true,
-          role: true
-        }
-      });
-
+      const user = await managementService.updateUser(id, req.body);
       return sendSuccess(res, user, 'User updated successfully');
     } catch (error) {
       next(error);
@@ -570,14 +312,9 @@ export class AdminController {
   async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      
-      // Prevent deleting self
       const authReq = req as AuthRequest;
-      if (authReq.user?.id === id) {
-        return sendError(res, 'You cannot delete your own account', 400);
-      }
-
-      await prisma.user.delete({ where: { id } });
+      
+      await managementService.deleteUser(id, authReq.user!.id);
       return sendSuccess(res, null, 'User deleted successfully');
     } catch (error) {
       next(error);
