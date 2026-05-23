@@ -8,35 +8,35 @@
 **Objective:** Eliminate "Fat Controllers" and enforce a strict Service-Controller pattern. The controller's only job is handling HTTP requests/responses; all business logic and database interactions must live in Services.
 
 **Tasks:**
-- [ ] Create `AdminService` (or break it down further into `AnalyticsService`, `GalleryService`, `ManagementService`).
-- [ ] Migrate all Prisma queries and business logic out of `server/src/controllers/admin.controller.ts` into the new services.
-- [ ] Update `admin.controller.ts` to strictly parse `req`, call the injected service, and format `res`.
-- [ ] Update Vitest tests to mock the new services instead of mocking Prisma directly in the controller tests.
+- [x] Create `AdminService` (or break it down further into `AnalyticsService`, `GalleryService`, `ManagementService`).
+- [x] Migrate all Prisma queries and business logic out of `server/src/controllers/admin.controller.ts` into the new services.
+- [x] Update `admin.controller.ts` to strictly parse `req`, call the injected service, and format `res`.
+- [x] Update Vitest tests to mock the new services instead of mocking Prisma directly in the controller tests.
 
 ## 🔗 Phase 2: Shared Type Synchronization
 **Objective:** Eliminate duplicate type definitions between the frontend and backend to guarantee a Single Source of Truth (SSOT).
 
 **Tasks:**
-- [ ] Create a `shared/types` directory at the project root (or inside the server folder if preferred, exporting them to the frontend).
-- [ ] Migrate `server/src/types/index.ts` and `src/types/index.ts` into a unified type definition file.
-- [ ] Expose Prisma-generated types safely to the frontend using shared DTOs (Data Transfer Objects).
-- [ ] Refactor both frontend and backend imports to utilize the new shared types.
+- [x] Create a `shared/types` directory at the project root (or inside the server folder if preferred, exporting them to the frontend).
+- [x] Migrate `server/src/types/index.ts` and `src/types/index.ts` into a unified type definition file.
+- [x] Expose Prisma-generated types safely to the frontend using shared DTOs (Data Transfer Objects).
+- [x] Refactor both frontend and backend imports to utilize the new shared types.
 
 ## 🧩 Phase 3: Frontend Componentization & State Management
 **Objective:** Break down monolithic React pages into reusable, atomic UI components and custom hooks.
 
 **Tasks:**
-- [ ] Audit `src/pages/dashboard/AdminDashboard.tsx` and extract structural elements (e.g., `StatCard`, `DashboardSection`) into `src/components/dashboard/`.
-- [ ] Refactor massive management tables (Quotes, Contacts, Users) into smaller sub-components (e.g., `TableToolbar`, `TableRow`, `PaginationFooter`).
-- [ ] Extract complex local state (modal visibility, form handling) from UI components into custom hooks (e.g., `useBulkActions`, `useModalManager`).
+- [x] Audit `src/pages/dashboard/AdminDashboard.tsx` and extract structural elements (e.g., `StatCard`, `DashboardSection`) into `src/components/dashboard/`.
+- [x] Refactor massive management tables (Quotes, Contacts, Users) into smaller sub-components (e.g., `TableToolbar`, `TableRow`, `PaginationFooter`).
+- [x] Extract complex local state (modal visibility, form handling) from UI components into custom hooks (e.g., `useBulkActions`, `useModalManager`).
 
 ## ⚙️ Phase 4: Express Configuration & Middleware Modularity
 **Objective:** Clean up the main backend entry point (`server/index.ts`) for better readability and easier testing.
 
 **Tasks:**
-- [ ] Extract all security middleware configurations (Helmet, CORS, CSRF, Rate Limiting) into `server/src/config/middleware.ts`.
-- [ ] Extract route mounting into a centralized `server/src/routes/index.ts` router registry.
-- [ ] Ensure `server/index.ts` is strictly responsible for bootstrapping the server and initializing background jobs/Sentry.
+- [x] Extract all security middleware configurations (Helmet, CORS, CSRF, Rate Limiting) into `server/src/config/middleware.ts`.
+- [x] Extract route mounting into a centralized `server/src/routes/index.ts` router registry.
+- [x] Ensure `server/index.ts` is strictly responsible for bootstrapping the server and initializing background jobs/Sentry.
 
 ---
 
