@@ -1,5 +1,47 @@
 import { z } from 'zod';
 
+/**
+ * Validate secret strength for production
+ */
+function validateSecretStrength(secret: string, name: string): void {
+  if (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
+    return; // Skip in development
+  }
+
+  // Check for weak patterns
+  const weakPatterns = [
+    'test',
+    'example',
+    'change',
+    'default',
+    'secret',
+    'password',
+    '12345',
+    'qwerty',
+    'admin',
+  ];
+
+  const lowerSecret = secret.toLowerCase();
+  for (const pattern of weakPatterns) {
+    if (lowerSecret.includes(pattern)) {
+      console.error(`❌ ${name} contains weak pattern: "${pattern}"`);
+      console.error('   Generate a secure random secret instead.');
+      process.exit(1);
+    }
+  }
+
+  // Check for sufficient entropy (basic check)
+  const uniqueChars = new Set(secret).size;
+  if (uniqueChars < 16) {
+    console.error(`❌ ${name} has insufficient entropy`);
+    console.error(`   Unique characters: ${uniqueChars}/16 minimum`);
+    console.error('   Use: openssl rand -base64 48');
+    process.exit(1);
+  }
+
+  console.log(`✅ ${name} validation passed`);
+}
+
 const envSchema = z.object({
   // Server
   PORT: z.string().default('5000'),
@@ -61,6 +103,12 @@ const testEnvDefaults = {
 try {
   env = envSchema.parse(process.env);
   console.log('✅ Environment validated');
+
+  // Additional security validation for production secrets
+  if (process.env.NODE_ENV === 'production') {
+    validateSecretStrength(env.JWT_SECRET, 'JWT_SECRET');
+    validateSecretStrength(env.JWT_REFRESH_SECRET, 'JWT_REFRESH_SECRET');
+  }
 } catch (error) {
   // In test environment, use defaults instead of failing
   if (process.env.NODE_ENV === 'test' || process.env.VITEST) {
