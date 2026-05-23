@@ -8,3 +8,10 @@ coverage/
 !.env.example
 
 /src/generated/prisma
+
+# Test artifacts
+test-results/
+playwright-report/
+
+# Upload temp files
+uploads/temp/
