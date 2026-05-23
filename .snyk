@@ -1,0 +1,28 @@
+# Snyk (https://snyk.io) policy file
+
+# Ignore Prisma dev dependencies (not in production)
+ignore:
+  SNYK-JS-HONONODESERVER-6891234:
+    - '@hono/node-server':
+        reason: 'Dev dependency only, not used in production'
+        expires: '2026-07-01T00:00:00.000Z'
+
+# Exclude dev dependencies from production scans
+exclude:
+  production:
+    - '@prisma/dev'
+    - 'prisma > @prisma/dev'
+
+# Set severity threshold
+severity-threshold: high
+
+# License policy
+license:
+  accept:
+    - MIT
+    - Apache-2.0
+    - BSD-3-Clause
+    - ISC
+  reject:
+    - GPL-2.0
+    - GPL-3.0

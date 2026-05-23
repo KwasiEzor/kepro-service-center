@@ -30,7 +30,10 @@
     "db:seed": "tsx prisma/seed.ts",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "security:scan": "snyk test --severity-threshold=high",
+    "security:monitor": "snyk monitor",
+    "security:fix": "snyk fix"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -102,6 +105,7 @@
     "@vitest/coverage-v8": "^4.1.6",
     "autoprefixer": "^10.4.21",
     "prisma": "^7.8.0",
+    "snyk": "^1.1305.0",
     "supertest": "^7.2.2",
     "tailwindcss": "^4.1.14",
     "terser": "^5.47.1",
