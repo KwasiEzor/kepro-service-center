@@ -1,4 +1,5 @@
 import { CreateQuoteDTO, CreateContactDTO } from '../types';
+import { env } from '../../env';
 
 const BRAND_COLOR = '#FF6B2C';
 const SECONDARY_COLOR = '#1A1A1A';
@@ -320,7 +321,7 @@ export const templates = {
       <p>Vous pouvez consulter et télécharger votre facture depuis votre tableau de bord.</p>
 
       <div style="text-align: center;">
-        <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/invoices" class="button">Voir ma facture</a>
+        <a href="${env.FRONTEND_URL}/dashboard/invoices" class="button">Voir ma facture</a>
       </div>
 
       <p style="font-size: 13px; color: #666;">Modes de paiement acceptés : Espèces, Carte bancaire, Virement, Chèque</p>
