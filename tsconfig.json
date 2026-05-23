@@ -16,14 +16,8 @@
     "allowJs": true,
     "jsx": "react-jsx",
     "types": ["vite/client"],
-    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "@shared/*": [
-        "./shared/*"
-      ]
+      "@shared/*": ["./shared/*"]
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
