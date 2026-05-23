@@ -1,7 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { User, UserRole } from '@prisma/client';
+import { User } from '@prisma/client';
+import { UserRole } from '../types';
 import prisma from '../config/database';
 import { authConfig } from '../config/auth';
 import { RegisterDTO, LoginDTO, TokenPayload, AuthResponse } from '../types';
@@ -33,9 +34,8 @@ export class AuthService {
     const payload: TokenPayload = {
       userId: user.id,
       email: user.email,
-      role: user.role,
+      role: user.role as any as UserRole,
     };
-
     return jwt.sign(payload, authConfig.jwt.secret as jwt.Secret, {
       expiresIn: authConfig.jwt.expiresIn as jwt.SignOptions['expiresIn'],
     });
@@ -48,9 +48,8 @@ export class AuthService {
     const payload: TokenPayload = {
       userId: user.id,
       email: user.email,
-      role: user.role,
+      role: user.role as any as UserRole,
     };
-
     return jwt.sign(payload, authConfig.jwt.refreshSecret as jwt.Secret, {
       expiresIn: authConfig.jwt.refreshExpiresIn as jwt.SignOptions['expiresIn'],
     });
@@ -124,9 +123,8 @@ export class AuthService {
 
     // Remove password from response
     const { password: _, ...userWithoutPassword } = user;
-
     return {
-      user: userWithoutPassword,
+      user: userWithoutPassword as any,
       accessToken,
       refreshToken,
     };
@@ -170,9 +168,8 @@ export class AuthService {
 
     // Remove password from response
     const { password: _, ...userWithoutPassword } = user;
-
     return {
-      user: userWithoutPassword,
+      user: userWithoutPassword as any,
       accessToken,
       refreshToken,
     };

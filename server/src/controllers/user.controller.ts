@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { sendSuccess, sendError } from '../utils/response';
+import { NotFoundError } from '../utils/errors';
 import prisma from '../config/database';
 import { AuthRequest } from '../types';
 import bcrypt from 'bcryptjs';

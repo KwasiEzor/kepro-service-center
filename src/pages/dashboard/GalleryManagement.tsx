@@ -39,7 +39,7 @@ export default function GalleryManagement() {
     setPage,
     pagination,
     refetch
-  } = useTable<ImageType>(endpoint, 18);
+  } = useTable<ImageType>(endpoint, { initialLimit: 18 });
 
   const [uploading, setUploading] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);

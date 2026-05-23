@@ -86,7 +86,7 @@ describe('ManagementService', () => {
       (prisma.quote.findUnique as any).mockResolvedValue(mockQuote);
       (prisma.quote.update as any).mockResolvedValue({ ...mockQuote, status: QuoteStatus.APPROVED });
 
-      const result = await managementService.updateQuote('1', { status: QuoteStatus.APPROVED });
+      const result = await managementService.updateQuote('1', { status: QuoteStatus.APPROVED as any });
 
       expect(prisma.quote.update).toHaveBeenCalled();
       expect(emailService.sendUserQuoteStatusUpdate).toHaveBeenCalled();
@@ -96,7 +96,7 @@ describe('ManagementService', () => {
     it('should throw NotFoundError if quote does not exist', async () => {
       (prisma.quote.findUnique as any).mockResolvedValue(null);
 
-      await expect(managementService.updateQuote('999', { status: QuoteStatus.APPROVED }))
+      await expect(managementService.updateQuote('999', { status: QuoteStatus.APPROVED as any }))
         .rejects.toThrow(NotFoundError);
     });
   });

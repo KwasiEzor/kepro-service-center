@@ -1,5 +1,5 @@
 import prisma from '../config/database';
-import { QuoteStatus } from '@prisma/client';
+import { QuoteStatus } from '../types';
 import { CreateQuoteDTO } from '../types';
 import emailService from './email.service';
 

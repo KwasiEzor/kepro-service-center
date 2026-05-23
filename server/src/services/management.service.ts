@@ -1,5 +1,5 @@
 import prisma from '../config/database';
-import { QuoteStatus, ContactStatus, UserRole } from '@prisma/client';
+import { QuoteStatus, ContactStatus, UserRole } from '../types';
 import emailService from './email.service';
 import { NotFoundError, BadRequestError } from '../utils/errors';
 

@@ -68,7 +68,7 @@ export default function ResetPassword() {
           <KeyRound className="w-16 h-16 text-brand-red mx-auto mb-6 opacity-20" />
           <h1 className="text-2xl font-bold mb-4">Invalid Reset Link</h1>
           <p className="text-text-tertiary mb-8">This password reset link is missing or malformed.</p>
-          <Link to="/forgot-password" class="text-brand-red font-bold uppercase tracking-widest text-xs">Request a new link</Link>
+          <Link to="/forgot-password" className="text-brand-red font-bold uppercase tracking-widest text-xs">Request a new link</Link>
         </div>
       </div>
     );

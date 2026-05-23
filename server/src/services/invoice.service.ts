@@ -1,5 +1,5 @@
 import prisma from '../config/database';
-import { InvoiceStatus } from '@prisma/client';
+import { InvoiceStatus } from '../types';
 import emailService from './email.service';
 
 interface CreateInvoiceData {

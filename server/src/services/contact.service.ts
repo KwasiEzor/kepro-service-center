@@ -1,5 +1,5 @@
 import prisma from '../config/database';
-import { ContactStatus } from '@prisma/client';
+import { ContactStatus } from '../types';
 import { CreateContactDTO } from '../types';
 import emailService from './email.service';
 

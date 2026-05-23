@@ -1,5 +1,5 @@
 import prisma from '../config/database';
-import { InvoiceStatus } from '@prisma/client';
+import { InvoiceStatus } from '../types';
 
 export class AnalyticsService {
   async getDashboardStats() {
@@ -80,9 +80,9 @@ export class AnalyticsService {
     }));
 
     const recentActivity = [
-      ...recentQuotes.map(q => ({ type: 'QUOTE', id: q.id, title: `New quote: ${q.serviceType}`, user: q.name, date: q.date || q.createdAt, status: q.status })),
-      ...recentContacts.map(c => ({ type: 'CONTACT', id: c.id, title: `New message: ${c.subject}`, user: c.name, date: c.date || c.createdAt, status: c.status })),
-      ...recentInvoices.map(i => ({ type: 'INVOICE', id: i.id, title: `Invoice ${i.invoiceNumber}`, user: `€${i.total}`, date: i.date || i.createdAt, status: i.status }))
+      ...recentQuotes.map(q => ({ type: 'QUOTE', id: q.id, title: `New quote: ${q.serviceType}`, user: q.name, date: q.createdAt, status: q.status })),
+      ...recentContacts.map(c => ({ type: 'CONTACT', id: c.id, title: `New message: ${c.subject}`, user: c.name, date: c.createdAt, status: c.status })),
+      ...recentInvoices.map(i => ({ type: 'INVOICE', id: i.id, title: `Invoice ${i.invoiceNumber}`, user: `€${i.total}`, date: i.createdAt, status: i.status }))
     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 10);
 
     return {

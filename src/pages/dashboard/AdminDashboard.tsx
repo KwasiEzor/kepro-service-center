@@ -4,7 +4,6 @@ import { useAuth } from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
-  LogOut, 
   FileText, 
   MessageSquare, 
   Image, 
@@ -15,11 +14,8 @@ import {
   ChevronLeft,
   HelpCircle
 } from 'lucide-react';
-import { Logo } from '../../components/Logo';
 import { api } from '../../lib/api';
 import { ApiResponse } from '../../types';
-import { cn } from '../../lib/utils';
-import { format } from 'date-fns';
 import QuotesTable from './QuotesTable';
 import ContactsTable from './ContactsTable';
 import InvoicesTable from './InvoicesTable';
@@ -29,6 +25,10 @@ import FaqManagement from './FaqManagement';
 import UsersManagement from './UsersManagement';
 import { RevenueChart } from './RevenueChart';
 import { ServiceDistributionChart } from './ServiceDistributionChart';
+import { StatCard } from '../../components/dashboard/StatCard';
+import { QuickAccessCard } from '../../components/dashboard/QuickAccessCard';
+import { ActivityFeed } from '../../components/dashboard/ActivityFeed';
+import { AdminHeader } from '../../components/dashboard/AdminHeader';
 
 interface Stats {
   quotesCount: number;
@@ -95,36 +95,11 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen gradient-bg">
-      {/* Header */}
-      <header className="border-b border-border-primary bg-bg-primary/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setActiveView('overview')}
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity"
-            >
-              <Logo size="md" showSubtitle={false} />
-              <span className="px-2 py-1 bg-brand-red/20 text-brand-red text-xs font-semibold rounded">
-                {t('dashboard.admin.badge')}
-              </span>
-            </button>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">{user?.firstName || user?.email}</p>
-              <p className="text-xs text-text-secondary">{t('common.admin')}</p>
-            </div>
-            <button
-              onClick={handleLogout}
-              className="p-2 hover:bg-bg-secondary rounded-lg transition-colors"
-              title={t('common.logout')}
-            >
-              <LogOut className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <AdminHeader 
+        user={user} 
+        onLogout={handleLogout} 
+        onLogoClick={() => setActiveView('overview')} 
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-12">
@@ -150,57 +125,41 @@ export default function AdminDashboard() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
-              <button 
+              <StatCard 
+                label={t('dashboard.admin.stats.quotes')}
+                value={stats?.quotesCount || 0}
+                icon={FileText}
                 onClick={() => setActiveView('quotes')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <FileText className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
-                  <span className="text-3xl font-bold">{stats?.quotesCount || 0}</span>
-                </div>
-                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.quotes')}</h3>
-              </button>
+              />
 
-              <button
+              <StatCard 
+                label={t('dashboard.admin.stats.contacts')}
+                value={stats?.contactsCount || 0}
+                icon={MessageSquare}
                 onClick={() => setActiveView('contacts')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <MessageSquare className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
-                  <span className="text-3xl font-bold">{stats?.contactsCount || 0}</span>
-                </div>
-                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.contacts')}</h3>
-              </button>
+              />
 
-              <button
+              <StatCard 
+                label={t('dashboard.admin.stats.invoices')}
+                value={stats?.invoicesCount || 0}
+                icon={FileText}
+                variant="blue"
                 onClick={() => setActiveView('invoices')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <FileText className="w-8 h-8 text-blue-500 group-hover:scale-110 transition-transform" />
-                  <span className="text-3xl font-bold">{stats?.invoicesCount || 0}</span>
-                </div>
-                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.invoices')}</h3>
-              </button>
+              />
 
-              <div className="card-dark p-6 text-left border-l-4 border-l-green-500">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-8 h-8 bg-green-500/10 text-green-500 rounded-lg flex items-center justify-center font-black">€</div>
-                  <span className="text-3xl font-bold">€{(stats?.totalRevenue || 0).toLocaleString()}</span>
-                </div>
-                <h3 className="text-text-secondary text-sm font-bold uppercase tracking-widest">Total Revenue</h3>
-              </div>
+              <StatCard 
+                label="Total Revenue"
+                value={`€${(stats?.totalRevenue || 0).toLocaleString()}`}
+                icon={FileText}
+                variant="success"
+              />
 
-              <button 
+              <StatCard 
+                label={t('dashboard.admin.stats.users')}
+                value={stats?.usersCount || 0}
+                icon={Users}
                 onClick={() => setActiveView('users')}
-                className="card-dark p-6 text-left hover:border-brand-red/50 transition-all group"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <Users className="w-8 h-8 text-brand-red group-hover:scale-110 transition-transform" />
-                  <span className="text-3xl font-bold">{stats?.usersCount || 0}</span>
-                </div>
-                <h3 className="text-text-secondary text-sm">{t('dashboard.admin.stats.users')}</h3>
-              </button>
+              />
             </div>
 
             {/* Charts Section */}
@@ -220,146 +179,67 @@ export default function AdminDashboard() {
               <div className="lg:col-span-2 space-y-6">
                 <h2 className="text-xl font-bold uppercase tracking-widest text-text-tertiary">Quick Access</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div 
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.gallery.title')}
+                    description={t('dashboard.admin.sections.gallery.desc')}
+                    icon={Image}
+                    actionText={t('dashboard.admin.sections.gallery.action')}
                     onClick={() => setActiveView('gallery')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <Image className="w-10 h-10 text-brand-red mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                      {t('dashboard.admin.sections.gallery.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.gallery.desc')}
-                    </p>
-                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.gallery.action')} →</span>
-                  </div>
+                  />
 
-                  <div
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.invoices.title')}
+                    description={t('dashboard.admin.sections.invoices.desc')}
+                    icon={FileText}
+                    variant="blue"
+                    actionText={t('dashboard.admin.sections.invoices.action')}
                     onClick={() => setActiveView('invoices')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <FileText className="w-10 h-10 text-blue-500 mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-blue-500 transition-colors">
-                      {t('dashboard.admin.sections.invoices.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.invoices.desc')}
-                    </p>
-                    <span className="text-sm text-blue-500">{t('dashboard.admin.sections.invoices.action')} →</span>
-                  </div>
+                  />
 
-                  <div
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.quotes.title')}
+                    description={t('dashboard.admin.sections.quotes.desc')}
+                    icon={FileText}
+                    actionText={t('dashboard.admin.sections.quotes.action')}
                     onClick={() => setActiveView('quotes')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <FileText className="w-10 h-10 text-brand-red mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                      {t('dashboard.admin.sections.quotes.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.quotes.desc')}
-                    </p>
-                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.quotes.action')} →</span>
-                  </div>
+                  />
 
-                  <div 
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.contacts.title')}
+                    description={t('dashboard.admin.sections.contacts.desc')}
+                    icon={MessageSquare}
+                    actionText={t('dashboard.admin.sections.contacts.action')}
                     onClick={() => setActiveView('contacts')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <MessageSquare className="w-10 h-10 text-brand-red mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                      {t('dashboard.admin.sections.contacts.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.contacts.desc')}
-                    </p>
-                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.contacts.action')} →</span>
-                  </div>
+                  />
 
-                  <div 
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.services.title')}
+                    description={t('dashboard.admin.sections.services.desc')}
+                    icon={Settings}
+                    actionText={t('dashboard.admin.sections.services.action')}
                     onClick={() => setActiveView('services')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <Settings className="w-10 h-10 text-brand-red mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                      {t('dashboard.admin.sections.services.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.services.desc')}
-                    </p>
-                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.services.action')} →</span>
-                  </div>
+                  />
 
-                  <div 
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.faq.title')}
+                    description={t('dashboard.admin.sections.faq.desc')}
+                    icon={HelpCircle}
+                    actionText={t('dashboard.admin.sections.faq.action')}
                     onClick={() => setActiveView('faq')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <HelpCircle className="w-10 h-10 text-brand-red mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                      {t('dashboard.admin.sections.faq.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.faq.desc')}
-                    </p>
-                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.faq.action')} →</span>
-                  </div>
+                  />
 
-                  <div 
+                  <QuickAccessCard 
+                    title={t('dashboard.admin.sections.users.title')}
+                    description={t('dashboard.admin.sections.users.desc')}
+                    icon={Users}
+                    actionText={t('dashboard.admin.sections.users.action')}
                     onClick={() => setActiveView('users')}
-                    className="card-dark p-6 hover:bg-bg-secondary transition-colors cursor-pointer group"
-                  >
-                    <Users className="w-10 h-10 text-brand-red mb-4" />
-                    <h3 className="text-xl font-semibold mb-2 group-hover:text-brand-red transition-colors">
-                      {t('dashboard.admin.sections.users.title')}
-                    </h3>
-                    <p className="text-text-secondary text-sm mb-4">
-                      {t('dashboard.admin.sections.users.desc')}
-                    </p>
-                    <span className="text-sm text-brand-red">{t('dashboard.admin.sections.users.action')} →</span>
-                  </div>
+                  />
                 </div>
               </div>
 
               {/* Recent Activity Feed */}
-              <div className="space-y-6">
-                <h2 className="text-xl font-bold uppercase tracking-widest text-text-tertiary">Recent Activity</h2>
-                <div className="card-dark p-6 space-y-6">
-                  {stats?.recentActivity?.map((activity, idx) => (
-                    <div key={`${activity.type}-${activity.id}-${idx}`} className="flex gap-4 group">
-                      <div className={cn(
-                        "w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-transform group-hover:scale-110",
-                        activity.type === 'QUOTE' && "bg-brand-red/10 text-brand-red",
-                        activity.type === 'CONTACT' && "bg-blue-500/10 text-blue-500",
-                        activity.type === 'INVOICE' && "bg-green-500/10 text-green-500"
-                      )}>
-                        {activity.type === 'QUOTE' && <FileText className="w-5 h-5" />}
-                        {activity.type === 'CONTACT' && <MessageSquare className="w-5 h-5" />}
-                        {activity.type === 'INVOICE' && <FileText className="w-5 h-5" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2 mb-0.5">
-                          <p className="font-bold text-sm text-text-primary truncate">{activity.title}</p>
-                          <span className="text-[10px] text-text-tertiary whitespace-nowrap">
-                            {format(new Date(activity.date), 'HH:mm')}
-                          </span>
-                        </div>
-                        <div className="flex items-center justify-between gap-2">
-                           <p className="text-xs text-text-secondary truncate">{activity.user}</p>
-                           <span className={cn(
-                             "text-[9px] font-black tracking-tighter uppercase px-1.5 py-0.5 rounded",
-                             activity.status === 'PAID' || activity.status === 'APPROVED' ? "bg-green-500/10 text-green-500" : "bg-bg-secondary text-text-tertiary"
-                           )}>
-                             {activity.status}
-                           </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {(!stats?.recentActivity || stats.recentActivity.length === 0) && (
-                    <p className="text-sm text-text-tertiary italic text-center py-4">No recent activity</p>
-                  )}
-                </div>
-              </div>
+              <ActivityFeed activities={stats?.recentActivity || []} />
             </div>
           </>
         )}

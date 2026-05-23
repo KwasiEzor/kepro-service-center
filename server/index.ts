@@ -1,30 +1,13 @@
 import 'dotenv/config';
 import express from 'express';
 import * as Sentry from '@sentry/node';
-import cors from 'cors';
-import helmet from 'helmet';
-import cookieParser from 'cookie-parser';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { env } from './env';
-import chatRouter from './api';
-import authRoutes from './src/routes/auth.routes';
-import publicRoutes from './src/routes/public.routes';
-import adminRoutes from './src/routes/admin.routes';
-import userRoutes from './src/routes/user.routes';
 import { errorHandler } from './src/middleware/errorHandler';
-import { apiLimiter, authLimiter } from './src/middleware/rateLimiter';
 import logger from './src/utils/logger';
-import { doubleCsrfProtection, generateToken } from './src/middleware/csrf';
 import { startCleanupJobs } from './src/jobs/cleanup';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Environment validation happens automatically on import
-
-const app = express();
-const PORT = parseInt(env.PORT);
+import { configureMiddleware } from './src/config/middleware';
+import rootRouter from './src/routes';
 
 // Initialize Sentry
 if (env.SENTRY_DSN) {
@@ -33,76 +16,23 @@ if (env.SENTRY_DSN) {
     environment: env.NODE_ENV,
     tracesSampleRate: 1.0,
   });
-  // The request handler must be the first middleware on the app
-  app.use(Sentry.Handlers.requestHandler());
-  // TracingHandler creates a trace for every incoming request
-  app.use(Sentry.Handlers.tracingHandler());
 }
 
-// Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"], // Needed for some libraries, consider nonce in production
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:", env.FRONTEND_URL],
-      connectSrc: ["'self'", env.FRONTEND_URL, "https://generativelanguage.googleapis.com"],
-      fontSrc: ["'self'", "data:"],
-      objectSrc: ["'none'"],
-      mediaSrc: ["'self'"],
-      frameSrc: ["'none'"],
-      upgradeInsecureRequests: [],
-    },
-  },
-  crossOriginEmbedderPolicy: false,
-}));
+const app = express();
+const PORT = parseInt(env.PORT);
 
-// CORS configuration
-app.use(
-  cors({
-    origin: env.FRONTEND_URL,
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  })
-);
+// Configure all middlewares (Security, CORS, CSRF, etc.)
+configureMiddleware(app);
 
-// Body parsers
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use(cookieParser());
-
-// CSRF Protection
-app.use(doubleCsrfProtection);
-
-// CSRF Token route
-app.get('/api/csrf-token', (req, res) => {
-  res.json({ token: generateToken(req, res) });
-});
-
-// Serve static uploads
+// Static files
 const uploadDir = env.UPLOAD_DIR;
 const uploadsPath = path.isAbsolute(uploadDir) 
   ? uploadDir 
   : path.join(process.cwd(), uploadDir);
-
 app.use('/uploads', express.static(uploadsPath));
 
-// Rate limiting
-app.use('/api/', apiLimiter); // Global API rate limiting
-
-// API routes
-app.use('/api/chat', chatRouter); // Existing Gemini chatbot route
-app.use('/api/auth', authLimiter, authRoutes); // Auth routes with strict rate limiting
-app.use('/api/public', publicRoutes); // New public routes (quotes, contact)
-app.use('/api/admin', adminRoutes); // New admin routes
-app.use('/api/user', userRoutes); // New user specific routes
-
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// Mounting all routes
+app.use('/api', rootRouter);
 
 // 404 handler
 app.use((req, res) => {
@@ -114,7 +44,7 @@ app.use((req, res) => {
 
 // Global error handler
 if (env.SENTRY_DSN) {
-  app.use(Sentry.Handlers.errorHandler());
+  Sentry.setupExpressErrorHandler(app);
 }
 app.use(errorHandler);
 
@@ -126,5 +56,4 @@ app.listen(PORT, host, () => {
   logger.info(`✅ API server on http://localhost:${PORT}`);
   logger.info(`📁 Uploads directory: ${uploadDir}`);
   logger.info(`🔐 Auth endpoints: http://localhost:${PORT}/api/auth`);
-  logger.info(`💬 Chat endpoint: http://localhost:${PORT}/api/chat`);
 });

@@ -32,6 +32,8 @@ export const sendPaginated = <T>(
       limit,
       total,
       totalPages: Math.ceil(total / limit),
+      hasNext: page < Math.ceil(total / limit),
+      hasPrev: page > 1,
     },
   };
   return res.status(200).json(response);

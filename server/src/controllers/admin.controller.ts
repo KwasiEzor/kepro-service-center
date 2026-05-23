@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { sendSuccess, sendError } from '../utils/response';
-import { QuoteStatus, ContactStatus, InvoiceStatus, UserRole } from '@prisma/client';
+import { QuoteStatus, ContactStatus, InvoiceStatus, UserRole } from '../types';
 import { AuthRequest } from '../types';
 import { getPaginationParams, paginateResponse } from '../utils/pagination';
 import analyticsService from '../services/analytics.service';

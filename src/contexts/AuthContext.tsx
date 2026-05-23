@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, LoginCredentials, RegisterData } from '../types';
+import { User, LoginDTO, RegisterDTO } from '../../shared/types';
 import { authApi } from '../lib/auth';
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
-  register: (data: RegisterData) => Promise<void>;
+  login: (credentials: LoginDTO) => Promise<void>;
+  register: (data: RegisterDTO) => Promise<void>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
   updateProfile: (userData: User) => Promise<void>;
@@ -45,14 +45,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     initAuth();
   }, []);
 
-  const login = async (credentials: LoginCredentials) => {
+  const login = async (credentials: LoginDTO) => {
     const response = await authApi.login(credentials);
     setUser(response.user);
     localStorage.setItem('user', JSON.stringify(response.user));
     localStorage.setItem('accessToken', response.accessToken);
   };
 
-  const register = async (data: RegisterData) => {
+  const register = async (data: RegisterDTO) => {
     const response = await authApi.register(data);
     setUser(response.user);
     localStorage.setItem('user', JSON.stringify(response.user));

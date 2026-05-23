@@ -16,5 +16,6 @@ export const {
   },
   size: 64,
   ignoredMethods: ['GET', 'HEAD', 'OPTIONS'],
-  getTokenFromRequest: (req) => req.headers['x-csrf-token'], // Client will send it in this header
-});
+  getSessionIdentifier: (req) => req.cookies['x-csrf-token'] || 'guest', // Using cookie value as identifier
+  getCsrfTokenFromRequest: (req) => req.headers['x-csrf-token'] as string,
+}) as any;
