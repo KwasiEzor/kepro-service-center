@@ -7,9 +7,9 @@ import { z } from 'zod';
 const router = Router();
 
 const profileSchema = z.object({
-  firstName: z.string().min(2).optional(),
-  lastName: z.string().min(2).optional(),
-  phone: z.string().optional(),
+  firstName: z.string().min(2).max(100).optional(),
+  lastName: z.string().min(2).max(100).optional(),
+  phone: z.string().max(20).optional(),
 });
 
 // All user routes require authentication

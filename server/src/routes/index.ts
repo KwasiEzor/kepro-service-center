@@ -4,7 +4,7 @@ import authRoutes from './auth.routes';
 import publicRoutes from './public.routes';
 import adminRoutes from './admin.routes';
 import userRoutes from './user.routes';
-import { authLimiter } from '../middleware/rateLimiter';
+import { authLimiter, userRateLimiter } from '../middleware/rateLimiter';
 import { generateToken } from '../middleware/csrf';
 
 const router = Router();
@@ -23,7 +23,7 @@ router.get('/health', (req, res) => {
 router.use('/chat', chatRouter);
 router.use('/auth', authLimiter, authRoutes);
 router.use('/public', publicRoutes);
-router.use('/admin', adminRoutes);
-router.use('/user', userRoutes);
+router.use('/admin', userRateLimiter, adminRoutes); // Per-user rate limiting for admin routes
+router.use('/user', userRateLimiter, userRoutes); // Per-user rate limiting for user routes
 
 export default router;

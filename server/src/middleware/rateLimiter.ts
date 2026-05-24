@@ -1,7 +1,8 @@
 import rateLimit from 'express-rate-limit';
+import { Request } from 'express';
 
 /**
- * Global API rate limiter
+ * Global API rate limiter (IP-based)
  * Prevents API abuse across all endpoints
  */
 export const apiLimiter = rateLimit({
@@ -10,6 +11,31 @@ export const apiLimiter = rateLimit({
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+/**
+ * Per-user rate limiter (User ID-based)
+ * Limits authenticated users regardless of IP (prevents IP rotation abuse)
+ */
+export const userRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 200, // Higher limit for authenticated users (200 requests per 15 min)
+  message: 'Too many requests from your account, please try again later.',
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req: Request) => {
+    // Rate limit by user ID if authenticated
+    const userId = (req.user as any)?.id;
+    if (userId) {
+      return `user:${userId}`;
+    }
+    // Fall back to default IP-based key generation (handles IPv6 properly)
+    return undefined as any; // Let express-rate-limit use default IP generator
+  },
+  skip: (req: Request) => {
+    // Skip if not authenticated (let IP-based limiter handle it)
+    return !(req.user as any)?.id;
+  },
 });
 
 /**
