@@ -4,6 +4,7 @@ import authRoutes from './auth.routes';
 import publicRoutes from './public.routes';
 import adminRoutes from './admin.routes';
 import userRoutes from './user.routes';
+import healthRoutes from './health';
 import { authLimiter, userRateLimiter } from '../middleware/rateLimiter';
 import { generateToken } from '../middleware/csrf';
 
@@ -14,10 +15,8 @@ router.get('/csrf-token', (req, res) => {
   res.json({ token: generateToken(req, res) });
 });
 
-// Health check
-router.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
+// Health check routes (production-grade with DB checks)
+router.use(healthRoutes);
 
 // API routes
 router.use('/chat', chatRouter);
